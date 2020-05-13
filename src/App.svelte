@@ -1,0 +1,553 @@
+<style>
+    .bg-cont {
+        position: absolute;
+        left:0;
+        top:0;
+        height:100vh;
+        width:100vw;
+        z-index:-1;
+        overflow:hidden;
+    }
+    body {
+        background: #fff;
+        color:#070f26;
+        font-family: roboto,monospace;
+        padding-top: 4vh;
+        padding-bottom: 18vh;
+        padding-left: 8vw;
+        padding-right: 8vw;
+        overflow: scroll;
+    }
+    h1 {
+        margin-top:60px;
+        font-size: 50px;
+    }
+    .item {
+        flex: 0 0 auto;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 200px;
+        border-radius: 5px;
+        background-color: #efefef;
+        box-shadow: 0px 0px 0px 0px rgba(0,0,0,0.15);
+        transition: all 0.6s ease-in-out;
+        margin:40px;
+        margin-left:0;
+        margin-right:0;
+        margin-bottom:0;
+        break-inside: avoid;
+    }
+    .item:hover {
+        margin-top:30px;
+        box-shadow: 0 2.8px 2.5px rgba(0,0,0,.022), 0 7.1px 6.3px rgba(0,0,0,.031), 0 14.5px 12.9px rgba(0,0,0,.039), 0 29.9px 26.6px rgba(0,0,0,.048), 0 82px 73px rgba(0,0,0,.07);
+    }
+    .title {
+        padding-left:10px;
+        max-height: 50%;
+        overflow:scroll;
+        margin-bottom: 0.2em;
+    }
+    .date {
+        padding-left:10px;
+        color:#6d6d6d;
+    }
+    .tag {
+        position:relative;
+        font-size:1.2em;
+        padding-left:20px;
+        padding-right:20px;
+    }
+    .footer {
+        position:absolute;
+        bottom:10px;
+        max-width:5px;
+        background:lawngreen;
+        transition: max-width 1s ease-in-out;
+    }
+    .footer:hover {
+        max-width:100%;
+    }
+    ::-webkit-scrollbar {
+        display: none;
+    }
+    .row {
+        display:flex;
+        flex-direction:row;
+        overflow:scroll;
+    }
+    .article {
+        flex: 0 0 auto;
+        position: relative;
+        z-index: 1;
+        width:100%;
+        height:90%;
+        background-color: #fff;
+    }
+    .article::after {
+        content: '';
+        z-index: -1;
+        width:10px;
+        height:10px;
+        border: 10px solid black;
+        border-right:0px;
+        border-bottom:0px;
+        position: absolute;
+        top: -10px;
+        left: -10px;
+    }
+    .article::before {
+        content: '';
+        z-index: -1;
+        width:100%;
+        height:15%;
+        border: 10px solid black;
+        border-top:0px;
+        position: absolute;
+        bottom: -10px;
+        left: -10px;
+    }
+    .cont {
+        height:0px;
+        width:90%;
+        margin:5%;
+        transition: all 0.6s ease-in-out;
+        display:none;
+        padding:0px;
+    }
+	@keyframes move {
+	from {
+		transform: none;
+		opacity: 0.8;
+	}
+	30% {
+		opacity: 1;
+	}
+	to {
+		transform: translateY(100vh);
+		opacity: 0;
+	}
+	}
+
+	main {
+	content: "";
+	display: block;
+	width: 150vw;
+	height: 100vh;
+	left: -25%;
+	bottom: 0;
+	position: absolute;
+	}
+
+	.grid {
+	perspective: 300px;
+	width: 100%;
+	height: 100%;
+	position: relative;
+	}
+	.grid .grid-inner {
+	border-top: 1px solid #070f26;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	width: 100%;
+	height: 100%;
+	transform: rotateX(60deg);
+	}
+
+	.line {
+	display: block;
+	position: absolute;
+	width: 0px;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	border: 1px solid #070f26;
+	box-sizing: border-box;
+	height: 100%;
+	transition: transformY 1s linear;
+	will-change: transformY;
+	}
+
+	.hori, .vert {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	width: 100vw;
+	height: 100vh;
+	}
+
+	.hori .line:nth-child(1) {
+	left: -40%;
+	}
+	.hori .line:nth-child(2) {
+	left: -20%;
+	}
+	.hori .line:nth-child(3) {
+	left: 0%;
+	}
+	.hori .line:nth-child(4) {
+	left: 20%;
+	}
+	.hori .line:nth-child(5) {
+	left: 40%;
+	}
+	.hori .line:nth-child(6) {
+	left: 60%;
+	}
+	.hori .line:nth-child(7) {
+	left: 80%;
+	}
+	.hori .line:nth-child(8) {
+	left: 100%;
+	}
+	.hori .line:nth-child(9) {
+	left: 120%;
+	}
+	.hori .line:nth-child(10) {
+	left: 140%;
+	}
+	.vert .line {
+	animation: move 5s infinite linear;
+	width: 200%;
+	left: -50%;
+	height: 0px;
+	}
+	.vert .line:nth-child(1) {
+	animation: none;
+	opacity: 0.7;
+	}
+	.vert .line:nth-child(2) {
+	animation-delay: 0.5s;
+	}
+	.vert .line:nth-child(3) {
+	animation-delay: 1s;
+	}
+	.vert .line:nth-child(4) {
+	animation-delay: 1.5s;
+	}
+	.vert .line:nth-child(5) {
+	animation-delay: 2s;
+	}
+	.vert .line:nth-child(6) {
+	animation-delay: 2.5s;
+	}
+	.vert .line:nth-child(7) {
+	animation-delay: 3s;
+	}
+	.vert .line:nth-child(8) {
+	animation-delay: 3.5s;
+	}
+	.vert .line:nth-child(9) {
+	animation-delay: 4s;
+	}
+	.vert .line:nth-child(10) {
+	animation-delay: 4.5s;
+	}
+	.item-cont {
+		display:inline-block;
+		break-inside: avoid;
+		width:100%;
+		height:240px;
+		transition: width 0.6s ease-in-out;
+	}
+</style>
+<head>
+    <meta charset="utf-8">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Bradley Pudsey | Game Designer &amp; Front End Developer</title>
+    <meta name="description" content="Traveling circus crafting software to save people time so they can spend their life on what matters to them">
+    <meta property="og:site_name" content="Bradley Pudsey | Game Designer &amp; Front End Developer">
+    <meta property="og:type" content="website">
+    <meta property="og:description" content="Traveling circus crafting software to save people time so they can spend their life on what matters to them">
+    <meta property="og:title" content="Bradley Pudsey | Game Designer &amp; Front End Developer">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Bradley Pudsey | Game Designer &amp; Front End Developer">
+    <meta name="twitter:description" content="Traveling circus crafting software to save people time so they can spend their life on what matters to them">
+</head>
+<body>
+<div class=bg-cont>  
+    <main></main>
+    <div class="grid">
+        <div class="grid-inner">
+            <div class="hori">
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+            </div>
+            <div class="vert">
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+            </div>
+        </div>
+    </div>
+</div>
+    <a> Bradley Pudsey</a><a style="margin-left:70vw"> Contact</a>
+    <h1>Game Designer &amp; <br>Front End Developer</h1>
+    
+    <div style="column-width:240px;">
+        <div class="item-cont">
+            <div class="item"> 
+                <h2 class="title">A Big Title blah flip nurp imp wiggle </h2>
+                <span class="date">12/34/56</span>
+                <div class="cont"><div class="article"></div></div>
+                <footer class="footer">
+                    <span class="tag"><span>Event</span></span>
+                </footer>
+            </div>
+        </div>
+        
+        
+        <div class="item-cont">
+            <div class="item"> 
+                <h2 class="title">A Big Title blah flip nurp imp wiggle </h2>
+                <span class="date">12/34/56</span>
+                <div class="cont"><div class="article"></div></div>
+                <footer class="footer">
+                    <span class="tag"><span>Event</span></span>
+                </footer>
+            </div>
+        </div>
+        <div class="item-cont">
+            <div class="item"> 
+                <h2 class="title">A Big Title blah flip nurp imp wiggle </h2>
+                <span class="date">12/34/56</span>
+                <div class="cont"><div class="article"></div></div>
+                <footer class="footer">
+                    <span class="tag"><span>Event</span></span>
+                </footer>
+            </div>
+        </div>
+        <div class="item-cont">
+            <div class="item"> 
+                <h2 class="title">A Big Title blah flip nurp imp wiggle </h2>
+                <span class="date">12/34/56</span>
+                <div class="cont"><div class="article"></div></div>
+                <footer class="footer">
+                    <span class="tag"><span>Event</span></span>
+                </footer>
+            </div>
+        </div>
+        <div class="item-cont">
+            <div class="item"> 
+                <h2 class="title">A Big Title blah flip nurp imp wiggle </h2>
+                <span class="date">12/34/56</span>
+                <div class="cont"><div class="article"></div></div>
+                <footer class="footer">
+                    <span class="tag"><span>Event</span></span>
+                </footer>
+            </div>
+        </div>
+        <div class="item-cont">
+            <div class="item"> 
+                <h2 class="title">A Big Title blah flip nurp imp wiggle </h2>
+                <span class="date">12/34/56</span>
+                <div class="cont"><div class="article"></div></div>
+                <footer class="footer">
+                    <span class="tag"><span>Event</span></span>
+                </footer>
+            </div>
+        </div>
+        <div class="item-cont">
+            <div class="item"> 
+                <h2 class="title">A Big Title blah flip nurp imp wiggle </h2>
+                <span class="date">12/34/56</span>
+                <div class="cont"><div class="article"></div></div>
+                <footer class="footer">
+                    <span class="tag"><span>Event</span></span>
+                </footer>
+            </div>
+        </div>
+        <div class="item-cont">
+            <div class="item"> 
+                <h2 class="title">A Big Title blah flip nurp imp wiggle </h2>
+                <span class="date">12/34/56</span>
+                <div class="cont"><div class="article"></div></div>
+                <footer class="footer">
+                    <span class="tag"><span>Event</span></span>
+                </footer>
+            </div>
+        </div>
+        <div class="item-cont">
+            <div class="item"> 
+                <h2 class="title">A Big Title blah flip nurp imp wiggle </h2>
+                <span class="date">12/34/56</span>
+                <div class="cont"><div class="article"></div></div>
+                <footer class="footer">
+                    <span class="tag"><span>Event</span></span>
+                </footer>
+            </div>
+        </div>
+        <div class="item-cont">
+            <div class="item"> 
+                <h2 class="title">A Big Title blah flip nurp imp wiggle </h2>
+                <span class="date">12/34/56</span>
+                <div class="cont"><div class="article"></div></div>
+                <footer class="footer">
+                    <span class="tag"><span>Event</span></span>
+                </footer>
+            </div>
+        </div>
+        <div class="item-cont">
+            <div class="item"> 
+                <h2 class="title">A Big Title blah flip nurp imp wiggle </h2>
+                <span class="date">12/34/56</span>
+                <div class="cont"><div class="article"></div></div>
+                <footer class="footer">
+                    <span class="tag"><span>Event</span></span>
+                </footer>
+            </div>
+        </div>
+        <div class="item-cont">
+            <div class="item"> 
+                <h2 class="title">A Big Title blah flip nurp imp wiggle </h2>
+                <span class="date">12/34/56</span>
+                <div class="cont"><div class="article"></div></div>
+                <footer class="footer">
+                    <span class="tag"><span>Event</span></span>
+                </footer>
+            </div>
+        </div>
+        <div class="item-cont">
+            <div class="item"> 
+                <h2 class="title">A Big Title blah flip nurp imp wiggle </h2>
+                <span class="date">12/34/56</span>
+                <div class="cont"><div class="article"></div></div>
+                <footer class="footer">
+                    <span class="tag"><span>Event</span></span>
+                </footer>
+            </div>
+        </div>
+        <div class="item-cont">
+            <div class="item"> 
+                <h2 class="title">A Big Title blah flip nurp imp wiggle </h2>
+                <span class="date">12/34/56</span>
+                <div class="cont"><div class="article"></div></div>
+                <footer class="footer">
+                    <span class="tag"><span>Event</span></span>
+                </footer>
+            </div>
+        </div>
+        <div class="item-cont">
+            <div class="item"> 
+                <h2 class="title">A Big Title blah flip nurp imp wiggle </h2>
+                <span class="date">12/34/56</span>
+                <div class="cont"><div class="article"></div></div>
+                <footer class="footer">
+                    <span class="tag"><span>Event</span></span>
+                </footer>
+            </div>
+        </div>
+        <div class="item-cont">
+            <div class="item"> 
+                <h2 class="title">A Big Title blah flip nurp imp wiggle </h2>
+                <span class="date">12/34/56</span>
+                <div class="cont"><div class="article"></div></div>
+                <footer class="footer">
+                    <span class="tag"><span>Event</span></span>
+                </footer>
+            </div>
+        </div>
+        <div class="item-cont">
+            <div class="item"> 
+                <h2 class="title">A Big Title blah flip nurp imp wiggle </h2>
+                <span class="date">12/34/56</span>
+                <div class="cont"><div class="article"></div></div>
+                <footer class="footer">
+                    <span class="tag"><span>Event</span></span>
+                </footer>
+            </div>
+        </div>
+        <div class="item-cont">
+            <div class="item"> 
+                <h2 class="title">A Big Title blah flip nurp imp wiggle </h2>
+                <span class="date">12/34/56</span>
+                <div class="cont"><div class="article"></div></div>
+                <footer class="footer">
+                    <span class="tag"><span>Event</span></span>
+                </footer>
+            </div>
+        </div>
+        <div class="item-cont">
+            <div class="item"> 
+                <h2 class="title">A Big Title blah flip nurp imp wiggle </h2>
+                <span class="date">12/34/56</span>
+                <div class="cont"><div class="article"></div></div>
+                <footer class="footer">
+                    <span class="tag"><span>Event</span></span>
+                </footer>
+            </div>
+        </div>
+        <div class="item-cont">
+            <div class="item"> 
+                <h2 class="title">A Big Title blah flip nurp imp wiggle </h2>
+                <span class="date">12/34/56</span>
+                <div class="cont"><div class="article"></div></div>
+                <footer class="footer">
+                    <span class="tag"><span>Event</span></span>
+                </footer>
+            </div>
+        </div>
+        <div class="item-cont">
+            <div class="item"> 
+                <h2 class="title">A Big Title blah flip nurp imp wiggle </h2>
+                <span class="date">12/34/56</span>
+                <div class="cont"><div class="article"></div></div>
+                <footer class="footer">
+                    <span class="tag"><span>Event</span></span>
+                </footer>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script>
+        let showarticle = (e,el)=>{
+            document.querySelectorAll(".tmp").forEach((l)=>l.parentNode.removeChild(l))
+            let newel = el.cloneNode();
+            newel.style.position="absolute";
+            newel.style.height="80vh";
+            newel.style.width="80vw";
+            newel.style.top=el.offsetTop+"px";
+            newel.style.left="10vw";
+            newel.innerHTML=el.innerHTML;
+            newel.classList.add('tmp');
+            document.body.appendChild(newel);
+            newel.querySelector('.cont').style.display='block';
+            newel.querySelector('.cont').style.height='60%';
+            newel.onclick = (e)=>hidearticle(e,newel);
+        }
+        let hidearticle = (e,el)=>{
+            document.body.removeChild(el);
+        }
+        document.querySelectorAll('.item').forEach(el=>el.onclick=(e)=>showarticle(e,el));
+
+    </script>
+
+</body>
