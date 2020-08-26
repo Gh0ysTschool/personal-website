@@ -1,0 +1,245 @@
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<h2>Weapons Dealer</h2>
+<link href="https://fonts.googleapis.com/css?family=Libre+Barcode+128+Text" rel="stylesheet">
+<div class='container'>
+    <div class='item-frame'>
+        <h3>M66</h3>
+        <img alt='gun' src='./guns1.png'>
+        <p>PURCHASE</p>
+        <div><span>1234567890</span></div>
+    </div>
+    <div class='item-frame'>
+        <h3>M66</h3>
+        <img alt='gun' src='./guns2.png'>
+        <p>PURCHASE</p>
+        <div><span>1234567890</span></div>
+    </div>
+    <div class='item-frame'>
+        <h3>M66</h3>
+        <img alt='gun' src='./guns3.png'>
+        <p>PURCHASE</p>
+        <div><span>1234567890</span></div>
+    </div>
+    <div class='item-frame'>
+        <h3>M66</h3>
+        <img alt='gun' src='./guns4.png'>
+        <p>PURCHASE</p>
+        <div><span>1234567890</span></div>
+    </div>
+    <div class='item-frame'>
+        <h3>M66</h3>
+        <img alt='gun' src='./guns5.png'>
+        <p>PURCHASE</p>
+        <div><span>1234567890</span></div>
+    </div>
+    <div class='item-frame'>
+        <h3>M66</h3>
+        <img alt='gun' src='./guns6.png'>
+        <p>PURCHASE</p>
+        <div><span>1234567890</span></div>
+    </div>
+    <div class='item-frame'>
+        <h3>M66</h3>
+        <img alt='gun' src='./guns7.png'>
+        <p>PURCHASE</p>
+        <div><span>1234567890</span></div>
+    </div>
+    <div class='item-frame'>
+        <h3>M66</h3>
+        <img alt='gun' src='./guns8.png'>
+        <p>PURCHASE</p>
+        <div><span>1234567890</span></div>
+    </div>
+    <div class='item-frame'>
+        <h3>M66</h3>
+        <img alt='gun' src='./guns9.png'>
+        <p>PURCHASE</p>
+        <div><span>1234567890</span></div>
+    </div>
+</div>
+</div>
+<style>
+    .container {
+        display: flex;
+        height: 50vh;
+        width: 100%;
+        overflow-x: overlay;
+        overflow-y: hidden;
+        scroll-snap-type: x mandatory;
+        scroll-padding-right: 2em ;
+        /* flex-wrap: wrap; */
+    }
+    :root {
+        --corner-color:#616161;
+        --sizing:40vh;
+    }
+    @keyframes flickerAnimation { /* flame pulses */
+        0%   { opacity:0; }
+        90% { opacity:1; }
+        92%   { opacity:0; }
+        96% { opacity:1; }
+        98%   { opacity:0; }
+        100% { opacity:1; }
+    }
+    .item-frame {
+        scroll-snap-align:end;
+        flex-grow: 1;
+        flex-shrink: 0;
+        flex-basis: 1;
+        contain:size;
+        height: var(--sizing);
+        width: var(--sizing);     
+        margin: calc(var(--sizing)/10);   
+        margin-left: calc(var(--sizing)/5);
+        position: relative;
+        background:#121212;
+        box-sizing: border-box;
+        box-shadow:inset 0 0 22px -6px darkorange;
+        color: #969494;
+    }
+    .item-frame:after {
+        position: absolute;
+        z-index: -1;
+        content:'';
+        height: calc(var(--sizing)*1.02);
+        width:  calc(var(--sizing)*1.02);
+        top: calc(var(--sizing)*-.01);
+        left:calc(var(--sizing)*-.01);
+        background-image: 
+        linear-gradient( -45deg, var(--corner-color), var(--corner-color) calc(var(--sizing)/10), transparent calc(var(--sizing)/10)),
+        linear-gradient(  45deg, var(--corner-color), var(--corner-color) calc(var(--sizing)/10), transparent calc(var(--sizing)/10)),
+        linear-gradient(-135deg, var(--corner-color), var(--corner-color) calc(var(--sizing)/10), transparent calc(var(--sizing)/10)),
+        linear-gradient( 135deg, var(--corner-color), var(--corner-color) calc(var(--sizing)/10), transparent calc(var(--sizing)/10));
+        animation: flickerAnimation 2s;
+
+    }
+    .item-frame > h3 {
+        width: 88%;
+        margin-top: calc(var(--sizing)*.11);
+        margin-left: 20%;
+        font-size: calc(var(--sizing)*.11);
+        margin-bottom: calc(var(--sizing)/60);
+        border-bottom: calc(var(--sizing)/100) solid darkorange;
+    }
+    .item-frame > p {
+        width: 88%;
+        margin-top: calc(var(--sizing)/60);
+        margin-left: 20%;
+        font-size: calc(var(--sizing)*.11);
+        border-top: calc(var(--sizing)/100) solid darkorange;
+    }
+    .item-frame > div {
+        
+        font-family: 'Libre Barcode 128 Text';
+        position: absolute;
+        height: 45%;
+        width: calc(var(--sizing)/5);
+        display: flex;
+        flex-direction: column;
+        top: 25%;
+        font-size: calc(var(--sizing)*0.1);
+        left: calc(var(--sizing)*-0.1);
+        border: calc(var(--sizing)*0.011) solid darkorange;
+        border-right: none;
+        background: linear-gradient(90deg,rgb(170, 94, 0),#121212);
+    }
+    .item-frame > div > span {
+        transform-origin: left;
+        transform: rotate(90deg) scaleY(2.5);
+        margin-left: calc(var(--sizing)/10);
+    }
+    .item-frame > img {
+        background: repeating-linear-gradient(#bbbbbb, transparent calc(var(--sizing)/40), transparent calc(var(--sizing)/20)),
+            repeating-linear-gradient(115deg, #bbbbbb, transparent calc(var(--sizing)/40), transparent calc(var(--sizing)/20)),
+             repeating-linear-gradient(75deg, #bbbbbb, transparent calc(var(--sizing)/40), transparent calc(var(--sizing)/20));
+        width: 88%;
+        margin-left: 20%;
+        height: 45%;
+        /* content:url(data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7); */
+    }
+
+    body {
+        background:linear-gradient(#232323,#121212 20%);
+        overflow:hidden;
+    }
+
+</style>
+<footer>
+    <div class='blurb'> lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum </div>
+    <h1>BRADLEY<span>PUDSEY</span></h1>
+</footer>
+<style>
+    h2 {
+        /* border-left: 3em solid #333333; */
+        text-align: center;
+        background-image: radial-gradient(#212121, #212121 40%, transparent 40%);
+        background-size: 10px 10px;
+        color: #969494;
+        padding: 1em;
+        margin-left:2em;
+        margin-right:2em;
+        font-family: Century Gothic,CenturyGothic,AppleGothic,sans-serif;
+        font-weight: 100;
+    }
+    h2:before {
+        content:'\2326';
+        position:absolute;
+        right: 0.5em;
+    }
+    h2:after  { 
+        content:'\232C';
+        position:absolute;
+        left: 1em;
+
+    }
+    h1 {
+        position: relative;
+        /* bottom: 1em;
+        right: 1em; */
+        font-family: Century Gothic,CenturyGothic,AppleGothic,sans-serif;
+        font-weight: 100;
+        padding: .2em .2em .2em .4em;
+        color: #434343cc;
+    }
+    h1::before {
+        content:'';
+        border-top: solid 0.1em #bbbbbb;
+        border-left:solid 0.1em #bbbbbb;
+        position: absolute;
+        top: -0.1em;
+        left: -0.1em;
+        width: 1.2em;
+        height: 1.2em;
+    }
+    h1 > span {
+        color: #bbbbbb;
+    }
+    footer {
+        display: flex;
+        justify-content: space-between;
+    }
+    .blurb {
+        text-align: center;
+        background: repeating-linear-gradient(-45deg, #212121, #212121 .4em, transparent .4em, transparent .5em);
+        /* background-size: 10px 10px; */
+        color: #969494;
+        padding: 1em;
+        /* height: 3vh; */
+        margin-left: 2em;
+        margin-right: 2em;
+        /* max-width: 40vh; */
+        overflow-y: overlay;
+        margin: 1em;
+        font-family: Century Gothic,CenturyGothic,AppleGothic,sans-serif;
+        font-weight: 100;
+        font-size: larger;
+    }
+    @media (orientation: portrait) {
+        footer {
+            flex-direction: column;
+        }
+        h1 {
+            margin: auto;
+        }
+    } 
+</style>
