@@ -1,0 +1,250 @@
+
+<!DOCTYPE html>
+<html>
+<body>
+    <script src='perlinnoise.js'></script>
+    <canvas id="myCanvas" width="800" height="600"></canvas>
+    <script>
+        let init = () => {
+            ////////////// utilities /////////////////////////
+            min = (f,s) => (f<=s) ? f : s;
+            max = (f,s) => (f>=s) ? f : s;
+
+            function box_muller_transform(min, max, skew) {
+                let u = 0, v = 0;
+                while(u === 0) u = Math.random(); //Converting [0,1) to (0,1)
+                while(v === 0) v = Math.random();
+                let num = Math.sqrt( -2.0 * Math.log( u ) ) * Math.cos( 2.0 * Math.PI * v );
+                num = num / 10.0 + 0.5; // Translate to 0 -> 1
+                if (num > 1 || num < 0) num = randn_bm(min, max, skew); // resample between 0 and 1 if out of range
+                num = Math.pow(num, skew); // Skew
+                num *= max - min; // Stretch to fill range
+                num += min; // offset to min
+                return num;
+            }
+            ///////////end utilities /////////////////////////
+
+            /////////////// input ////////////////////////////
+            let keybpard = kb = {
+                cur_k:0,
+                A : 65, B : 66, C : 67, D : 68, 
+                E : 69, F : 70, G : 71,
+                H : 72, I : 73, J : 74, K : 75, 
+                L : 76, M : 77, N : 78,
+                O : 79, P : 80, Q : 81, R : 82, 
+                S : 83, T : 84, U : 85,
+                V : 86, W : 87, X : 88, Y : 89, 
+                Z : 90, LEFT : 37, RIGHT : 39, 
+                UP : 38,DOWN : 40,SPACE : 32,
+                ESC : 27, PGUP : 33, PGDOWN : 34, 
+                HOME : 36, END : 35,
+                _0 : 48, _1 : 49, _2 : 50, _3 : 51, 
+                _4 : 52, _5 : 53,
+                _6 : 54, _7 : 55, _8 : 56, _9 : 57,
+            }
+            document.onkeydown = e => kb.cur_k=e.keyCode;
+            document.onkeyup = e => kb.cur_k=0
+            
+            let throttled = false;
+            throttle = (f) => {
+                if (throttled || !f()) return false;
+                throttled=true;
+                setTimeout(e=>throttled=false,200);
+                return true;
+            }
+            btnp = (bn) => throttle(f=>bn==kb.cur_k);
+            btn = (bn) => bn==kb.cur_k;
+            ///////////// end input /////////////////////
+
+            ////////////////// map ////////////////
+            let map = {
+                x:20,
+                y:20,
+                z:13,
+                tiles:9,
+            }
+            noise.seed(Math.random());
+            arr2 = Array(map.x).fill(0).map(f=>Array(map.y).fill(0))
+            arr2=arr2.map((lx,x)=>lx.map((ly,y)=>noise.perlin2(x/10,y/10)))
+            arr2=arr2.map(el=>el.map(f=>Math.ceil(f*(map.tiles-1)/2+(map.tiles-1)/2)))
+            map_data=arr2
+            
+            feature_data=
+                map_data.map(
+                    ll=>ll.map(
+                        el=>Math.floor(Math.random()*40)).map(
+                            el=>(el>3) ? undefined : el))
+
+            arr = Array(map.x).fill(0).map(f=>Array(map.y).fill(0))
+            arr=arr.map((lx,x)=>lx.map((ly,y)=>noise.simplex2(x/20,y/20)))
+            arr=arr.map(el=>el.map(f=>Math.abs(Math.floor(f*map.z))))
+            height_data= arr
+            map_data.map((el,x)=>el.map((ll,y)=>height_data[x][y]=(ll==7) ? 0 : height_data[x][y]))
+            ///////////////end map ////////////////
+
+            ///////////////// graphics ///////////////////
+            let sprSheet = new Image();
+            sprSheet.src = './sprites.png';
+            
+            let canvas = document.querySelector('canvas'),context = canvas.getContext('2d');
+            context.imageSmoothingEnabled = false;
+            context.mozImageSmoothingEnabled = false;
+            context.webkitImageSmoothingEnabled = false;
+            context.msImageSmoothingEnabled = false;
+            spr = (n,x,y,w,h,o=0) => {
+                let scale=5;
+                context.drawImage(sprSheet,(n*16),o*16,w*8,h*8,x*scale-crs.pos.x*32+crs.pos.y*32,y*scale-crs.pos.y*16-crs.pos.x*16,w*8*scale,h*8*scale);
+            }
+            line = (x1,y1,x2,y2) => {
+                context.beginPath();
+                context.moveTo(x1, y1);
+                context.lineTo(x2, y2);
+                context.stroke();
+            }
+            print = (text,x,y,color) => context.fillText(text,x,y);
+            cls = () => context.clearRect(0, 0, canvas.width, canvas.height);
+            
+            function drawchars(x,y){
+                let  height=height_data[y][x];
+                for( char of [...pcs,...npcs]) {
+                    if(char.x==x&&char.y==y) spr(char.tile,56+(x)*8-(y)*8,(32+x*4+y*4-height*2)-9,2,2,animation.anim_frame%2);
+                }
+            }
+            function drawmovementindicator(x,y){
+                if(selectedaction=='move' && crs.sunit != null){
+                    if (crs.mtiles==null) crs.mtiles = calcmove();
+                    let  height=height_data[y][x];
+                    if (crs.mtiles[x][y]) {
+                        spr(14,56+(x)*8-(y)*8,32+x*4+y*4-height*2,2,2)
+                        spr(0,56+(x)*8-(y)*8,32+x*4+y*4-height*2,2,2,1+Math.floor((animation.cur_frame/8))%3)
+                    }
+                }
+            }
+            function drawcrs(x,y,z){
+                spr(0,56+(x)*8-(y)*8,32+x*4+y*4-z*2,2,2);  
+            }
+            function _draw(){
+                cls();
+                let  [x,y,z]=[0,0,0];
+                for ( let y=0;y<map.y;y++ ) {
+                    for ( let x=0;x<map.x;x++ ) {
+                        let  tile=map_data[y][x];
+                        let  height=height_data[y][x];
+                        for ( let z=0;z<=height;z++ ) {
+                            spr(tile, 
+                                56+x*8-y*8,
+                                32+x*4+y*4-z*2,
+                                2,2);
+                        };
+                        drawmovementindicator(x,y);
+                        if (y==crs.pos.y && x==crs.pos.x) drawcrs(x,y,height);
+                        spr(feature_data[x][y]+15,56+(x)*8-(y)*8,(32+x*4+y*4-height*2)-9,2,2);
+                        drawchars(x,y);
+                    }
+                    
+                }
+                print("dpad to move",0,0,7);
+                print("E to select unit",0,10,7);
+                print("F to move unit",0,20,7);
+            
+            }
+
+            ///////////// end rendering /////////////////
+            
+            //////////////////// movement //////////////
+            let selectedaction = 'move'
+            function calcmove() {
+                arr = Array(map.x).fill(0).map(el=>Array(map.y).fill(0))
+                mark(arr,crs.sunit.x,crs.sunit.y,crs.sunit.speed)
+                return arr
+            }
+            function isEmpty(x,y){
+                return (feature_data[x][y]==undefined && map_data[x][y]!=7 && [...npcs,...pcs].filter(f=>f.x==x&&f.y==y).length==0) ? 1 : 0;
+            }
+            function mark(arr,x,y,lim){
+                if (lim==0) return
+                [[x-1,y],[x+1,y],[x,y-1],[x,y+1]].map(([xx,yy])=>{
+                    if (xx>0 && yy>0 && xx<map.x && yy<map.y && isEmpty(xx,yy)) { 
+                        arr[xx][yy] = 1;
+                        mark(arr,xx,yy,lim-1); 
+                    }
+
+                })
+            }
+            function move(x,y){
+                if (crs.sunit == null || crs.mtiles == null || crs.mtiles[x][y] == 0) return
+                crs.mtiles=null
+                crs.sunit.x=x
+                crs.sunit.y=y
+                crs.sunit=null
+            }
+            /////////////////end movement //////////////
+
+            ///////////////// crs ///////////////////
+            crs = {
+                sunit:null,
+                pos:{ x:0, y:0 },
+                mtiles:null,
+            };
+            function updatecrspos(){ // branchless conditionals
+                crs.pos.x +=
+                      (crs.pos.x < map.x-1) *
+                        ( btnp(kb.RIGHT) || btnp(kb.D) )
+                    - (crs.pos.x > 0) * 
+                        ( btnp(kb.LEFT ) || btnp(kb.A) )
+                crs.pos.y +=
+                      (crs.pos.y < map.y-1) *
+                        ( btnp(kb.DOWN) || btnp(kb.S) )
+                    - (crs.pos.y > 0) * 
+                        ( btnp(kb.UP  ) || btnp(kb.W) )
+            }
+            //////////////end crs ///////////////////
+            
+            let char = (tile,name) => ({tile:tile+19,name:name, health:1, maxhealth:1, jump:2, speed:3, attack:1, special:1, x:0, y:0 });
+            let l = () => Math.floor(Math.random() * (map.x-1))
+            let pcs = [
+                char(5,'archer'),
+                char(6,'barbarian'),
+                char(7,'halbedier'),
+                char(8,'priest'),
+                char(9,'wizard')
+            ].map(c=>({...c,x:l(),y:l(),}))
+            let npcs = [
+                char(0,'spear_sk'),
+                char(1,'scythe_sk'),
+                char(2,'sword_sk'),
+                char(3,'priest_sk'),
+                char(4,'necromancer_sk')
+            ].map(c=>({...c,x:l(),y:l(),}))
+            let animation = {cur_frame:0,period:60,anim_frame:0}
+            
+            function _update() {
+                updatecrspos()
+            
+                let  h=height_data[crs.pos.y][crs.pos.x];
+                if ( btnp(/*🅾️*/69) ) {
+                    if (crs.sunit == null ) 
+                        crs.sunit=[...pcs,...npcs].filter(f=>f.x==crs.pos.x&&f.y==crs.pos.y);
+                    if(crs.sunit.length>0)  { 
+                        crs.sunit = crs.sunit[0] 
+                    } else {
+                        crs.sunit = null;
+                    } 
+                } else if ( btnp(/*❎*/70) ) {
+                    move(crs.pos.x,crs.pos.y)
+                }
+                animation.cur_frame++;
+                if (animation.cur_frame % animation.period == 0) animation.anim_frame++;
+            }
+            
+            gameloop = () => {
+                _update();
+                _draw();
+                requestAnimationFrame(gameloop);
+            }
+            gameloop();
+            
+        }
+        init();
+</script>
+</body>
