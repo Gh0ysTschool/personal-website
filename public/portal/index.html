@@ -1,0 +1,593 @@
+
+<!DOCTYPE html>
+<html>
+<body>
+    <!-- style='width:100%;height:100%'  -->
+    <canvas id="myCanvas" width='1200' height='550'></canvas>
+    <script>
+        let init = () => {
+            ////////////// utilities /////////////////////////
+            min = (f,s) => (f<=s) ? f : s;
+            max = (f,s) => (f>=s) ? f : s;
+            arr_2d = (x,y, fill) => Array(x).fill().map(f=>Array(y).fill(0)).map(ll=>ll.map(fill));
+            function box_muller_transform(min, max, skew) {
+                let u = 0, v = 0;
+                while(u === 0) u = Math.random(); //Converting [0,1) to (0,1)
+                while(v === 0) v = Math.random();
+                let num = Math.sqrt( -2.0 * Math.log( u ) ) * Math.cos( 2.0 * Math.PI * v );
+                num = num / 10.0 + 0.5; // Translate to 0 -> 1
+                if (num > 1 || num < 0) num = randn_bm(min, max, skew); // resample between 0 and 1 if out of range
+                num = Math.pow(num, skew); // Skew
+                num *= max - min; // Stretch to fill range
+                num += min; // offset to min
+                return num;
+            }
+            ///////////end utilities /////////////////////////
+            
+            ////////////// flags /////////////////////////
+            let flags = {
+                opened:false
+            }
+            function flag(key){
+                flags[key]=true
+            }
+            function unflag(key){
+                flags[key]=false
+            }
+            flg = flags
+            ///////////end flags /////////////////////////
+            
+            /////////////// input ////////////////////////////
+            let keybpard = kb = {
+                cur_k:0,
+                A : 65, B : 66, C : 67, D : 68, 
+                E : 69, F : 70, G : 71,
+                H : 72, I : 73, J : 74, K : 75, 
+                L : 76, M : 77, N : 78,
+                O : 79, P : 80, Q : 81, R : 82, 
+                S : 83, T : 84, U : 85,
+                V : 86, W : 87, X : 88, Y : 89, 
+                Z : 90, LEFT : 37, RIGHT : 39, 
+                UP : 38,DOWN : 40,SPACE : 32,
+                ESC : 27, PGUP : 33, PGDOWN : 34, 
+                HOME : 36, END : 35,
+                _0 : 48, _1 : 49, _2 : 50, _3 : 51, 
+                _4 : 52, _5 : 53,
+                _6 : 54, _7 : 55, _8 : 56, _9 : 57,
+            }
+            document.onkeydown = e => kb.cur_k=e.keyCode;
+            document.onkeyup = e => kb.cur_k=0
+            
+            let throttled = false;
+            throttle = (f) => {
+                if (throttled || !f()) return false;
+                throttled=true;
+                setTimeout(e=>throttled=false,200);
+                return true;
+            }
+            btnp = (bn) => throttle(f=>bn==kb.cur_k);
+            btn = (bn) => bn==kb.cur_k;
+            ///////////// end input /////////////////////
+
+            ///////////////// portals /////////////////////
+            let portal = (color,tile) => ({color,tile,pos:{x:null,y:null},dir:'right'})
+            let or_por=portal('orange',20),bl_por=portal('blue',18)
+            let fire = (portal) => {
+                arr = project(chell.pos.x,chell.pos.y,crs.dir);
+                portal.pos.x=arr[0]
+                portal.pos.y=arr[1]//addfeature(arr[0],arr[1]);
+                portal.dir=crs.dir+'';
+            }
+            resetportals = () => [or_por,bl_por].map(p=>p.pos={x:null,y:null,z:null})
+            ///////////// end portals /////////////////////
+
+            ////////////////// map ////////////////
+            let map = {
+                // x:15,
+                // y:15,
+                y:11,
+                x:9,
+                z:13,
+                tiles:9,
+            }
+            map_data=[
+              [ ,7,7,7,7,7,7,7,7],
+              [ ,9,9,7,7,7,7,7,7],
+              [ ,9,9,7,7,7,7,7,7],
+              [ ,9,9,7,7,7,7,7,7],
+              [9,9,9,7,7,7,7,7,7],
+              [9,9,9,7,7,7,7,7,,],
+              [7,7,7,7,7,7,7,7,,],
+              [7,7,7,7,7,7,7,7,,],
+              [7,7,7,7,7,9,9,9,,],
+              [7,7,7,7,7,9,9,9,,],
+              [ ,7,7,7,7,9,9,9,,],
+            ]
+            height_data= 
+            [
+               [ ,5,5,5,5,5,5,5,3],
+               [ ,5,0,0,0,1,0,0,1],
+               [ ,5,0,0,0,0,0,0,0],
+               [ ,5,2,2,0,0,0,0,0],
+               [5,5,2,2,0,0,0,1,1],
+               [5,2,2,0,0,0,0,1,,],
+               [5,2,2,0,0,1,0,1,,],
+               [5,2,2,1,1,1,1,1,,],
+               [5,2,1,1,1,1,1,1,,],
+               [5,2,1,1,1,1,1,1,,],
+               [ ,5,1,1,1,1,1,1,,]
+            ]
+            ///////////////end map ////////////////
+
+            ///////////////// graphics ///////////////////
+            let sprSheet = new Image();
+            sprSheet.src = './blehtiles-portal.png';
+            
+            let canvas = document.querySelector('canvas'),context = canvas.getContext('2d');
+            context.imageSmoothingEnabled = false;
+            context.mozImageSmoothingEnabled = false;
+            context.webkitImageSmoothingEnabled = false;
+            context.msImageSmoothingEnabled = false;
+            spr = (n,x,y,w,h,o=0) => {
+                let scale=2//5;
+                x+=150
+                y+=110
+                context.drawImage(sprSheet,(n*32),o*16,w*16,h*16,x*scale-chell.pos.x*10+chell.pos.y*10,y*scale-chell.pos.y*6-chell.pos.x*6,w*16*scale,h*16*scale);
+            }
+            line = (x1,y1,x2,y2) => {
+                context.beginPath();
+                context.moveTo(x1, y1);
+                context.lineTo(x2, y2);
+                context.stroke();
+            }
+            print = (text,x,y,color) => context.fillText(text,x,y);
+            cls = () => context.clearRect(0, 0, canvas.width, canvas.height);
+            
+            function drawmovementindicator(x,y){
+                // if(selectedaction=='move' && crs.sunit != null){
+                //     if (crs.mtiles==null) crs.mtiles = calcmove();
+                //     let  height=height_data[y][x];
+                //     if (crs.mtiles[x][y]) {
+                //         spr(14,56+(x)*8-(y)*8,32+x*4+y*4-height*2,2,2)
+                //         spr(0,56+(x)*8-(y)*8,32+x*4+y*4-height*2,2,2,1+Math.floor((animation.cur_frame/8))%3)
+                //     }
+                // }
+            }
+            function drawcrs(x,y,z){
+                // spr(0,56+(x)*16-(y)*16,32+x*8+y*8-z*5,2,2);  
+            }
+            function drawchar(x,y,z){
+                spr(10,
+                    rndr.xoff+rndr.th/4+(x-y)*rndr.th, 
+                    rndr.yoff-1.25*rndr.th+(x+y-2*z)*rndr.th/2,
+                    2,2,2*(crs.dir=='left' || crs.dir=='down')); 
+                if (chell.carry != null)
+                    spr(8,
+                        rndr.xoff+rndr.th/2+(x-y)*rndr.th,
+                        rndr.yoff+(x+y-4)*rndr.th/2+-z*rndr.th,
+                        2,2,4); 
+            }
+            /////////////////// collision ////////////////////
+            function sameplace(en1,en2){
+                return en1.pos.x==en2.pos.x && en1.pos.y==en2.pos.y
+            }
+            function collides(x1,y1,x2,y2){
+                return x2>=map.x || y2>=map.y || x2<0 || y2<0 || height_data[y1][x1] <= height_data[y2][x2]-2 || entity_data[x2][y2].some(el=>el.blocking) || height_data[y2][x2] == undefined
+            }
+            ////////////////end collision ////////////////////
+
+            let render = rndr = {
+                tile_height:16,
+                x_offset:56,
+                y_offset:32,
+                //abbreviations
+                th:16,
+                xoff:56,
+                yoff:32,
+            }
+            function _draw(){
+                cls();
+                let  [x,y,z]=[0,0,0];
+                for ( let y=0;y<map.y;y++ ) {
+                    for ( let x=0;x<map.x;x++ ) {
+                        let  tile=map_data[y][x];
+                        let  height=height_data[y][x];
+                        for ( let z=0;z<=height;z++ ) {
+                            spr(tile, 
+                                rndr.xoff+(x-y)*rndr.th,
+                                rndr.yoff+(x+y)*rndr.th/2-z*rndr.th,
+                                2,2);
+                        };
+                        drawmovementindicator(x,y);
+                        entitydraw(x,y);
+                        if(y==or_por.pos.y && x==or_por.pos.x) 
+                            spr(or_por.tile+(or_por.dir=='down' || or_por.dir=='right'),
+                                    rndr.xoff+rndr.th+(x-y-1)*16,
+                                    rndr.yoff+(x+y-3)*rndr.th/2-(height-0.5*(or_por.dir=='down' || or_por.dir=='right'))*rndr.th,
+                                    2,2,(or_por.dir=='up' || or_por.dir =='down')*2);
+                        if(y==bl_por.pos.y && x==bl_por.pos.x)
+                            spr(bl_por.tile+(bl_por.dir=='down' || bl_por.dir=='right'),
+                                    rndr.xoff+rndr.th+(x-y-1)*16,
+                                    rndr.yoff+(x+y-3)*rndr.th/2-(height-0.5*(bl_por.dir=='down' || bl_por.dir=='right'))*rndr.th,
+                                    2,2,(bl_por.dir=='up' || bl_por.dir =='down')*2);
+                        if (y==crs.pos.y && x==crs.pos.x) drawcrs(x,y,height);
+                        if (y==chell.pos.y && x==chell.pos.x) drawchar(x,y,height);
+                    }
+                    
+                }
+                print("WASD or arrows to move",0,10,7);
+                print("E / F to shoot portals",0,20,7);
+                print("R to interact",0,30,7);
+            
+            }
+
+            ///////////// end rendering /////////////////
+            
+            //////////////////// movement //////////////
+            // let selectedaction = 'move'
+            // function calcmove() {
+            //     arr = arr_2d(map.x,map.y,el=>0)
+            //     mark(arr,crs.sunit.x,crs.sunit.y,crs.sunit.speed)
+            //     return arr
+            // }
+            // function isEmpty(x,y){
+            //     return (feature_data[x][y]==0 && map_data[x][y]!=7 && [...npcs,...pcs].filter(f=>f.x==x&&f.y==y).length==0) ? 1 : 0;
+            // }
+            // function mark(arr,x,y,lim){
+            //     if (lim==0) return
+            //     [[x-1,y],[x+1,y],[x,y-1],[x,y+1]].map(([xx,yy])=>{
+            //         if (xx>0 && yy>0 && xx<map.x && yy<map.y && isEmpty(xx,yy)) { 
+            //             arr[xx][yy] = 1;
+            //             mark(arr,xx,yy,lim-1); 
+            //         }
+
+            //     })
+            // }
+            // function move(x,y){
+            //     if (crs.sunit == null || crs.mtiles == null || crs.mtiles[x][y] == 0) return
+            //     crs.mtiles=null
+            //     crs.sunit.x=x
+            //     crs.sunit.y=y
+            //     crs.sunit=null
+            // }
+            /////////////////end movement //////////////
+            
+            ////////////////projectiles ////////////////
+            function project(x,y,dir){
+                return (collides(x,y,x-(dir=='left')+(dir=='right'),y-(dir=='up')+(dir=='down'))) ?
+                    [x,y] : project(x-(dir=='left')+(dir=='right'),y-(dir=='up')+(dir=='down'),dir)
+            }
+            proj = project;
+            ////////////end projectiles ////////////////
+
+            ///////////////// crs //////////////////////
+            crs = {
+                sunit:null,
+                pos:{ x:0, y:0 },
+                mtiles:null,
+                dir:'right'
+            };
+            function updatecrspos(){ // branchless conditionals
+                 crs.dir= 
+                      (chell.pos.x > chell.pos.prevx ) ? 'right' :
+                      (chell.pos.x < chell.pos.prevx ) ? 'left' :
+                      (chell.pos.y > chell.pos.prevy ) ? 'down' :
+                      (chell.pos.y < chell.pos.prevy ) ? 'up' : crs.dir;
+            }
+            //////////////end crs ///////////////////
+            
+            //////////////////// characters ///////////////////
+            function updatecharpos(){ // branchless conditionals
+                chell.pos.prevx = 1*chell.pos.x
+                chell.pos.prevy = 1*chell.pos.y
+                chell.pos.x +=
+                      (chell.pos.x < map.x-1) *
+                        ( btnp(kb.RIGHT) || btnp(kb.D) )
+                    - (chell.pos.x > 0) * 
+                        ( btnp(kb.LEFT ) || btnp(kb.A) )
+                chell.pos.y +=
+                      (chell.pos.y < map.y-1) *
+                        ( btnp(kb.DOWN) || btnp(kb.S) )
+                    - (chell.pos.y > 0) * 
+                        ( btnp(kb.UP  ) || btnp(kb.W) )
+                
+                if((chell.pos.x != chell.pos.prevx || chell.pos.y != chell.pos.prevy)){
+                    if( collides(chell.pos.prevx,chell.pos.prevy,chell.pos.x,chell.pos.y)){
+                        chell.pos.x=1*chell.pos.prevx;
+                        chell.pos.y=1*chell.pos.prevy;
+                        if(or_por.pos.x != null && bl_por.pos.x!= null){
+                            if(or_por.pos.x == chell.pos.x && or_por.pos.y == chell.pos.y) { chell.pos.x = 0+bl_por.pos.x; chell.pos.y = 0+bl_por.pos.y;}
+                            else if(bl_por.pos.x == chell.pos.x && bl_por.pos.y == chell.pos.y) { chell.pos.x = 0+or_por.pos.x; chell.pos.y = 0+or_por.pos.y;}
+                        }
+                        let door = findentity('door');
+                        if(door != null && flags.opened && (sameplace(chell,door) || sameplace(chell,{...door,pos:{...door.pos,x:door.pos.x-1}}) || sameplace(chell,{...door,pos:{...door.pos,y:door.pos.y-1}}) ) && map.exit != undefined) { map.exit() }
+                    } else {
+                        // let fd = feature_data[chell.pos.prevx][chell.pos.prevy]
+                        // if([1,2,3,4].reduce((cond,cur)=>feature_data[chell.pos.x][chell.pos.y].includes(cur) ? true : cond,false)) {
+                        //     flag('opened')
+                        // } else if(!fd.includes(6) && (fd.includes(3) || fd.includes(4) || fd.includes(1) || fd.includes(2))) unflag('opened');
+                        
+                    }
+                }
+                
+            }
+            let chell = {tile:10,name:'chel', health:1, maxhealth:1, jump:2, speed:3, attack:1, special:1, pos:{x:map.x-2, y:map.y-2 }, carry:null, possessions:{portalgunblue:false, portalgunorange:false}}
+            let animation = {cur_frame:0,period:60,anim_frame:0}
+            
+            function _update() {
+                updatecrspos()
+                updatecharpos()
+                entityupdate()
+                let  h=height_data[chell.pos.y][chell.pos.x];
+                if ( btnp(/*🅾️*/69) ) {
+                    if(chell.possessions.portalgunblue) fire(bl_por)
+                } else if ( btnp(/*❎*/70) ) {
+                    if(chell.possessions.portalgunorange) fire(or_por)
+                } else if ( btnp(/*❎*/kb.R) ) {
+                    if (chell.carry == null) {entitypickup(chell.pos.x,chell.pos.y);}
+                    else entitydrop(chell.pos.x,chell.pos.y,height_data[chell.pos.y][chell.pos.x]+1)
+                }
+                animation.cur_frame++;
+                if (animation.cur_frame % animation.period == 0) animation.anim_frame++;
+            }
+            
+            ///////////// entity /////////////////////
+
+            findentity=(type)=>{
+                let en = null
+                for (let i = 0; i< entity_data.length; i++){
+                    for (let j = 0; j< entity_data[i].length; j++){
+                        en = findentityxy(i,j,type)
+                        if (en != null) break
+                    } if (en != null) break
+                }
+                return en;
+            }
+            findentityxy = (i,j,type) => {
+                let en = null;
+                for (let k = 0; k < entity_data[i][j].length; k++){
+                    if(entity_data[i][j][k].name == type) {
+                        en = entity_data[i][j][k]
+                        break
+                    }
+                }
+                return en;
+            }
+            let removeentity = (x,y,en) => entity_data[x][y] = entity_data[x][y].filter(f=>f!=en)
+            entitypickup = (x,y) =>{
+                let en = findentityxy(x,y,cube.name)
+                if (en != null) removeentity(x,y,en)
+                if (chell.carry == null) chell.carry = en;
+            }
+            entitydrop = (x,y,z) =>{
+                entity_data[x][y].push({...chell.carry,pos:{x,y,z}}) 
+                chell.carry = null;
+            }
+            let stddraw = (en) => {
+                spr(en.tiles[0],
+                    rndr.xoff+(en.pos.x-en.pos.y)*rndr.th,
+                    rndr.yoff-1+(en.pos.x+en.pos.y)*rndr.th/2-en.pos.z*rndr.th,2,2)
+            }
+            let stdupdate = () => {}
+            let stdinit = (en) => {entity_data[en.pos.x][en.pos.y].push(en);}
+            let noop=()=>{}
+            let entity = (name,tiles,draw=stddraw,update=stdupdate,init=stdinit,x=null,y=null,z=null) => 
+                ({name,tiles,pos:{x,y,z},dir:'right',draw,update,init});
+
+            /// testing entities
+            let cube = entity('weighted companion cube',[8],stddraw,stdupdate,stdinit,4,2,1)
+            let button = entity('pressure plate',[3,4,5,6],en=>{
+                [[0,0],[-1,-1],[-1,0],[0,-1]].map((el,i)=>{
+                    spr(en.tiles[i],
+                    rndr.xoff+((en.pos.x+el[0])-(en.pos.y+el[1]))*rndr.th,
+                    rndr.yoff-1+((en.pos.x+el[0])+(en.pos.y+el[1]))*rndr.th/2-en.pos.z*rndr.th,2,2)
+                })
+            },en=>{
+                unflag('opened');
+                [[0,0],[-1,-1],[-1,0],[0,-1]].map(f=>{
+                    let x = en.pos.x+f[0],y = en.pos.y+f[1]
+                    if(findentityxy(x,y,cube.name) != null || (x == chell.pos.x && y == chell.pos.y)){
+                        flag('opened')
+                    }
+                })
+            },stdinit,4,9,1)
+            let door = entity('door',[12],en=>{
+                spr(en.tiles[0],
+                rndr.xoff+1+(en.pos.x-en.pos.y)*16,
+                rndr.yoff-3+(en.pos.x+en.pos.y-5)*8-en.pos.z*16,2,4,8+(8*flags.opened))
+            },stdupdate,stdinit,1,7,2);
+            let portalgun = entity('portal gun',[16],(en)=>{
+                spr(en.tiles[0]+(en.dir=='right' || en.dir=='up'),
+                    rndr.xoff+(en.pos.x-en.pos.y)*rndr.th,
+                    rndr.yoff-1+(en.pos.x+en.pos.y)*rndr.th/2-en.pos.z*rndr.th,2,2,(en.dir=='up' || en.dir =='left')*2)
+            },(en)=>{/*spin and shoot portals, change tile offset*/},stdinit,5,5,0);
+            let glass = {...entity('glass',[13],en=>{
+                for(let i = 0; i< en.height; i++){
+                    spr(en.tiles[0],
+                    rndr.xoff+(en.pos.x-en.pos.y)*rndr.th,
+                    rndr.yoff-1+(en.pos.x+en.pos.y)*rndr.th/2-(en.pos.z+i)*rndr.th,2,2)
+                }
+            },stdupdate,stdinit,2,7,3),height:3,blocking:true};
+            let redswitch = entity('red switch',[15],stddraw,stdupdate,stdinit,6,7,2)
+            let clearentities = () => entity_data = arr_2d(map.x,map.y,el=>[]);
+            /// end testing entities
+            entity_data = arr_2d(map.x,map.y,el=>[]);
+            cube.init(cube)
+            door.init(door)
+            button.init(button)
+            glass.init(glass)
+            redswitch.init(redswitch);
+            glass.init({...glass,pos:{...glass.pos,y:glass.pos.y-1}})
+            glass.init({...glass,pos:{...glass.pos,y:glass.pos.y-2}})
+            
+            entityupdate = () => {
+                entity_data.map(x=>x.map(y=>y.map(f=>f.update(f))))
+            }
+            entityinit = () => {
+                entity_data.map(x=>x.map(y=>y.map(f=>f.init(f))))
+            }
+            entitydraw = (x,y) => {
+                entity_data[x][y].map(f=>f.draw(f))
+            }
+            entity_clone = (x,y,z,en) => ({...en,pos:{x,y,z}})
+            ///////////// end entity /////////////////////
+            room3 = () => {
+                resetportals();
+                map = {...map,
+                    x:12,
+                    y:14,
+                    exit:room1,
+                    chamber_num:3,
+                }
+                map_data = [
+                    [7,7,7,7,7,7,7,7,7,7,200],
+                    [7,7,7,7,7,7,7,7,7,7,200],
+                    [7,7,7,7,7,7,7,7,7,7,200],
+                    [7,7,7,7,7,7,7,7,7,7,200],
+                    [7,7,7,7,7,7,7,7,7,7,200],
+                    [7,7,7,7,7,7,7,7,7,7,200],
+                    [7,7,7,7,7,7,7,7,7,7,200],
+                    [7,7,7,7,7,7,7,7,7,7,200],
+                    [7,7,7,7,7,7,7,7,7,7,200],
+                    [7,7,7,7,7,7,7,7,7,7,200],
+                    [7,7,7,7,7,7,7,7,7,7,200],
+                    [7,7,7,7,7,7,7,7,7,7,200],
+                    [7,7,7,7,7,7,7,7,7,7,200],
+                    [7,7,7,7,7,7,7,7,7,7,200],
+                    [7,7,7,7,7,7,7,7,7,7,200],
+                    [7,7,7,7,7,7,7,7,7,7,200],
+                ]
+                height_data = [
+                    [5,5,5,5,5,5,5,5,5,5,7],
+                    [5,5,3,3,3,3,3,5,5,5,7],
+                    [5,5,3,3,3,3,3,5,5,5,7],
+                    [5,0,0,0,0,0,0,3,0,0,7],
+                    [5,0,0,0,0,0,0,2,0,0,7],
+                    [5,0,0,0,0,0,0,2,0,0,7],
+                    [5,0,0,0,0,0,0,0,0,0,7],
+                    [5,0,0,0,0,0,0,2,0,0,7],
+                    [5,0,0,0,0,0,0,2,0,0,7],
+                    [5,0,0,0,0,0,0,2,0,0,7],
+                    [5,0,0,0,0,0,0,2,0,0,7],
+                    [5,4,2,2,2,2,2,4,0,0,7],
+                    [5,2,2,2,2,2,2,2,0,0,7],
+                    [5,2,2,2,2,2,2,2,0,0,7],
+                ]
+                clearentities();
+                glass.height=2;
+                [[6,11,3],[5,11,3],[4,11,3],[3,11,3],[2,11,3],].map(([x,y,z])=>glass.init(entity_clone(x,y,z,{...glass,tiles:[14]})))
+                door.init(entity_clone(2,2,3,{...door,tiles:[12]}))
+                let e = entity('hole in the wall',[7], stddraw, (en)=>{if(sameplace(chell,en)) {chell.pos.x=0+chell.pos.prevx;chell.pos.x=0+chell.pos.prevx;}}, stdinit, 7,6,2); 
+                e.init(e);
+                or_por.pos={x:4,y:1,z:0}
+                or_por.dir='up'
+                chell.pos = {x:2,y:13}
+
+                let timer = 0;
+                let t = f => setTimeout(f=>{
+                    if (map.chamber_num != 3) return
+                    if (chell.possessions.portalgunblue) {flag('opened');return;}
+                    // bl_por.dir='down';
+                    bl_por.pos= [{x:3,y:3,z:0},{x:1,y:6,z:0},{x:3,y:10,z:0},{x:9,y:6,z:0},][(timer++)%4];
+                    bl_por.dir= ['right','up','left','down',][(timer)%4];
+                    findentity('portal gun').dir=['right','up','left','down'][(timer)%4]
+                    t();
+                },2000)
+                portalgun.init(entity_clone(3,6,1,{...portalgun,update:(en)=>{if(chell.pos.x==en.pos.x && chell.pos.y==en.pos.y) {chell.possessions.portalgunblue=true;bl_por.pos={x:null,y:null,z:null};removeentity(en.pos.x,en.pos.y,en);}}}))
+                t()
+                window.bl = bl_por;
+
+            }
+            room2 = () => {
+                resetportals();
+                map = {...map,
+                    x:10,
+                    y:8,
+                    exit:room3,
+                    chamber_num:2,
+                }
+                map_data = [
+                    [7,7,7,7,7,7,7,7,7],
+                    [7,7,7,7,7,7,7,7,7],
+                    [7,7,7,7,7,7,7,7,7],
+                    [7,9,9,9,7,7,9,9,9],
+                    [7,7,7,9,7,7,9,7,7],
+                    [7,7,7,7,7,7,7,7,7],
+                    [7,7,7,7,7,7,7,7,7],
+                    [7,7,7,7,7,7,7,7,7],
+                ]
+                height_data = [
+                    [5,5,5,5,5,5,5,5,5],
+                    [5,0,0,0,0,0,0,0,0],
+                    [5,0,0,0,0,0,0,0,0],
+                    [5,2,2,2,0,0,2,2,2],
+                    [5,0,0,2,0,0,2,0,0],
+                    [5,0,0,0,0,0,0,0,0],
+                    [5,0,0,0,0,0,0,0,0],
+                    [5,0,0,0,0,0,0,0,0],
+                ]
+                clearentities();
+                glass.height=2;
+                
+                or_por.dir='left';
+                [[3,5,1],[3,6,1],[3,7,1],[6,5,1],[6,6,1],[6,7,1],].map(([x,y,z])=>glass.init(entity_clone(x,y,z,glass)));
+                [[4,3,1],[5,3,1],].map(([x,y,z])=>glass.init(entity_clone(x,y,z,{...glass,tiles:[14]})))
+                door.init(entity_clone(1,2,0,{...door,tiles:[12]}))
+                cube.init(entity_clone(1,6,1,cube))
+                button.init(entity_clone(9,7,1,button))
+                or_por.pos={x:4,y:4,z:0}
+                chell.pos = {x:4,y:6}
+                let timer = 0;
+                let t = f => setTimeout(f=>{
+                    if (map.chamber_num != 2) return
+                    bl_por.dir='up';
+                    bl_por.pos= [{x:8,y:1,z:0},{x:8,y:4,z:0},{x:1,y:4,z:0}][(timer++)%3];
+                    t();
+                },2000)
+                t()
+            }
+            
+            room1 = () => {
+                map_data = [
+                    [7,7,7,7,7,7,7],
+                    [7,7,7,7,7,7,7],
+                    [7,7,7,7,7,7,7],
+                    [7,7,7,7,7,7,7],
+                    [7,7,7,7,7,7,7],
+                    [7,7,7,7,7,7,7],
+                    [7,7,7,7,7,7,7],
+                ]
+                height_data = [
+                    [5,5,5,5,5,5,5],
+                    [5,0,0,0,0,0,0],
+                    [5,0,0,0,0,0,0],
+                    [5,0,0,0,0,0,0],
+                    [5,0,0,0,0,0,0],
+                    [5,0,0,0,0,0,0],
+                    [5,0,0,0,0,0,0],
+                ]
+                map = {...map,
+                    x:7,
+                    y:7,
+                    exit:room2,
+                    chamber_num:1,
+                }
+                chell.pos = {x:6,y:6}
+                clearentities()
+                resetportals()
+                button.init(entity_clone(2,6,0,button))
+                cube.init(entity_clone(2,2,1,cube))
+                door.init(entity_clone(4,1,0,{...door,tiles:[11]}))
+            }
+            gameloop = () => {
+                _update();
+                _draw();
+                requestAnimationFrame(gameloop);
+            }
+            gameloop();
+            room1();
+        }
+        init();
+       
+</script>
+</body>
