@@ -5,6 +5,7 @@
     export let title = 'Bradley Pudsey'
     export let hiddenModal = false
     export let visibleModal = false
+    export let post = {title:'',blurb:''}
     let primaryColor = !secondaryColor
     let longFormContent = true
     
@@ -62,7 +63,8 @@
 </style>
     <div class='modal' class:primaryColor class:secondaryColor class:hiddenModal class:visibleModal>
         <div class='modalbg'></div>
-        <Blurb {title} {secondaryColor} {longFormContent}>
+        <Blurb title={post.title} {secondaryColor} {longFormContent}>
+            {post.blurb}
             <slot></slot>
         </Blurb>
             <ModalToggle></ModalToggle>

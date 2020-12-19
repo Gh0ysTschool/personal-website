@@ -2,12 +2,16 @@
     import Blurb from './Blurb.svelte'
     export let secondaryColor = false
     export let title = 'Bradley Pudsey'
+    export let setPost = f=>{}
+    let blurb = ''
     let primaryColor = !secondaryColor
+    let setBlurb = b => blurb = b
     let clickhandler = ()=> {
         [...document.querySelectorAll('.modal')].map(el=>{
             el.classList.remove('hiddenModal')
             el.classList.add('visibleModal')
         })
+        setPost(title,blurb)
     }
 </script>
 
@@ -50,7 +54,7 @@
 </style>
     <div class='header11' class:primaryColor class:secondaryColor on:click={clickhandler}>
         <div class='headerbg'></div>
-        <Blurb {title} {secondaryColor}>
+        <Blurb {setBlurb} {title} {secondaryColor}>
             <slot></slot>
         </Blurb>
     </div>

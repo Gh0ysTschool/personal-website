@@ -1,9 +1,14 @@
 <script>
+    import {onMount} from 'svelte'
     export let title = 'Bradley Pudsey'
     export let secondaryColor = false
     export let longFormContent = false
+    export let setBlurb = b => {}
+    let el
     let primaryColor = !secondaryColor
-
+    onMount(f=>{
+        setBlurb(el.innerText)
+    })
 </script>
 
 <style>
@@ -43,7 +48,7 @@
 
 <div class='blurb' class:longFormContent>
     <div class='blurbtitle' class:primaryColor class:secondaryColor>{title}</div>
-    <div class='content' class:primaryColor class:secondaryColor>
+    <div bind:this={el} class='content' class:primaryColor class:secondaryColor>
         <slot></slot>
     </div>
     <div></div>
