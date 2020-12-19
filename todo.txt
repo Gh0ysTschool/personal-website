@@ -1,0 +1,18 @@
+@css edg
+@css saf
+@css moz
+@stats +css moz saf edg
+@stats +links (patreon/kofi,coursera/udemy/skillshare,podcast,app directory,steam/psn,articles/medium)
+@blurb text alignment
+@blurb text ancapsulation
+@blurb prevew text is cut to size and shows a trailing '...' when too long
+@blurb title to slowly pans from side to side when too long
+@card preview images
+@css better font + color
+@landing link to email
+@landing bio
+@landing resume
+@landing social links
+@landing spotify playlists
+@navbar personal logo (recolor typography logo from weapon-dealer-menu)
+

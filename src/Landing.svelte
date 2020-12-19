@@ -97,7 +97,7 @@
                 Playstation One Era Controller Icons
                 While is currently lacks fully realized dark themes across the board for each styling like its predecessor NES.css, we wish its developer the best with the remaining endeavors as continues development. A live demo can be found here and I'll see you next time on CSS Gems
                 </Card>
-            <Card {setPost} title='Portal in Isometric Pixelart' secondaryColor=true>bradleypudsey.now.sh/portal</Card>
+            <Card {setPost} title='Portal in Isometric Pixelart' secondaryColor=true>bradleypudsey.now.sh/portal/</Card>
             <Card {setPost} title='Pico-8-style Isometric Tactics RPG Web demo'></Card>
             <Card {setPost} title='Bringing pixelart UI into the Browser w/ NES.css' secondaryColor=true>NES.css
                 Developed out of a not-so-uncommon distaste for standard css tropes, NES.css's developer B.C.Rikko finished paving their path to mainstream recognition with the release of v1.0.0. After recieving a github star from kazuya kawaguchi on the 15ths of November 2018, the repository skyrocketed to 1000 stars in exactly 14 days, earning B.C.Rikko their first GitHub Trending Developer award. By January of 2019 NES.css had won over 10,000 stars & reached 5th place on the GitHub css-framework topic. Offering a robust feature-set, NES.css came complete with NES pixel art stylings for:

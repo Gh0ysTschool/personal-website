@@ -1,0 +1,25 @@
+:root {
+    --clr0 : #121212;
+    --clr1 : #404040;
+    --clr2 : #993d65;
+    --clr3 : #3d9599;
+    --clr4 : #e38f95;
+    --clr5 : #ffd4d4;
+    --clr6 : #f5f5ac;
+    --clr7 : #beebe9;
+    --clr8 : #beebc3;
+    --clr9 : #e4c697;
+}
+div, ul {
+    border-radius: 1em;
+}
+body {
+    background: var(--clr0);
+    margin: 1.5em;
+    font-family: sans-serif;
+    font-weight: bolder;
+    color: var(--clr6);
+}
+::-webkit-scrollbar {
+    display: none;
+}
