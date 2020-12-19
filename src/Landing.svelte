@@ -54,18 +54,18 @@
                 game and compresses it into a compact card game that casts aside all the
                 unnecessary complexity while losing none of the feelings associated with
                 a good 4x game. It can’t fit this card game in my pocket, so let's build a
-                progressive web app in a framework pioneered by the NY Times devs. Built using Javascipt, Node.js, & Svelte </Card>
-                eminent-domain-2020.herokuapp.com/
+                progressive web app in a framework pioneered by the NY Times devs. Built using Javascipt, Node.js, & Svelte 
+                eminent-domain-2020.herokuapp.com/</Card>
             <Card {setPost} title ='Zelda: NES Memory Efficiency in the 1980s in the Browser'secondaryColor=true>Explore the design methodologies of the mid 1980’s that allowed
                 Nintendo to fit a large scale adventure rpg with end game content into
-                just 128Kbs as I port the code from assembly to run on web technologies. Built with Javascript, Node.js, & Svelte</Card>
-                https://github.com/Gh0ysTschool/Z1RE
+                just 128Kbs as I port the code from assembly to run on web technologies. Built with Javascript, Node.js, & Svelte
+                https://github.com/Gh0ysTschool/Z1RE</Card>
             <Card {setPost} title='Jira in Svelte: A Best Practice Demonstration'>A simplified clone of Jira, the productivity software suite. Svelte is a
                 relatively recent addition to the popular web frameworks and therefore
                 there aren’t as many data-intensive projects of scale in the framework
                 yet. Jira in Svelte acts as a template for what such a project could look like
-                in a professional environment at scale. Built with Javascript, Node.js, & Svelte</Card>
-                https://github.com/Gh0ysTschool/svelte-jira
+                in a professional environment at scale. Built with Javascript, Node.js, & Svelte
+                https://github.com/Gh0ysTschool/svelte-jira</Card>
             <Card {setPost} title='Cthulhu Wars Online' secondaryColor=true>Cthulhu Wars is a combination of strategic gaming and Lovecraftian horror, with the bonus of high-quality monster figures to make your game even more fun. Sandy Petersen, its creator, is well-known as one of the top game designers in the industry, and this is his best work so far! I am bringing this massive mechanically asymmetrical game to the online platform. Built with Javascript, Node.js, & Svelte bradleypudsey.now.sh and glacial-garden-41261.herokuapp.com/ </Card>
             <Card title='Sci-Fi Weapons Dealer UI Menu'>bradleypudsey.now.sh/weapon-dealer-menu</Card>
             <Card title="90's Hacking in the Browser UI w/ uiterminal.css" secondaryColor=true>Developed in a dingy smoke-filled cyberpunk bordello while Cowboy Bebop wafts gently through the airwaves omerimzali finished their demake for the browser ui on March 31st 2019 after only 24 days of devlopment. Your text will never look more retro, with support for
