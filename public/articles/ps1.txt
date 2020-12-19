@@ -1,0 +1,20 @@
+Final Fantasy 7 Browser UI w/ PSone.css
+5/19/20
+PSone.css
+
+Github Repo
+Taking inspiration from NES.css's developer B.C.Rikko, micah5 set out to bring pixelart UI in the browser from the 8-bit era of NES to the 16-bit era of the Playstation One. Stylized using classics like Tekken 3, Metal Gear Solid, Final Fantasy 7, and the PSOne's core UI, PSone.css exploded fresh onto the scene in November of 2018 and could use some recognition for Currently topping out at 312 stars on Github, PSone.css Offers a concise feature-set, including component styling for:
+
+Text Areas & Fields
+Push & Radio Buttons
+Checkboxes
+Inputs
+Containers
+Dialogs
+Lists
+Progress Bars
+Cursors
+Playstation One Era Controller Icons
+While is currently lacks fully realized dark themes across the board for each styling like its predecessor NES.css, we wish its developer the best with the remaining endeavors as continues development. A live demo can be found here and I'll see you next time on CSS Gems
+
+CSS Gems

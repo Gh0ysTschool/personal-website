@@ -56,6 +56,6 @@ li > span {
     <li><span>podcast</span></li>
     <li><span>artwork</span></li>
     <li><span>webapps</span></li>
-    <li><span>gameing</span></li>
+    <li><span>gaming</span></li>
     <li><span>writing</span></li>
 </ul>

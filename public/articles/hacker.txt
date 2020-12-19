@@ -1,0 +1,20 @@
+90's Hacking in the Browser UI w/ uiterminal.css
+5/21/20
+uiterminal.css
+
+Github Repo
+Developed in a dingy smoke-filled cyberpunk bordello while Cowboy Bebop wafts gently through the airwaves omerimzali finished their demake for the browser ui on March 31st 2019 after only 24 days of devlopment. Your text will never look more retro, with support for
+
+Terminal Lines
+Iconic Colors
+Forms
+Buttons
+Badges
+Progress Bars
+headings
+Lists
+Tables
+Images
+bring back the holodecks and text-only interfaces for a feeling oh so a e t h e t i c . for Guidance you'll find a plethora of examples right here and I'll see you next time on CSS Gems
+
+CSS Gems
