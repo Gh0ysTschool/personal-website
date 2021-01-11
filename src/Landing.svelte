@@ -5,11 +5,24 @@
     import ModalToggle from './ModalToggle.svelte'
     import ValueProposition from './ValueProposition.svelte'
     import Card from './Card.svelte'
+    import {onMount} from 'svelte'
+    let qposts = {}
     let post = {title:'',blurb:''}
     let setPost = (t,b) => {
         post.title = t 
         post.blurb = b
     }
+    onMount( ()=>{
+        let qpost = new URLSearchParams(window.location.search).get('post')
+        if (qposts[qpost]){
+            [...document.querySelectorAll('.modal')].map(el=>{
+                el.classList.remove('hiddenModal')
+                el.classList.add('visibleModal')
+            })
+            setPost(qposts[qpost])
+        }
+    })
+
 </script>
  
 <style>
