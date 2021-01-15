@@ -50,7 +50,7 @@ li > span {
     -webkit-text-fill-color: transparent;
 } -->
 <ul>
-    <li><span>contact</span></li>
+    <li><span><a href='./contact/'>contact</a></span></li>
     <li><span>support</span></li>
     <li><span>courses</span></li>
     <li><span>podcast</span></li>
