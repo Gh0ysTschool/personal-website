@@ -20,7 +20,7 @@ body {
     margin: 1.5em;
     font-family: arial, sans-serif;
     font-weight: bolder;
-    color: var(--clr6);
+    color: #ffffff77;
 }
 ::-webkit-scrollbar {
     display: none;
