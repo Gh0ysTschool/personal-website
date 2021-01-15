@@ -1,5 +1,1233 @@
-var app=function(){"use strict";function e(){}const t=e=>e;function n(e,t){for(const n in t)e[n]=t[n];return e}function l(e){return e()}function i(){return Object.create(null)}function o(e){e.forEach(l)}function s(e){return"function"==typeof e}function a(e,t){return e!=e?t==t:e!==t||e&&"object"==typeof e||"function"==typeof e}const c="undefined"!=typeof window;let r=c?()=>window.performance.now():()=>Date.now(),u=c?e=>requestAnimationFrame(e):e;const f=new Set;function h(e){f.forEach((t=>{t.c(e)||(f.delete(t),t.f())})),0!==f.size&&u(h)}function p(e){let t;return 0===f.size&&u(h),{promise:new Promise((n=>{f.add(t={c:e,f:n})})),abort(){f.delete(t)}}}function d(e,t){e.appendChild(t)}function g(e,t,n){e.insertBefore(t,n||null)}function m(e){e.parentNode.removeChild(e)}function y(e,t){for(let n=0;n<e.length;n+=1)e[n]&&e[n].d(t)}function $(e){return document.createElement(e)}function k(e){return document.createTextNode(e)}function v(){return k("")}function b(e,t,n,l){return e.addEventListener(t,n,l),()=>e.removeEventListener(t,n,l)}function w(e,t,n){null==n?e.removeAttribute(t):e.getAttribute(t)!==n&&e.setAttribute(t,n)}function x(e,t){t=""+t,e.wholeText!==t&&(e.data=t)}function _(e,t,n){e.classList[n?"add":"remove"](t)}function C(e,t){const n=document.createEvent("CustomEvent");return n.initCustomEvent(e,!1,!1,t),n}const O=new Set;let j,B=0;function R(e,t,n,l,i,o,s,a=0){const c=16.666/l;let r="{\n";for(let e=0;e<=1;e+=c){const l=t+(n-t)*o(e);r+=100*e+`%{${s(l,1-l)}}\n`}const u=r+`100% {${s(n,1-n)}}\n}`,f=`__svelte_${function(e){let t=5381,n=e.length;for(;n--;)t=(t<<5)-t^e.charCodeAt(n);return t>>>0}(u)}_${a}`,h=e.ownerDocument;O.add(h);const p=h.__svelte_stylesheet||(h.__svelte_stylesheet=h.head.appendChild($("style")).sheet),d=h.__svelte_rules||(h.__svelte_rules={});d[f]||(d[f]=!0,p.insertRule(`@keyframes ${f} ${u}`,p.cssRules.length));const g=e.style.animation||"";return e.style.animation=`${g?g+", ":""}${f} ${l}ms linear ${i}ms 1 both`,B+=1,f}function z(e,t){const n=(e.style.animation||"").split(", "),l=n.filter(t?e=>e.indexOf(t)<0:e=>-1===e.indexOf("__svelte")),i=n.length-l.length;i&&(e.style.animation=l.join(", "),B-=i,B||u((()=>{B||(O.forEach((e=>{const t=e.__svelte_stylesheet;let n=t.cssRules.length;for(;n--;)t.deleteRule(n);e.__svelte_rules={}})),O.clear())})))}function S(n,l,i,o){if(!l)return e;const s=n.getBoundingClientRect();if(l.left===s.left&&l.right===s.right&&l.top===s.top&&l.bottom===s.bottom)return e;const{delay:a=0,duration:c=300,easing:u=t,start:f=r()+a,end:h=f+c,tick:d=e,css:g}=i(n,{from:l,to:s},o);let m,y=!0,$=!1;function k(){g&&z(n,m),y=!1}return p((e=>{if(!$&&e>=f&&($=!0),$&&e>=h&&(d(1,0),k()),!y)return!1;if($){const t=0+1*u((e-f)/c);d(t,1-t)}return!0})),g&&(m=R(n,0,1,c,a,u,g)),a||($=!0),d(0,1),k}function q(e){const t=getComputedStyle(e);if("absolute"!==t.position&&"fixed"!==t.position){const{width:n,height:l}=t,i=e.getBoundingClientRect();e.style.position="absolute",e.style.width=n,e.style.height=l,E(e,i)}}function E(e,t){const n=e.getBoundingClientRect();if(t.left!==n.left||t.top!==n.top){const l=getComputedStyle(e),i="none"===l.transform?"":l.transform;e.style.transform=`${i} translate(${t.left-n.left}px, ${t.top-n.top}px)`}}function A(e){j=e}function M(){if(!j)throw new Error("Function called outside component initialization");return j}function N(e){M().$$.on_mount.push(e)}function T(){const e=M();return(t,n)=>{const l=e.$$.callbacks[t];if(l){const i=C(t,n);l.slice().forEach((t=>{t.call(e,i)}))}}}const D=[],P=[],H=[],F=[],Y=Promise.resolve();let G=!1;function U(e){H.push(e)}let K=!1;const L=new Set;function I(){if(!K){K=!0;do{for(let e=0;e<D.length;e+=1){const t=D[e];A(t),W(t.$$)}for(A(null),D.length=0;P.length;)P.pop()();for(let e=0;e<H.length;e+=1){const t=H[e];L.has(t)||(L.add(t),t())}H.length=0}while(D.length);for(;F.length;)F.pop()();G=!1,K=!1,L.clear()}}function W(e){if(null!==e.fragment){e.update(),o(e.before_update);const t=e.dirty;e.dirty=[-1],e.fragment&&e.fragment.p(e.ctx,t),e.after_update.forEach(U)}}let Z;function J(){return Z||(Z=Promise.resolve(),Z.then((()=>{Z=null}))),Z}function Q(e,t,n){e.dispatchEvent(C(`${t?"intro":"outro"}${n}`))}const V=new Set;let X;function ee(){X={r:0,c:[],p:X}}function te(){X.r||o(X.c),X=X.p}function ne(e,t){e&&e.i&&(V.delete(e),e.i(t))}function le(e,t,n,l){if(e&&e.o){if(V.has(e))return;V.add(e),X.c.push((()=>{V.delete(e),l&&(n&&e.d(1),l())})),e.o(t)}}const ie={duration:0};function oe(n,l,i){let o,a,c=l(n,i),u=!1,f=0;function h(){o&&z(n,o)}function d(){const{delay:l=0,duration:i=300,easing:s=t,tick:d=e,css:g}=c||ie;g&&(o=R(n,0,1,i,l,s,g,f++)),d(0,1);const m=r()+l,y=m+i;a&&a.abort(),u=!0,U((()=>Q(n,!0,"start"))),a=p((e=>{if(u){if(e>=y)return d(1,0),Q(n,!0,"end"),h(),u=!1;if(e>=m){const t=s((e-m)/i);d(t,1-t)}}return u}))}let g=!1;return{start(){g||(z(n),s(c)?(c=c(),J().then(d)):d())},invalidate(){g=!1},end(){u&&(h(),u=!1)}}}function se(n,l,i){let a,c=l(n,i),u=!0;const f=X;function h(){const{delay:l=0,duration:i=300,easing:s=t,tick:h=e,css:d}=c||ie;d&&(a=R(n,1,0,i,l,s,d));const g=r()+l,m=g+i;U((()=>Q(n,!1,"start"))),p((e=>{if(u){if(e>=m)return h(0,1),Q(n,!1,"end"),--f.r||o(f.c),!1;if(e>=g){const t=s((e-g)/i);h(1-t,t)}}return u}))}return f.r+=1,s(c)?J().then((()=>{c=c(),h()})):h(),{end(e){e&&c.tick&&c.tick(1,0),u&&(a&&z(n,a),u=!1)}}}const ae="undefined"!=typeof window?window:"undefined"!=typeof globalThis?globalThis:global;function ce(e,t){e.f(),function(e,t){le(e,1,1,(()=>{t.delete(e.key)}))}(e,t)}function re(e,t,n,l,i,o,s,a,c,r,u,f){let h=e.length,p=o.length,d=h;const g={};for(;d--;)g[e[d].key]=d;const m=[],y=new Map,$=new Map;for(d=p;d--;){const e=f(i,o,d),a=n(e);let c=s.get(a);c?l&&c.p(e,t):(c=r(a,e),c.c()),y.set(a,m[d]=c),a in g&&$.set(a,Math.abs(d-g[a]))}const k=new Set,v=new Set;function b(e){ne(e,1),e.m(a,u),s.set(e.key,e),u=e.first,p--}for(;h&&p;){const t=m[p-1],n=e[h-1],l=t.key,i=n.key;t===n?(u=t.first,h--,p--):y.has(i)?!s.has(l)||k.has(l)?b(t):v.has(i)?h--:$.get(l)>$.get(i)?(v.add(l),b(t)):(k.add(i),h--):(c(n,s),h--)}for(;h--;){const t=e[h];y.has(t.key)||c(t,s)}for(;p;)b(m[p-1]);return m}function ue(e){e&&e.c()}function fe(e,t,n){const{fragment:i,on_mount:a,on_destroy:c,after_update:r}=e.$$;i&&i.m(t,n),U((()=>{const t=a.map(l).filter(s);c?c.push(...t):o(t),e.$$.on_mount=[]})),r.forEach(U)}function he(e,t){const n=e.$$;null!==n.fragment&&(o(n.on_destroy),n.fragment&&n.fragment.d(t),n.on_destroy=n.fragment=null,n.ctx=[])}function pe(e,t){-1===e.$$.dirty[0]&&(D.push(e),G||(G=!0,Y.then(I)),e.$$.dirty.fill(0)),e.$$.dirty[t/31|0]|=1<<t%31}function de(t,n,l,s,a,c,r=[-1]){const u=j;A(t);const f=n.props||{},h=t.$$={fragment:null,ctx:null,props:c,update:e,not_equal:a,bound:i(),on_mount:[],on_destroy:[],before_update:[],after_update:[],context:new Map(u?u.$$.context:[]),callbacks:i(),dirty:r,skip_bound:!1};let p=!1;if(h.ctx=l?l(t,f,((e,n,...l)=>{const i=l.length?l[0]:n;return h.ctx&&a(h.ctx[e],h.ctx[e]=i)&&(!h.skip_bound&&h.bound[e]&&h.bound[e](i),p&&pe(t,e)),n})):[],h.update(),p=!0,o(h.before_update),h.fragment=!!s&&s(h.ctx),n.target){if(n.hydrate){const e=function(e){return Array.from(e.childNodes)}(n.target);h.fragment&&h.fragment.l(e),e.forEach(m)}else h.fragment&&h.fragment.c();n.intro&&ne(t.$$.fragment),fe(t,n.target,n.anchor),I()}A(u)}class ge{$destroy(){he(this,1),this.$destroy=e}$on(e,t){const n=this.$$.callbacks[e]||(this.$$.callbacks[e]=[]);return n.push(t),()=>{const e=n.indexOf(t);-1!==e&&n.splice(e,1)}}$set(e){var t;this.$$set&&(t=e,0!==Object.keys(t).length)&&(this.$$.skip_bound=!0,this.$$set(e),this.$$.skip_bound=!1)}}function me(t){let n,l,i;return{c(){n=$("div"),w(n,"class","unit svelte-exeyc"),_(n,"gate",t[2])},m(e,o){g(e,n,o),t[5](n),l||(i=b(n,"click",t[1]),l=!0)},p(e,[t]){4&t&&_(n,"gate",e[2])},i:e,o:e,d(e){e&&m(n),t[5](null),l=!1,i()}}}function ye(e,t,n){let l,{choose:i}=t,{unit:o={owner:{faction:{color:"black"}}}}=(T(),t);N((e=>{n(0,l.style.background=o.owner.faction.color,l)}));let s=o.gate;return e.$$set=e=>{"choose"in e&&n(3,i=e.choose),"unit"in e&&n(4,o=e.unit)},[l,e=>{e.stopPropagation(),i("unit",o)},s,i,o,function(e){P[e?"unshift":"push"]((()=>{l=e,n(0,l)}))}]}class $e extends ge{constructor(e){super(),de(this,e,ye,me,a,{choose:3,unit:4})}}function ke(e){const t=e-1;return t*t*t+1}function ve(e){return--e*e*e*e*e+1}
-/*! *****************************************************************************
+
+(function(l, r) { if (l.getElementById('livereloadscript')) return; r = l.createElement('script'); r.async = 1; r.src = '//' + (window.location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1'; r.id = 'livereloadscript'; l.getElementsByTagName('head')[0].appendChild(r) })(window.document);
+var app = (function () {
+    'use strict';
+
+    function noop() { }
+    const identity = x => x;
+    function assign(tar, src) {
+        // @ts-ignore
+        for (const k in src)
+            tar[k] = src[k];
+        return tar;
+    }
+    function add_location(element, file, line, column, char) {
+        element.__svelte_meta = {
+            loc: { file, line, column, char }
+        };
+    }
+    function run(fn) {
+        return fn();
+    }
+    function blank_object() {
+        return Object.create(null);
+    }
+    function run_all(fns) {
+        fns.forEach(run);
+    }
+    function is_function(thing) {
+        return typeof thing === 'function';
+    }
+    function safe_not_equal(a, b) {
+        return a != a ? b == b : a !== b || ((a && typeof a === 'object') || typeof a === 'function');
+    }
+    function is_empty(obj) {
+        return Object.keys(obj).length === 0;
+    }
+
+    const is_client = typeof window !== 'undefined';
+    let now = is_client
+        ? () => window.performance.now()
+        : () => Date.now();
+    let raf = is_client ? cb => requestAnimationFrame(cb) : noop;
+
+    const tasks = new Set();
+    function run_tasks(now) {
+        tasks.forEach(task => {
+            if (!task.c(now)) {
+                tasks.delete(task);
+                task.f();
+            }
+        });
+        if (tasks.size !== 0)
+            raf(run_tasks);
+    }
+    /**
+     * Creates a new task that runs on each raf frame
+     * until it returns a falsy value or is aborted
+     */
+    function loop(callback) {
+        let task;
+        if (tasks.size === 0)
+            raf(run_tasks);
+        return {
+            promise: new Promise(fulfill => {
+                tasks.add(task = { c: callback, f: fulfill });
+            }),
+            abort() {
+                tasks.delete(task);
+            }
+        };
+    }
+
+    function append(target, node) {
+        target.appendChild(node);
+    }
+    function insert(target, node, anchor) {
+        target.insertBefore(node, anchor || null);
+    }
+    function detach(node) {
+        node.parentNode.removeChild(node);
+    }
+    function destroy_each(iterations, detaching) {
+        for (let i = 0; i < iterations.length; i += 1) {
+            if (iterations[i])
+                iterations[i].d(detaching);
+        }
+    }
+    function element(name) {
+        return document.createElement(name);
+    }
+    function text(data) {
+        return document.createTextNode(data);
+    }
+    function empty() {
+        return text('');
+    }
+    function listen(node, event, handler, options) {
+        node.addEventListener(event, handler, options);
+        return () => node.removeEventListener(event, handler, options);
+    }
+    function attr(node, attribute, value) {
+        if (value == null)
+            node.removeAttribute(attribute);
+        else if (node.getAttribute(attribute) !== value)
+            node.setAttribute(attribute, value);
+    }
+    function children(element) {
+        return Array.from(element.childNodes);
+    }
+    function set_style(node, key, value, important) {
+        node.style.setProperty(key, value, important ? 'important' : '');
+    }
+    function toggle_class(element, name, toggle) {
+        element.classList[toggle ? 'add' : 'remove'](name);
+    }
+    function custom_event(type, detail) {
+        const e = document.createEvent('CustomEvent');
+        e.initCustomEvent(type, false, false, detail);
+        return e;
+    }
+
+    const active_docs = new Set();
+    let active = 0;
+    // https://github.com/darkskyapp/string-hash/blob/master/index.js
+    function hash(str) {
+        let hash = 5381;
+        let i = str.length;
+        while (i--)
+            hash = ((hash << 5) - hash) ^ str.charCodeAt(i);
+        return hash >>> 0;
+    }
+    function create_rule(node, a, b, duration, delay, ease, fn, uid = 0) {
+        const step = 16.666 / duration;
+        let keyframes = '{\n';
+        for (let p = 0; p <= 1; p += step) {
+            const t = a + (b - a) * ease(p);
+            keyframes += p * 100 + `%{${fn(t, 1 - t)}}\n`;
+        }
+        const rule = keyframes + `100% {${fn(b, 1 - b)}}\n}`;
+        const name = `__svelte_${hash(rule)}_${uid}`;
+        const doc = node.ownerDocument;
+        active_docs.add(doc);
+        const stylesheet = doc.__svelte_stylesheet || (doc.__svelte_stylesheet = doc.head.appendChild(element('style')).sheet);
+        const current_rules = doc.__svelte_rules || (doc.__svelte_rules = {});
+        if (!current_rules[name]) {
+            current_rules[name] = true;
+            stylesheet.insertRule(`@keyframes ${name} ${rule}`, stylesheet.cssRules.length);
+        }
+        const animation = node.style.animation || '';
+        node.style.animation = `${animation ? `${animation}, ` : ``}${name} ${duration}ms linear ${delay}ms 1 both`;
+        active += 1;
+        return name;
+    }
+    function delete_rule(node, name) {
+        const previous = (node.style.animation || '').split(', ');
+        const next = previous.filter(name
+            ? anim => anim.indexOf(name) < 0 // remove specific animation
+            : anim => anim.indexOf('__svelte') === -1 // remove all Svelte animations
+        );
+        const deleted = previous.length - next.length;
+        if (deleted) {
+            node.style.animation = next.join(', ');
+            active -= deleted;
+            if (!active)
+                clear_rules();
+        }
+    }
+    function clear_rules() {
+        raf(() => {
+            if (active)
+                return;
+            active_docs.forEach(doc => {
+                const stylesheet = doc.__svelte_stylesheet;
+                let i = stylesheet.cssRules.length;
+                while (i--)
+                    stylesheet.deleteRule(i);
+                doc.__svelte_rules = {};
+            });
+            active_docs.clear();
+        });
+    }
+
+    function create_animation(node, from, fn, params) {
+        if (!from)
+            return noop;
+        const to = node.getBoundingClientRect();
+        if (from.left === to.left && from.right === to.right && from.top === to.top && from.bottom === to.bottom)
+            return noop;
+        const { delay = 0, duration = 300, easing = identity, 
+        // @ts-ignore todo: should this be separated from destructuring? Or start/end added to public api and documentation?
+        start: start_time = now() + delay, 
+        // @ts-ignore todo:
+        end = start_time + duration, tick = noop, css } = fn(node, { from, to }, params);
+        let running = true;
+        let started = false;
+        let name;
+        function start() {
+            if (css) {
+                name = create_rule(node, 0, 1, duration, delay, easing, css);
+            }
+            if (!delay) {
+                started = true;
+            }
+        }
+        function stop() {
+            if (css)
+                delete_rule(node, name);
+            running = false;
+        }
+        loop(now => {
+            if (!started && now >= start_time) {
+                started = true;
+            }
+            if (started && now >= end) {
+                tick(1, 0);
+                stop();
+            }
+            if (!running) {
+                return false;
+            }
+            if (started) {
+                const p = now - start_time;
+                const t = 0 + 1 * easing(p / duration);
+                tick(t, 1 - t);
+            }
+            return true;
+        });
+        start();
+        tick(0, 1);
+        return stop;
+    }
+    function fix_position(node) {
+        const style = getComputedStyle(node);
+        if (style.position !== 'absolute' && style.position !== 'fixed') {
+            const { width, height } = style;
+            const a = node.getBoundingClientRect();
+            node.style.position = 'absolute';
+            node.style.width = width;
+            node.style.height = height;
+            add_transform(node, a);
+        }
+    }
+    function add_transform(node, a) {
+        const b = node.getBoundingClientRect();
+        if (a.left !== b.left || a.top !== b.top) {
+            const style = getComputedStyle(node);
+            const transform = style.transform === 'none' ? '' : style.transform;
+            node.style.transform = `${transform} translate(${a.left - b.left}px, ${a.top - b.top}px)`;
+        }
+    }
+
+    let current_component;
+    function set_current_component(component) {
+        current_component = component;
+    }
+    function get_current_component() {
+        if (!current_component)
+            throw new Error(`Function called outside component initialization`);
+        return current_component;
+    }
+    function onMount(fn) {
+        get_current_component().$$.on_mount.push(fn);
+    }
+    function afterUpdate(fn) {
+        get_current_component().$$.after_update.push(fn);
+    }
+    function createEventDispatcher() {
+        const component = get_current_component();
+        return (type, detail) => {
+            const callbacks = component.$$.callbacks[type];
+            if (callbacks) {
+                // TODO are there situations where events could be dispatched
+                // in a server (non-DOM) environment?
+                const event = custom_event(type, detail);
+                callbacks.slice().forEach(fn => {
+                    fn.call(component, event);
+                });
+            }
+        };
+    }
+
+    const dirty_components = [];
+    const binding_callbacks = [];
+    const render_callbacks = [];
+    const flush_callbacks = [];
+    const resolved_promise = Promise.resolve();
+    let update_scheduled = false;
+    function schedule_update() {
+        if (!update_scheduled) {
+            update_scheduled = true;
+            resolved_promise.then(flush);
+        }
+    }
+    function add_render_callback(fn) {
+        render_callbacks.push(fn);
+    }
+    let flushing = false;
+    const seen_callbacks = new Set();
+    function flush() {
+        if (flushing)
+            return;
+        flushing = true;
+        do {
+            // first, call beforeUpdate functions
+            // and update components
+            for (let i = 0; i < dirty_components.length; i += 1) {
+                const component = dirty_components[i];
+                set_current_component(component);
+                update(component.$$);
+            }
+            set_current_component(null);
+            dirty_components.length = 0;
+            while (binding_callbacks.length)
+                binding_callbacks.pop()();
+            // then, once components are updated, call
+            // afterUpdate functions. This may cause
+            // subsequent updates...
+            for (let i = 0; i < render_callbacks.length; i += 1) {
+                const callback = render_callbacks[i];
+                if (!seen_callbacks.has(callback)) {
+                    // ...so guard against infinite loops
+                    seen_callbacks.add(callback);
+                    callback();
+                }
+            }
+            render_callbacks.length = 0;
+        } while (dirty_components.length);
+        while (flush_callbacks.length) {
+            flush_callbacks.pop()();
+        }
+        update_scheduled = false;
+        flushing = false;
+        seen_callbacks.clear();
+    }
+    function update($$) {
+        if ($$.fragment !== null) {
+            $$.update();
+            run_all($$.before_update);
+            const dirty = $$.dirty;
+            $$.dirty = [-1];
+            $$.fragment && $$.fragment.p($$.ctx, dirty);
+            $$.after_update.forEach(add_render_callback);
+        }
+    }
+
+    let promise;
+    function wait() {
+        if (!promise) {
+            promise = Promise.resolve();
+            promise.then(() => {
+                promise = null;
+            });
+        }
+        return promise;
+    }
+    function dispatch(node, direction, kind) {
+        node.dispatchEvent(custom_event(`${direction ? 'intro' : 'outro'}${kind}`));
+    }
+    const outroing = new Set();
+    let outros;
+    function group_outros() {
+        outros = {
+            r: 0,
+            c: [],
+            p: outros // parent group
+        };
+    }
+    function check_outros() {
+        if (!outros.r) {
+            run_all(outros.c);
+        }
+        outros = outros.p;
+    }
+    function transition_in(block, local) {
+        if (block && block.i) {
+            outroing.delete(block);
+            block.i(local);
+        }
+    }
+    function transition_out(block, local, detach, callback) {
+        if (block && block.o) {
+            if (outroing.has(block))
+                return;
+            outroing.add(block);
+            outros.c.push(() => {
+                outroing.delete(block);
+                if (callback) {
+                    if (detach)
+                        block.d(1);
+                    callback();
+                }
+            });
+            block.o(local);
+        }
+    }
+    const null_transition = { duration: 0 };
+    function create_in_transition(node, fn, params) {
+        let config = fn(node, params);
+        let running = false;
+        let animation_name;
+        let task;
+        let uid = 0;
+        function cleanup() {
+            if (animation_name)
+                delete_rule(node, animation_name);
+        }
+        function go() {
+            const { delay = 0, duration = 300, easing = identity, tick = noop, css } = config || null_transition;
+            if (css)
+                animation_name = create_rule(node, 0, 1, duration, delay, easing, css, uid++);
+            tick(0, 1);
+            const start_time = now() + delay;
+            const end_time = start_time + duration;
+            if (task)
+                task.abort();
+            running = true;
+            add_render_callback(() => dispatch(node, true, 'start'));
+            task = loop(now => {
+                if (running) {
+                    if (now >= end_time) {
+                        tick(1, 0);
+                        dispatch(node, true, 'end');
+                        cleanup();
+                        return running = false;
+                    }
+                    if (now >= start_time) {
+                        const t = easing((now - start_time) / duration);
+                        tick(t, 1 - t);
+                    }
+                }
+                return running;
+            });
+        }
+        let started = false;
+        return {
+            start() {
+                if (started)
+                    return;
+                delete_rule(node);
+                if (is_function(config)) {
+                    config = config();
+                    wait().then(go);
+                }
+                else {
+                    go();
+                }
+            },
+            invalidate() {
+                started = false;
+            },
+            end() {
+                if (running) {
+                    cleanup();
+                    running = false;
+                }
+            }
+        };
+    }
+    function create_out_transition(node, fn, params) {
+        let config = fn(node, params);
+        let running = true;
+        let animation_name;
+        const group = outros;
+        group.r += 1;
+        function go() {
+            const { delay = 0, duration = 300, easing = identity, tick = noop, css } = config || null_transition;
+            if (css)
+                animation_name = create_rule(node, 1, 0, duration, delay, easing, css);
+            const start_time = now() + delay;
+            const end_time = start_time + duration;
+            add_render_callback(() => dispatch(node, false, 'start'));
+            loop(now => {
+                if (running) {
+                    if (now >= end_time) {
+                        tick(0, 1);
+                        dispatch(node, false, 'end');
+                        if (!--group.r) {
+                            // this will result in `end()` being called,
+                            // so we don't need to clean up here
+                            run_all(group.c);
+                        }
+                        return false;
+                    }
+                    if (now >= start_time) {
+                        const t = easing((now - start_time) / duration);
+                        tick(1 - t, t);
+                    }
+                }
+                return running;
+            });
+        }
+        if (is_function(config)) {
+            wait().then(() => {
+                // @ts-ignore
+                config = config();
+                go();
+            });
+        }
+        else {
+            go();
+        }
+        return {
+            end(reset) {
+                if (reset && config.tick) {
+                    config.tick(1, 0);
+                }
+                if (running) {
+                    if (animation_name)
+                        delete_rule(node, animation_name);
+                    running = false;
+                }
+            }
+        };
+    }
+
+    const globals = (typeof window !== 'undefined'
+        ? window
+        : typeof globalThis !== 'undefined'
+            ? globalThis
+            : global);
+    function outro_and_destroy_block(block, lookup) {
+        transition_out(block, 1, 1, () => {
+            lookup.delete(block.key);
+        });
+    }
+    function fix_and_outro_and_destroy_block(block, lookup) {
+        block.f();
+        outro_and_destroy_block(block, lookup);
+    }
+    function update_keyed_each(old_blocks, dirty, get_key, dynamic, ctx, list, lookup, node, destroy, create_each_block, next, get_context) {
+        let o = old_blocks.length;
+        let n = list.length;
+        let i = o;
+        const old_indexes = {};
+        while (i--)
+            old_indexes[old_blocks[i].key] = i;
+        const new_blocks = [];
+        const new_lookup = new Map();
+        const deltas = new Map();
+        i = n;
+        while (i--) {
+            const child_ctx = get_context(ctx, list, i);
+            const key = get_key(child_ctx);
+            let block = lookup.get(key);
+            if (!block) {
+                block = create_each_block(key, child_ctx);
+                block.c();
+            }
+            else if (dynamic) {
+                block.p(child_ctx, dirty);
+            }
+            new_lookup.set(key, new_blocks[i] = block);
+            if (key in old_indexes)
+                deltas.set(key, Math.abs(i - old_indexes[key]));
+        }
+        const will_move = new Set();
+        const did_move = new Set();
+        function insert(block) {
+            transition_in(block, 1);
+            block.m(node, next);
+            lookup.set(block.key, block);
+            next = block.first;
+            n--;
+        }
+        while (o && n) {
+            const new_block = new_blocks[n - 1];
+            const old_block = old_blocks[o - 1];
+            const new_key = new_block.key;
+            const old_key = old_block.key;
+            if (new_block === old_block) {
+                // do nothing
+                next = new_block.first;
+                o--;
+                n--;
+            }
+            else if (!new_lookup.has(old_key)) {
+                // remove old block
+                destroy(old_block, lookup);
+                o--;
+            }
+            else if (!lookup.has(new_key) || will_move.has(new_key)) {
+                insert(new_block);
+            }
+            else if (did_move.has(old_key)) {
+                o--;
+            }
+            else if (deltas.get(new_key) > deltas.get(old_key)) {
+                did_move.add(new_key);
+                insert(new_block);
+            }
+            else {
+                will_move.add(old_key);
+                o--;
+            }
+        }
+        while (o--) {
+            const old_block = old_blocks[o];
+            if (!new_lookup.has(old_block.key))
+                destroy(old_block, lookup);
+        }
+        while (n)
+            insert(new_blocks[n - 1]);
+        return new_blocks;
+    }
+    function validate_each_keys(ctx, list, get_context, get_key) {
+        const keys = new Set();
+        for (let i = 0; i < list.length; i++) {
+            const key = get_key(get_context(ctx, list, i));
+            if (keys.has(key)) {
+                throw new Error(`Cannot have duplicate keys in a keyed each`);
+            }
+            keys.add(key);
+        }
+    }
+
+    function get_spread_update(levels, updates) {
+        const update = {};
+        const to_null_out = {};
+        const accounted_for = { $$scope: 1 };
+        let i = levels.length;
+        while (i--) {
+            const o = levels[i];
+            const n = updates[i];
+            if (n) {
+                for (const key in o) {
+                    if (!(key in n))
+                        to_null_out[key] = 1;
+                }
+                for (const key in n) {
+                    if (!accounted_for[key]) {
+                        update[key] = n[key];
+                        accounted_for[key] = 1;
+                    }
+                }
+                levels[i] = n;
+            }
+            else {
+                for (const key in o) {
+                    accounted_for[key] = 1;
+                }
+            }
+        }
+        for (const key in to_null_out) {
+            if (!(key in update))
+                update[key] = undefined;
+        }
+        return update;
+    }
+    function get_spread_object(spread_props) {
+        return typeof spread_props === 'object' && spread_props !== null ? spread_props : {};
+    }
+    function create_component(block) {
+        block && block.c();
+    }
+    function mount_component(component, target, anchor) {
+        const { fragment, on_mount, on_destroy, after_update } = component.$$;
+        fragment && fragment.m(target, anchor);
+        // onMount happens before the initial afterUpdate
+        add_render_callback(() => {
+            const new_on_destroy = on_mount.map(run).filter(is_function);
+            if (on_destroy) {
+                on_destroy.push(...new_on_destroy);
+            }
+            else {
+                // Edge case - component was destroyed immediately,
+                // most likely as a result of a binding initialising
+                run_all(new_on_destroy);
+            }
+            component.$$.on_mount = [];
+        });
+        after_update.forEach(add_render_callback);
+    }
+    function destroy_component(component, detaching) {
+        const $$ = component.$$;
+        if ($$.fragment !== null) {
+            run_all($$.on_destroy);
+            $$.fragment && $$.fragment.d(detaching);
+            // TODO null out other refs, including component.$$ (but need to
+            // preserve final state?)
+            $$.on_destroy = $$.fragment = null;
+            $$.ctx = [];
+        }
+    }
+    function make_dirty(component, i) {
+        if (component.$$.dirty[0] === -1) {
+            dirty_components.push(component);
+            schedule_update();
+            component.$$.dirty.fill(0);
+        }
+        component.$$.dirty[(i / 31) | 0] |= (1 << (i % 31));
+    }
+    function init(component, options, instance, create_fragment, not_equal, props, dirty = [-1]) {
+        const parent_component = current_component;
+        set_current_component(component);
+        const prop_values = options.props || {};
+        const $$ = component.$$ = {
+            fragment: null,
+            ctx: null,
+            // state
+            props,
+            update: noop,
+            not_equal,
+            bound: blank_object(),
+            // lifecycle
+            on_mount: [],
+            on_destroy: [],
+            before_update: [],
+            after_update: [],
+            context: new Map(parent_component ? parent_component.$$.context : []),
+            // everything else
+            callbacks: blank_object(),
+            dirty,
+            skip_bound: false
+        };
+        let ready = false;
+        $$.ctx = instance
+            ? instance(component, prop_values, (i, ret, ...rest) => {
+                const value = rest.length ? rest[0] : ret;
+                if ($$.ctx && not_equal($$.ctx[i], $$.ctx[i] = value)) {
+                    if (!$$.skip_bound && $$.bound[i])
+                        $$.bound[i](value);
+                    if (ready)
+                        make_dirty(component, i);
+                }
+                return ret;
+            })
+            : [];
+        $$.update();
+        ready = true;
+        run_all($$.before_update);
+        // `false` as a special case of no DOM component
+        $$.fragment = create_fragment ? create_fragment($$.ctx) : false;
+        if (options.target) {
+            if (options.hydrate) {
+                const nodes = children(options.target);
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                $$.fragment && $$.fragment.l(nodes);
+                nodes.forEach(detach);
+            }
+            else {
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                $$.fragment && $$.fragment.c();
+            }
+            if (options.intro)
+                transition_in(component.$$.fragment);
+            mount_component(component, options.target, options.anchor);
+            flush();
+        }
+        set_current_component(parent_component);
+    }
+    class SvelteComponent {
+        $destroy() {
+            destroy_component(this, 1);
+            this.$destroy = noop;
+        }
+        $on(type, callback) {
+            const callbacks = (this.$$.callbacks[type] || (this.$$.callbacks[type] = []));
+            callbacks.push(callback);
+            return () => {
+                const index = callbacks.indexOf(callback);
+                if (index !== -1)
+                    callbacks.splice(index, 1);
+            };
+        }
+        $set($$props) {
+            if (this.$$set && !is_empty($$props)) {
+                this.$$.skip_bound = true;
+                this.$$set($$props);
+                this.$$.skip_bound = false;
+            }
+        }
+    }
+
+    function dispatch_dev(type, detail) {
+        document.dispatchEvent(custom_event(type, Object.assign({ version: '3.29.0' }, detail)));
+    }
+    function append_dev(target, node) {
+        dispatch_dev("SvelteDOMInsert", { target, node });
+        append(target, node);
+    }
+    function insert_dev(target, node, anchor) {
+        dispatch_dev("SvelteDOMInsert", { target, node, anchor });
+        insert(target, node, anchor);
+    }
+    function detach_dev(node) {
+        dispatch_dev("SvelteDOMRemove", { node });
+        detach(node);
+    }
+    function listen_dev(node, event, handler, options, has_prevent_default, has_stop_propagation) {
+        const modifiers = options === true ? ["capture"] : options ? Array.from(Object.keys(options)) : [];
+        if (has_prevent_default)
+            modifiers.push('preventDefault');
+        if (has_stop_propagation)
+            modifiers.push('stopPropagation');
+        dispatch_dev("SvelteDOMAddEventListener", { node, event, handler, modifiers });
+        const dispose = listen(node, event, handler, options);
+        return () => {
+            dispatch_dev("SvelteDOMRemoveEventListener", { node, event, handler, modifiers });
+            dispose();
+        };
+    }
+    function attr_dev(node, attribute, value) {
+        attr(node, attribute, value);
+        if (value == null)
+            dispatch_dev("SvelteDOMRemoveAttribute", { node, attribute });
+        else
+            dispatch_dev("SvelteDOMSetAttribute", { node, attribute, value });
+    }
+    function set_data_dev(text, data) {
+        data = '' + data;
+        if (text.wholeText === data)
+            return;
+        dispatch_dev("SvelteDOMSetData", { node: text, data });
+        text.data = data;
+    }
+    function validate_each_argument(arg) {
+        if (typeof arg !== 'string' && !(arg && typeof arg === 'object' && 'length' in arg)) {
+            let msg = '{#each} only iterates over array-like objects.';
+            if (typeof Symbol === 'function' && arg && Symbol.iterator in arg) {
+                msg += ' You can use a spread to convert this iterable into an array.';
+            }
+            throw new Error(msg);
+        }
+    }
+    function validate_slots(name, slot, keys) {
+        for (const slot_key of Object.keys(slot)) {
+            if (!~keys.indexOf(slot_key)) {
+                console.warn(`<${name}> received an unexpected slot "${slot_key}".`);
+            }
+        }
+    }
+    class SvelteComponentDev extends SvelteComponent {
+        constructor(options) {
+            if (!options || (!options.target && !options.$$inline)) {
+                throw new Error(`'target' is a required option`);
+            }
+            super();
+        }
+        $destroy() {
+            super.$destroy();
+            this.$destroy = () => {
+                console.warn(`Component was already destroyed`); // eslint-disable-line no-console
+            };
+        }
+        $capture_state() { }
+        $inject_state() { }
+    }
+
+    /* src\components\cw\Unit.svelte generated by Svelte v3.29.0 */
+    const file = "src\\components\\cw\\Unit.svelte";
+
+    function create_fragment(ctx) {
+    	let div;
+    	let t_value = /*unit*/ ctx[0].type[0] + "";
+    	let t;
+    	let mounted;
+    	let dispose;
+
+    	const block = {
+    		c: function create() {
+    			div = element("div");
+    			t = text(t_value);
+    			attr_dev(div, "class", "unit svelte-1uf1z5d");
+    			toggle_class(div, "mon", /*unit*/ ctx[0].tier == 1);
+    			toggle_class(div, "goo", /*unit*/ ctx[0].tier == 2);
+    			toggle_class(div, "gate", /*unit*/ ctx[0].gate);
+    			add_location(div, file, 51, 0, 1102);
+    		},
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+    			append_dev(div, t);
+    			/*div_binding*/ ctx[4](div);
+
+    			if (!mounted) {
+    				dispose = listen_dev(div, "click", /*click*/ ctx[2], false, false, false);
+    				mounted = true;
+    			}
+    		},
+    		p: function update(ctx, [dirty]) {
+    			if (dirty & /*unit*/ 1 && t_value !== (t_value = /*unit*/ ctx[0].type[0] + "")) set_data_dev(t, t_value);
+
+    			if (dirty & /*unit*/ 1) {
+    				toggle_class(div, "mon", /*unit*/ ctx[0].tier == 1);
+    			}
+
+    			if (dirty & /*unit*/ 1) {
+    				toggle_class(div, "goo", /*unit*/ ctx[0].tier == 2);
+    			}
+
+    			if (dirty & /*unit*/ 1) {
+    				toggle_class(div, "gate", /*unit*/ ctx[0].gate);
+    			}
+    		},
+    		i: noop,
+    		o: noop,
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div);
+    			/*div_binding*/ ctx[4](null);
+    			mounted = false;
+    			dispose();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_fragment.name,
+    		type: "component",
+    		source: "",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function instance($$self, $$props, $$invalidate) {
+    	let { $$slots: slots = {}, $$scope } = $$props;
+    	validate_slots("Unit", slots, []);
+    	let { choose } = $$props;
+    	let dispatch = createEventDispatcher();
+    	let { unit = { owner: { faction: { color: "black" } } } } = $$props;
+    	let el;
+
+    	onMount(x => {
+    		$$invalidate(1, el.style.background = unit.owner.faction.color, el);
+    	});
+
+    	let click = e => {
+    		e.stopPropagation();
+    		choose("unit", unit);
+    	};
+
+    	const writable_props = ["choose", "unit"];
+
+    	Object.keys($$props).forEach(key => {
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<Unit> was created with unknown prop '${key}'`);
+    	});
+
+    	function div_binding($$value) {
+    		binding_callbacks[$$value ? "unshift" : "push"](() => {
+    			el = $$value;
+    			$$invalidate(1, el);
+    		});
+    	}
+
+    	$$self.$$set = $$props => {
+    		if ("choose" in $$props) $$invalidate(3, choose = $$props.choose);
+    		if ("unit" in $$props) $$invalidate(0, unit = $$props.unit);
+    	};
+
+    	$$self.$capture_state = () => ({
+    		choose,
+    		createEventDispatcher,
+    		dispatch,
+    		unit,
+    		onMount,
+    		el,
+    		click
+    	});
+
+    	$$self.$inject_state = $$props => {
+    		if ("choose" in $$props) $$invalidate(3, choose = $$props.choose);
+    		if ("dispatch" in $$props) dispatch = $$props.dispatch;
+    		if ("unit" in $$props) $$invalidate(0, unit = $$props.unit);
+    		if ("el" in $$props) $$invalidate(1, el = $$props.el);
+    		if ("click" in $$props) $$invalidate(2, click = $$props.click);
+    	};
+
+    	if ($$props && "$$inject" in $$props) {
+    		$$self.$inject_state($$props.$$inject);
+    	}
+
+    	return [unit, el, click, choose, div_binding];
+    }
+
+    class Unit extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance, create_fragment, safe_not_equal, { choose: 3, unit: 0 });
+
+    		dispatch_dev("SvelteRegisterComponent", {
+    			component: this,
+    			tagName: "Unit",
+    			options,
+    			id: create_fragment.name
+    		});
+
+    		const { ctx } = this.$$;
+    		const props = options.props || {};
+
+    		if (/*choose*/ ctx[3] === undefined && !("choose" in props)) {
+    			console.warn("<Unit> was created without expected prop 'choose'");
+    		}
+    	}
+
+    	get choose() {
+    		throw new Error("<Unit>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set choose(value) {
+    		throw new Error("<Unit>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get unit() {
+    		throw new Error("<Unit>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set unit(value) {
+    		throw new Error("<Unit>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+    }
+
+    /* src\components\cw\Gate.svelte generated by Svelte v3.29.0 */
+    const file$1 = "src\\components\\cw\\Gate.svelte";
+
+    // (39:0) {#if place.gate && place.nocults}
+    function create_if_block(ctx) {
+    	let div;
+    	let mounted;
+    	let dispose;
+
+    	const block = {
+    		c: function create() {
+    			div = element("div");
+    			attr_dev(div, "class", "gate svelte-1hbe3mt");
+    			add_location(div, file$1, 38, 33, 948);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+    			/*div_binding*/ ctx[6](div);
+
+    			if (!mounted) {
+    				dispose = listen_dev(div, "click", /*click*/ ctx[2], false, false, false);
+    				mounted = true;
+    			}
+    		},
+    		p: noop,
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div);
+    			/*div_binding*/ ctx[6](null);
+    			mounted = false;
+    			dispose();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block.name,
+    		type: "if",
+    		source: "(39:0) {#if place.gate && place.nocults}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function create_fragment$1(ctx) {
+    	let if_block_anchor;
+    	let if_block = /*place*/ ctx[0].gate && /*place*/ ctx[0].nocults && create_if_block(ctx);
+
+    	const block = {
+    		c: function create() {
+    			if (if_block) if_block.c();
+    			if_block_anchor = empty();
+    		},
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+    		m: function mount(target, anchor) {
+    			if (if_block) if_block.m(target, anchor);
+    			insert_dev(target, if_block_anchor, anchor);
+    		},
+    		p: function update(ctx, [dirty]) {
+    			if (/*place*/ ctx[0].gate && /*place*/ ctx[0].nocults) {
+    				if (if_block) {
+    					if_block.p(ctx, dirty);
+    				} else {
+    					if_block = create_if_block(ctx);
+    					if_block.c();
+    					if_block.m(if_block_anchor.parentNode, if_block_anchor);
+    				}
+    			} else if (if_block) {
+    				if_block.d(1);
+    				if_block = null;
+    			}
+    		},
+    		i: noop,
+    		o: noop,
+    		d: function destroy(detaching) {
+    			if (if_block) if_block.d(detaching);
+    			if (detaching) detach_dev(if_block_anchor);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_fragment$1.name,
+    		type: "component",
+    		source: "",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function instance$1($$self, $$props, $$invalidate) {
+    	let { $$slots: slots = {}, $$scope } = $$props;
+    	validate_slots("Gate", slots, []);
+    	let { choose } = $$props;
+    	let dispatch = createEventDispatcher();
+    	let place = { name: "place", gate: 0, nocults: 0 };
+    	let { name = "place" } = $$props;
+    	let { places = { place } } = $$props;
+    	let el;
+
+    	let click = e => {
+    		e.stopPropagation();
+    		choose("gate", place);
+    	};
+
+    	const writable_props = ["choose", "name", "places"];
+
+    	Object.keys($$props).forEach(key => {
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<Gate> was created with unknown prop '${key}'`);
+    	});
+
+    	function div_binding($$value) {
+    		binding_callbacks[$$value ? "unshift" : "push"](() => {
+    			el = $$value;
+    			$$invalidate(1, el);
+    		});
+    	}
+
+    	$$self.$$set = $$props => {
+    		if ("choose" in $$props) $$invalidate(3, choose = $$props.choose);
+    		if ("name" in $$props) $$invalidate(4, name = $$props.name);
+    		if ("places" in $$props) $$invalidate(5, places = $$props.places);
+    	};
+
+    	$$self.$capture_state = () => ({
+    		choose,
+    		createEventDispatcher,
+    		dispatch,
+    		place,
+    		name,
+    		places,
+    		afterUpdate,
+    		el,
+    		click
+    	});
+
+    	$$self.$inject_state = $$props => {
+    		if ("choose" in $$props) $$invalidate(3, choose = $$props.choose);
+    		if ("dispatch" in $$props) dispatch = $$props.dispatch;
+    		if ("place" in $$props) $$invalidate(0, place = $$props.place);
+    		if ("name" in $$props) $$invalidate(4, name = $$props.name);
+    		if ("places" in $$props) $$invalidate(5, places = $$props.places);
+    		if ("el" in $$props) $$invalidate(1, el = $$props.el);
+    		if ("click" in $$props) $$invalidate(2, click = $$props.click);
+    	};
+
+    	if ($$props && "$$inject" in $$props) {
+    		$$self.$inject_state($$props.$$inject);
+    	}
+
+    	$$self.$$.update = () => {
+    		if ($$self.$$.dirty & /*places, name*/ 48) {
+    			 $$invalidate(0, place = places[name]);
+    		}
+    	};
+
+    	return [place, el, click, choose, name, places, div_binding];
+    }
+
+    class Gate extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance$1, create_fragment$1, safe_not_equal, { choose: 3, name: 4, places: 5 });
+
+    		dispatch_dev("SvelteRegisterComponent", {
+    			component: this,
+    			tagName: "Gate",
+    			options,
+    			id: create_fragment$1.name
+    		});
+
+    		const { ctx } = this.$$;
+    		const props = options.props || {};
+
+    		if (/*choose*/ ctx[3] === undefined && !("choose" in props)) {
+    			console.warn("<Gate> was created without expected prop 'choose'");
+    		}
+    	}
+
+    	get choose() {
+    		throw new Error("<Gate>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set choose(value) {
+    		throw new Error("<Gate>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get name() {
+    		throw new Error("<Gate>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set name(value) {
+    		throw new Error("<Gate>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get places() {
+    		throw new Error("<Gate>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set places(value) {
+    		throw new Error("<Gate>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+    }
+
+    function cubicOut(t) {
+        const f = t - 1.0;
+        return f * f * f + 1.0;
+    }
+    function quintOut(t) {
+        return --t * t * t * t * t + 1;
+    }
+
+    /*! *****************************************************************************
     Copyright (c) Microsoft Corporation. All rights reserved.
     Licensed under the Apache License, Version 2.0 (the "License"); you may not use
     this file except in compliance with the License. You may obtain a copy of the
@@ -12,5 +1240,7353 @@ var app=function(){"use strict";function e(){}const t=e=>e;function n(e,t){for(c
 
     See the Apache Version 2.0 License for specific language governing permissions
     and limitations under the License.
-    ***************************************************************************** */function be(e){var{fallback:t}=e,l=function(e,t){var n={};for(var l in e)Object.prototype.hasOwnProperty.call(e,l)&&t.indexOf(l)<0&&(n[l]=e[l]);if(null!=e&&"function"==typeof Object.getOwnPropertySymbols){var i=0;for(l=Object.getOwnPropertySymbols(e);i<l.length;i++)t.indexOf(l[i])<0&&Object.prototype.propertyIsEnumerable.call(e,l[i])&&(n[l[i]]=e[l[i]])}return n}(e,["fallback"]);const i=new Map,o=new Map;function a(e,i,o){return(a,c)=>(e.set(c.key,{rect:a.getBoundingClientRect()}),()=>{if(i.has(c.key)){const{rect:e}=i.get(c.key);return i.delete(c.key),function(e,t,i){const{delay:o=0,duration:a=(e=>30*Math.sqrt(e)),easing:c=ke}=n(n({},l),i),r=t.getBoundingClientRect(),u=e.left-r.left,f=e.top-r.top,h=e.width/r.width,p=e.height/r.height,d=Math.sqrt(u*u+f*f),g=getComputedStyle(t),m="none"===g.transform?"":g.transform,y=+g.opacity;return{delay:o,duration:s(a)?a(d):a,easing:c,css:(e,t)=>`\n\t\t\t\topacity: ${e*y};\n\t\t\t\ttransform-origin: top left;\n\t\t\t\ttransform: ${m} translate(${t*u}px,${t*f}px) scale(${e+(1-e)*h}, ${e+(1-e)*p});\n\t\t\t`}}(e,a,c)}return e.delete(c.key),t&&t(a,c,o)})}return[a(o,i,!1),a(i,o,!0)]}function we(e,t,n){const l=getComputedStyle(e),i="none"===l.transform?"":l.transform,o=t.from.width/e.clientWidth,a=t.from.height/e.clientHeight,c=(t.from.left-t.to.left)/o,r=(t.from.top-t.to.top)/a,u=Math.sqrt(c*c+r*r),{delay:f=0,duration:h=(e=>120*Math.sqrt(e)),easing:p=ke}=n;return{delay:f,duration:s(h)?h(u):h,easing:p,css:(e,t)=>`transform: ${i} translate(${t*c}px, ${t*r}px);`}}const{Map:xe}=ae;function _e(e,t,n){const l=e.slice();return l[41]=t[n],l}function Ce(e,t,n){const l=e.slice();return l[41]=t[n],l}function Oe(e,t,n){const l=e.slice();return l[41]=t[n],l}function je(e,t,n){const l=e.slice();return l[41]=t[n],l}function Be(e,t,n){const l=e.slice();return l[41]=t[n],l}function Re(e,t,n){const l=e.slice();return l[41]=t[n],l}function ze(e,t,n){const l=e.slice();return l[41]=t[n],l}function Se(e,t,n){const l=e.slice();return l[41]=t[n],l}function qe(e,t,n){const l=e.slice();return l[41]=t[n],l}function Ee(e,t,n){const l=e.slice();return l[41]=t[n],l}function Ae(e,t,n){const l=e.slice();return l[41]=t[n],l}function Me(e,t,n){const l=e.slice();return l[41]=t[n],l}function Ne(e,t,n){const l=e.slice();return l[41]=t[n],l}function Te(e,t,n){const l=e.slice();return l[41]=t[n],l}function De(e,t,n){const l=e.slice();return l[41]=t[n],l}function Pe(e,t,n){const l=e.slice();return l[41]=t[n],l}function He(e,t,n){const l=e.slice();return l[41]=t[n],l}function Fe(t,n){let l,i,o,s,a,c,r=e;return i=new $e({props:{unit:n[41],choose:n[1]}}),{key:t,first:null,c(){l=$("div"),ue(i.$$.fragment),this.first=l},m(e,t){g(e,l,t),fe(i,l,null),c=!0},p(e,t){n=e;const l={};1&t[0]&&(l.unit=n[41]),2&t[0]&&(l.choose=n[1]),i.$set(l)},r(){a=l.getBoundingClientRect()},f(){q(l),r(),E(l,a)},a(){r(),r=S(l,a,we,{duration:200})},i(e){c||(ne(i.$$.fragment,e),U((()=>{s&&s.end(1),o||(o=oe(l,n[21],{key:n[41].id})),o.start()})),c=!0)},o(e){le(i.$$.fragment,e),o&&o.invalidate(),s=se(l,n[20],{key:n[41].id}),c=!1},d(e){e&&m(l),he(i),e&&s&&s.end()}}}function Ye(t,n){let l,i,o,s,a,c,r=e;return i=new $e({props:{unit:n[41],choose:n[1]}}),{key:t,first:null,c(){l=$("div"),ue(i.$$.fragment),this.first=l},m(e,t){g(e,l,t),fe(i,l,null),c=!0},p(e,t){n=e;const l={};1&t[0]&&(l.unit=n[41]),2&t[0]&&(l.choose=n[1]),i.$set(l)},r(){a=l.getBoundingClientRect()},f(){q(l),r(),E(l,a)},a(){r(),r=S(l,a,we,{duration:200})},i(e){c||(ne(i.$$.fragment,e),U((()=>{s&&s.end(1),o||(o=oe(l,n[21],{key:n[41].id})),o.start()})),c=!0)},o(e){le(i.$$.fragment,e),o&&o.invalidate(),s=se(l,n[20],{key:n[41].id}),c=!1},d(e){e&&m(l),he(i),e&&s&&s.end()}}}function Ge(t,n){let l,i,o,s,a,c,r=e;return i=new $e({props:{unit:n[41],choose:n[1]}}),{key:t,first:null,c(){l=$("div"),ue(i.$$.fragment),this.first=l},m(e,t){g(e,l,t),fe(i,l,null),c=!0},p(e,t){n=e;const l={};1&t[0]&&(l.unit=n[41]),2&t[0]&&(l.choose=n[1]),i.$set(l)},r(){a=l.getBoundingClientRect()},f(){q(l),r(),E(l,a)},a(){r(),r=S(l,a,we,{duration:200})},i(e){c||(ne(i.$$.fragment,e),U((()=>{s&&s.end(1),o||(o=oe(l,n[21],{key:n[41].id})),o.start()})),c=!0)},o(e){le(i.$$.fragment,e),o&&o.invalidate(),s=se(l,n[20],{key:n[41].id}),c=!1},d(e){e&&m(l),he(i),e&&s&&s.end()}}}function Ue(t,n){let l,i,o,s,a,c,r=e;return i=new $e({props:{unit:n[41],choose:n[1]}}),{key:t,first:null,c(){l=$("div"),ue(i.$$.fragment),this.first=l},m(e,t){g(e,l,t),fe(i,l,null),c=!0},p(e,t){n=e;const l={};1&t[0]&&(l.unit=n[41]),2&t[0]&&(l.choose=n[1]),i.$set(l)},r(){a=l.getBoundingClientRect()},f(){q(l),r(),E(l,a)},a(){r(),r=S(l,a,we,{duration:200})},i(e){c||(ne(i.$$.fragment,e),U((()=>{s&&s.end(1),o||(o=oe(l,n[21],{key:n[41].id})),o.start()})),c=!0)},o(e){le(i.$$.fragment,e),o&&o.invalidate(),s=se(l,n[20],{key:n[41].id}),c=!1},d(e){e&&m(l),he(i),e&&s&&s.end()}}}function Ke(t,n){let l,i,o,s,a,c,r=e;return i=new $e({props:{unit:n[41],choose:n[1]}}),{key:t,first:null,c(){l=$("div"),ue(i.$$.fragment),this.first=l},m(e,t){g(e,l,t),fe(i,l,null),c=!0},p(e,t){n=e;const l={};1&t[0]&&(l.unit=n[41]),2&t[0]&&(l.choose=n[1]),i.$set(l)},r(){a=l.getBoundingClientRect()},f(){q(l),r(),E(l,a)},a(){r(),r=S(l,a,we,{duration:200})},i(e){c||(ne(i.$$.fragment,e),U((()=>{s&&s.end(1),o||(o=oe(l,n[21],{key:n[41].id})),o.start()})),c=!0)},o(e){le(i.$$.fragment,e),o&&o.invalidate(),s=se(l,n[20],{key:n[41].id}),c=!1},d(e){e&&m(l),he(i),e&&s&&s.end()}}}function Le(t,n){let l,i,o,s,a,c,r=e;return i=new $e({props:{unit:n[41],choose:n[1]}}),{key:t,first:null,c(){l=$("div"),ue(i.$$.fragment),this.first=l},m(e,t){g(e,l,t),fe(i,l,null),c=!0},p(e,t){n=e;const l={};1&t[0]&&(l.unit=n[41]),2&t[0]&&(l.choose=n[1]),i.$set(l)},r(){a=l.getBoundingClientRect()},f(){q(l),r(),E(l,a)},a(){r(),r=S(l,a,we,{duration:200})},i(e){c||(ne(i.$$.fragment,e),U((()=>{s&&s.end(1),o||(o=oe(l,n[21],{key:n[41].id})),o.start()})),c=!0)},o(e){le(i.$$.fragment,e),o&&o.invalidate(),s=se(l,n[20],{key:n[41].id}),c=!1},d(e){e&&m(l),he(i),e&&s&&s.end()}}}function Ie(t,n){let l,i,o,s,a,c,r=e;return i=new $e({props:{unit:n[41],choose:n[1]}}),{key:t,first:null,c(){l=$("div"),ue(i.$$.fragment),this.first=l},m(e,t){g(e,l,t),fe(i,l,null),c=!0},p(e,t){n=e;const l={};1&t[0]&&(l.unit=n[41]),2&t[0]&&(l.choose=n[1]),i.$set(l)},r(){a=l.getBoundingClientRect()},f(){q(l),r(),E(l,a)},a(){r(),r=S(l,a,we,{duration:200})},i(e){c||(ne(i.$$.fragment,e),U((()=>{s&&s.end(1),o||(o=oe(l,n[21],{key:n[41].id})),o.start()})),c=!0)},o(e){le(i.$$.fragment,e),o&&o.invalidate(),s=se(l,n[20],{key:n[41].id}),c=!1},d(e){e&&m(l),he(i),e&&s&&s.end()}}}function We(t,n){let l,i,o,s,a,c,r=e;return i=new $e({props:{unit:n[41],choose:n[1]}}),{key:t,first:null,c(){l=$("div"),ue(i.$$.fragment),this.first=l},m(e,t){g(e,l,t),fe(i,l,null),c=!0},p(e,t){n=e;const l={};1&t[0]&&(l.unit=n[41]),2&t[0]&&(l.choose=n[1]),i.$set(l)},r(){a=l.getBoundingClientRect()},f(){q(l),r(),E(l,a)},a(){r(),r=S(l,a,we,{duration:200})},i(e){c||(ne(i.$$.fragment,e),U((()=>{s&&s.end(1),o||(o=oe(l,n[21],{key:n[41].id})),o.start()})),c=!0)},o(e){le(i.$$.fragment,e),o&&o.invalidate(),s=se(l,n[20],{key:n[41].id}),c=!1},d(e){e&&m(l),he(i),e&&s&&s.end()}}}function Ze(t,n){let l,i,o,s,a,c,r=e;return i=new $e({props:{unit:n[41],choose:n[1]}}),{key:t,first:null,c(){l=$("div"),ue(i.$$.fragment),this.first=l},m(e,t){g(e,l,t),fe(i,l,null),c=!0},p(e,t){n=e;const l={};1&t[0]&&(l.unit=n[41]),2&t[0]&&(l.choose=n[1]),i.$set(l)},r(){a=l.getBoundingClientRect()},f(){q(l),r(),E(l,a)},a(){r(),r=S(l,a,we,{duration:200})},i(e){c||(ne(i.$$.fragment,e),U((()=>{s&&s.end(1),o||(o=oe(l,n[21],{key:n[41].id})),o.start()})),c=!0)},o(e){le(i.$$.fragment,e),o&&o.invalidate(),s=se(l,n[20],{key:n[41].id}),c=!1},d(e){e&&m(l),he(i),e&&s&&s.end()}}}function Je(t,n){let l,i,o,s,a,c,r=e;return i=new $e({props:{unit:n[41],choose:n[1]}}),{key:t,first:null,c(){l=$("div"),ue(i.$$.fragment),this.first=l},m(e,t){g(e,l,t),fe(i,l,null),c=!0},p(e,t){n=e;const l={};1&t[0]&&(l.unit=n[41]),2&t[0]&&(l.choose=n[1]),i.$set(l)},r(){a=l.getBoundingClientRect()},f(){q(l),r(),E(l,a)},a(){r(),r=S(l,a,we,{duration:200})},i(e){c||(ne(i.$$.fragment,e),U((()=>{s&&s.end(1),o||(o=oe(l,n[21],{key:n[41].id})),o.start()})),c=!0)},o(e){le(i.$$.fragment,e),o&&o.invalidate(),s=se(l,n[20],{key:n[41].id}),c=!1},d(e){e&&m(l),he(i),e&&s&&s.end()}}}function Qe(t,n){let l,i,o,s,a,c,r=e;return i=new $e({props:{unit:n[41],choose:n[1]}}),{key:t,first:null,c(){l=$("div"),ue(i.$$.fragment),this.first=l},m(e,t){g(e,l,t),fe(i,l,null),c=!0},p(e,t){n=e;const l={};1&t[0]&&(l.unit=n[41]),2&t[0]&&(l.choose=n[1]),i.$set(l)},r(){a=l.getBoundingClientRect()},f(){q(l),r(),E(l,a)},a(){r(),r=S(l,a,we,{duration:200})},i(e){c||(ne(i.$$.fragment,e),U((()=>{s&&s.end(1),o||(o=oe(l,n[21],{key:n[41].id})),o.start()})),c=!0)},o(e){le(i.$$.fragment,e),o&&o.invalidate(),s=se(l,n[20],{key:n[41].id}),c=!1},d(e){e&&m(l),he(i),e&&s&&s.end()}}}function Ve(t,n){let l,i,o,s,a,c,r=e;return i=new $e({props:{unit:n[41],choose:n[1]}}),{key:t,first:null,c(){l=$("div"),ue(i.$$.fragment),this.first=l},m(e,t){g(e,l,t),fe(i,l,null),c=!0},p(e,t){n=e;const l={};1&t[0]&&(l.unit=n[41]),2&t[0]&&(l.choose=n[1]),i.$set(l)},r(){a=l.getBoundingClientRect()},f(){q(l),r(),E(l,a)},a(){r(),r=S(l,a,we,{duration:200})},i(e){c||(ne(i.$$.fragment,e),U((()=>{s&&s.end(1),o||(o=oe(l,n[21],{key:n[41].id})),o.start()})),c=!0)},o(e){le(i.$$.fragment,e),o&&o.invalidate(),s=se(l,n[20],{key:n[41].id}),c=!1},d(e){e&&m(l),he(i),e&&s&&s.end()}}}function Xe(t,n){let l,i,o,s,a,c,r=e;return i=new $e({props:{unit:n[41],choose:n[1]}}),{key:t,first:null,c(){l=$("div"),ue(i.$$.fragment),this.first=l},m(e,t){g(e,l,t),fe(i,l,null),c=!0},p(e,t){n=e;const l={};1&t[0]&&(l.unit=n[41]),2&t[0]&&(l.choose=n[1]),i.$set(l)},r(){a=l.getBoundingClientRect()},f(){q(l),r(),E(l,a)},a(){r(),r=S(l,a,we,{duration:200})},i(e){c||(ne(i.$$.fragment,e),U((()=>{s&&s.end(1),o||(o=oe(l,n[21],{key:n[41].id})),o.start()})),c=!0)},o(e){le(i.$$.fragment,e),o&&o.invalidate(),s=se(l,n[20],{key:n[41].id}),c=!1},d(e){e&&m(l),he(i),e&&s&&s.end()}}}function et(t,n){let l,i,o,s,a,c,r=e;return i=new $e({props:{unit:n[41],choose:n[1]}}),{key:t,first:null,c(){l=$("div"),ue(i.$$.fragment),this.first=l},m(e,t){g(e,l,t),fe(i,l,null),c=!0},p(e,t){n=e;const l={};1&t[0]&&(l.unit=n[41]),2&t[0]&&(l.choose=n[1]),i.$set(l)},r(){a=l.getBoundingClientRect()},f(){q(l),r(),E(l,a)},a(){r(),r=S(l,a,we,{duration:200})},i(e){c||(ne(i.$$.fragment,e),U((()=>{s&&s.end(1),o||(o=oe(l,n[21],{key:n[41].id})),o.start()})),c=!0)},o(e){le(i.$$.fragment,e),o&&o.invalidate(),s=se(l,n[20],{key:n[41].id}),c=!1},d(e){e&&m(l),he(i),e&&s&&s.end()}}}function tt(t,n){let l,i,o,s,a,c,r=e;return i=new $e({props:{unit:n[41],choose:n[1]}}),{key:t,first:null,c(){l=$("div"),ue(i.$$.fragment),this.first=l},m(e,t){g(e,l,t),fe(i,l,null),c=!0},p(e,t){n=e;const l={};1&t[0]&&(l.unit=n[41]),2&t[0]&&(l.choose=n[1]),i.$set(l)},r(){a=l.getBoundingClientRect()},f(){q(l),r(),E(l,a)},a(){r(),r=S(l,a,we,{duration:200})},i(e){c||(ne(i.$$.fragment,e),U((()=>{s&&s.end(1),o||(o=oe(l,n[21],{key:n[41].id})),o.start()})),c=!0)},o(e){le(i.$$.fragment,e),o&&o.invalidate(),s=se(l,n[20],{key:n[41].id}),c=!1},d(e){e&&m(l),he(i),e&&s&&s.end()}}}function nt(t,n){let l,i,o,s,a,c,r=e;return i=new $e({props:{unit:n[41],choose:n[1]}}),{key:t,first:null,c(){l=$("div"),ue(i.$$.fragment),this.first=l},m(e,t){g(e,l,t),fe(i,l,null),c=!0},p(e,t){n=e;const l={};1&t[0]&&(l.unit=n[41]),2&t[0]&&(l.choose=n[1]),i.$set(l)},r(){a=l.getBoundingClientRect()},f(){q(l),r(),E(l,a)},a(){r(),r=S(l,a,we,{duration:200})},i(e){c||(ne(i.$$.fragment,e),U((()=>{s&&s.end(1),o||(o=oe(l,n[21],{key:n[41].id})),o.start()})),c=!0)},o(e){le(i.$$.fragment,e),o&&o.invalidate(),s=se(l,n[20],{key:n[41].id}),c=!1},d(e){e&&m(l),he(i),e&&s&&s.end()}}}function lt(t,n){let l,i,o,s,a,c,r=e;return i=new $e({props:{unit:n[41],choose:n[1]}}),{key:t,first:null,c(){l=$("div"),ue(i.$$.fragment),this.first=l},m(e,t){g(e,l,t),fe(i,l,null),c=!0},p(e,t){n=e;const l={};1&t[0]&&(l.unit=n[41]),2&t[0]&&(l.choose=n[1]),i.$set(l)},r(){a=l.getBoundingClientRect()},f(){q(l),r(),E(l,a)},a(){r(),r=S(l,a,we,{duration:200})},i(e){c||(ne(i.$$.fragment,e),U((()=>{s&&s.end(1),o||(o=oe(l,n[21],{key:n[41].id})),o.start()})),c=!0)},o(e){le(i.$$.fragment,e),o&&o.invalidate(),s=se(l,n[20],{key:n[41].id}),c=!1},d(e){e&&m(l),he(i),e&&s&&s.end()}}}function it(e){let t,n,l,i,s,a,c,r,u,f,h,p,y,k,v,x,_,C,O,j,B,R,z=[],S=new xe,q=[],E=new xe,A=[],M=new xe,N=[],T=new xe,D=[],P=new xe,H=[],F=new xe,Y=[],G=new xe,U=[],K=new xe,L=[],I=new xe,W=[],Z=new xe,J=[],Q=new xe,V=[],X=new xe,ie=[],oe=new xe,se=[],ae=new xe,ue=[],fe=new xe,he=[],pe=new xe,de=[],ge=new xe,me=e[0].filter(ot);const ye=e=>e[41].id;for(let t=0;t<me.length;t+=1){let n=He(e,me,t),l=ye(n);S.set(l,z[t]=Fe(l,n))}let $e=e[0].filter(st);const ke=e=>e[41].id;for(let t=0;t<$e.length;t+=1){let n=Pe(e,$e,t),l=ke(n);E.set(l,q[t]=Ye(l,n))}let ve=e[0].filter(at);const be=e=>e[41].id;for(let t=0;t<ve.length;t+=1){let n=De(e,ve,t),l=be(n);M.set(l,A[t]=Ge(l,n))}let we=e[0].filter(ct);const it=e=>e[41].id;for(let t=0;t<we.length;t+=1){let n=Te(e,we,t),l=it(n);T.set(l,N[t]=Ue(l,n))}let wt=e[0].filter(rt);const xt=e=>e[41].id;for(let t=0;t<wt.length;t+=1){let n=Ne(e,wt,t),l=xt(n);P.set(l,D[t]=Ke(l,n))}let _t=e[0].filter(ut);const Ct=e=>e[41].id;for(let t=0;t<_t.length;t+=1){let n=Me(e,_t,t),l=Ct(n);F.set(l,H[t]=Le(l,n))}let Ot=e[0].filter(ft);const jt=e=>e[41].id;for(let t=0;t<Ot.length;t+=1){let n=Ae(e,Ot,t),l=jt(n);G.set(l,Y[t]=Ie(l,n))}let Bt=e[0].filter(ht);const Rt=e=>e[41].id;for(let t=0;t<Bt.length;t+=1){let n=Ee(e,Bt,t),l=Rt(n);K.set(l,U[t]=We(l,n))}let zt=e[0].filter(pt);const St=e=>e[41].id;for(let t=0;t<zt.length;t+=1){let n=qe(e,zt,t),l=St(n);I.set(l,L[t]=Ze(l,n))}let qt=e[0].filter(dt);const Et=e=>e[41].id;for(let t=0;t<qt.length;t+=1){let n=Se(e,qt,t),l=Et(n);Z.set(l,W[t]=Je(l,n))}let At=e[0].filter(gt);const Mt=e=>e[41].id;for(let t=0;t<At.length;t+=1){let n=ze(e,At,t),l=Mt(n);Q.set(l,J[t]=Qe(l,n))}let Nt=e[0].filter(mt);const Tt=e=>e[41].id;for(let t=0;t<Nt.length;t+=1){let n=Re(e,Nt,t),l=Tt(n);X.set(l,V[t]=Ve(l,n))}let Dt=e[0].filter(yt);const Pt=e=>e[41].id;for(let t=0;t<Dt.length;t+=1){let n=Be(e,Dt,t),l=Pt(n);oe.set(l,ie[t]=Xe(l,n))}let Ht=e[0].filter($t);const Ft=e=>e[41].id;for(let t=0;t<Ht.length;t+=1){let n=je(e,Ht,t),l=Ft(n);ae.set(l,se[t]=et(l,n))}let Yt=e[0].filter(kt);const Gt=e=>e[41].id;for(let t=0;t<Yt.length;t+=1){let n=Oe(e,Yt,t),l=Gt(n);fe.set(l,ue[t]=tt(l,n))}let Ut=e[0].filter(vt);const Kt=e=>e[41].id;for(let t=0;t<Ut.length;t+=1){let n=Ce(e,Ut,t),l=Kt(n);pe.set(l,he[t]=nt(l,n))}let Lt=e[0].filter(bt);const It=e=>e[41].id;for(let t=0;t<Lt.length;t+=1){let n=_e(e,Lt,t),l=It(n);ge.set(l,de[t]=lt(l,n))}return{c(){t=$("div"),n=$("div");for(let e=0;e<z.length;e+=1)z[e].c();l=$("div");for(let e=0;e<q.length;e+=1)q[e].c();i=$("div");for(let e=0;e<A.length;e+=1)A[e].c();s=$("div");for(let e=0;e<N.length;e+=1)N[e].c();a=$("div");for(let e=0;e<D.length;e+=1)D[e].c();c=$("div");for(let e=0;e<H.length;e+=1)H[e].c();r=$("div");for(let e=0;e<Y.length;e+=1)Y[e].c();u=$("div");for(let e=0;e<U.length;e+=1)U[e].c();f=$("div");for(let e=0;e<L.length;e+=1)L[e].c();h=$("div");for(let e=0;e<W.length;e+=1)W[e].c();p=$("div");for(let e=0;e<J.length;e+=1)J[e].c();y=$("div");for(let e=0;e<V.length;e+=1)V[e].c();k=$("div");for(let e=0;e<ie.length;e+=1)ie[e].c();v=$("div");for(let e=0;e<se.length;e+=1)se[e].c();x=$("div");for(let e=0;e<ue.length;e+=1)ue[e].c();_=$("div");for(let e=0;e<he.length;e+=1)he[e].c();C=$("div");for(let e=0;e<de.length;e+=1)de[e].c();O=$("div"),w(n,"class","l arcticocean svelte-1dtyzdh"),w(n,"name","arcticocean"),w(l,"class","l northpacific svelte-1dtyzdh"),w(l,"name","northpacific"),w(i,"class","l northamerica svelte-1dtyzdh"),w(i,"name","northamerica"),w(s,"class","l northatlantic svelte-1dtyzdh"),w(s,"name","northatlantic"),w(a,"class","l scandinavia svelte-1dtyzdh"),w(a,"name","scandinavia"),w(c,"class","l europe svelte-1dtyzdh"),w(c,"name","europe"),w(r,"class","l northasia svelte-1dtyzdh"),w(r,"name","northasia"),w(u,"class","l southamerica svelte-1dtyzdh"),w(u,"name","southamerica"),w(f,"class","l southasia svelte-1dtyzdh"),w(f,"name","southasia"),w(h,"class","l arabia svelte-1dtyzdh"),w(h,"name","arabia"),w(p,"class","l westafrica svelte-1dtyzdh"),w(p,"name","westafrica"),w(y,"class","l indianocean svelte-1dtyzdh"),w(y,"name","indianocean"),w(k,"class","l eastafrica svelte-1dtyzdh"),w(k,"name","eastafrica"),w(v,"class","l antarctica svelte-1dtyzdh"),w(v,"name","antarctica"),w(x,"class","l southatlantic svelte-1dtyzdh"),w(x,"name","southatlantic"),w(_,"class","l southpacific svelte-1dtyzdh"),w(_,"name","southpacific"),w(C,"class","l australia svelte-1dtyzdh"),w(C,"name","australia"),w(t,"class","grid2 svelte-1dtyzdh"),w(O,"class","grid svelte-1dtyzdh")},m(o,m){g(o,t,m),d(t,n);for(let e=0;e<z.length;e+=1)z[e].m(n,null);e[23](n),d(t,l);for(let e=0;e<q.length;e+=1)q[e].m(l,null);e[24](l),d(t,i);for(let e=0;e<A.length;e+=1)A[e].m(i,null);e[25](i),d(t,s);for(let e=0;e<N.length;e+=1)N[e].m(s,null);e[26](s),d(t,a);for(let e=0;e<D.length;e+=1)D[e].m(a,null);e[27](a),d(t,c);for(let e=0;e<H.length;e+=1)H[e].m(c,null);e[28](c),d(t,r);for(let e=0;e<Y.length;e+=1)Y[e].m(r,null);e[29](r),d(t,u);for(let e=0;e<U.length;e+=1)U[e].m(u,null);e[30](u),d(t,f);for(let e=0;e<L.length;e+=1)L[e].m(f,null);e[31](f),d(t,h);for(let e=0;e<W.length;e+=1)W[e].m(h,null);e[32](h),d(t,p);for(let e=0;e<J.length;e+=1)J[e].m(p,null);e[33](p),d(t,y);for(let e=0;e<V.length;e+=1)V[e].m(y,null);e[34](y),d(t,k);for(let e=0;e<ie.length;e+=1)ie[e].m(k,null);e[35](k),d(t,v);for(let e=0;e<se.length;e+=1)se[e].m(v,null);e[36](v),d(t,x);for(let e=0;e<ue.length;e+=1)ue[e].m(x,null);e[37](x),d(t,_);for(let e=0;e<he.length;e+=1)he[e].m(_,null);e[38](_),d(t,C);for(let e=0;e<de.length;e+=1)de[e].m(C,null);e[39](C),g(o,O,m),j=!0,B||(R=[b(n,"click",e[19]),b(l,"click",e[19]),b(i,"click",e[19]),b(s,"click",e[19]),b(a,"click",e[19]),b(c,"click",e[19]),b(r,"click",e[19]),b(u,"click",e[19]),b(f,"click",e[19]),b(h,"click",e[19]),b(p,"click",e[19]),b(y,"click",e[19]),b(k,"click",e[19]),b(v,"click",e[19]),b(x,"click",e[19]),b(_,"click",e[19]),b(C,"click",e[19])],B=!0)},p(e,t){if(3&t[0]){const l=e[0].filter(ot);ee();for(let e=0;e<z.length;e+=1)z[e].r();z=re(z,t,ye,1,e,l,S,n,ce,Fe,null,He);for(let e=0;e<z.length;e+=1)z[e].a();te()}if(3&t[0]){const n=e[0].filter(st);ee();for(let e=0;e<q.length;e+=1)q[e].r();q=re(q,t,ke,1,e,n,E,l,ce,Ye,null,Pe);for(let e=0;e<q.length;e+=1)q[e].a();te()}if(3&t[0]){const n=e[0].filter(at);ee();for(let e=0;e<A.length;e+=1)A[e].r();A=re(A,t,be,1,e,n,M,i,ce,Ge,null,De);for(let e=0;e<A.length;e+=1)A[e].a();te()}if(3&t[0]){const n=e[0].filter(ct);ee();for(let e=0;e<N.length;e+=1)N[e].r();N=re(N,t,it,1,e,n,T,s,ce,Ue,null,Te);for(let e=0;e<N.length;e+=1)N[e].a();te()}if(3&t[0]){const n=e[0].filter(rt);ee();for(let e=0;e<D.length;e+=1)D[e].r();D=re(D,t,xt,1,e,n,P,a,ce,Ke,null,Ne);for(let e=0;e<D.length;e+=1)D[e].a();te()}if(3&t[0]){const n=e[0].filter(ut);ee();for(let e=0;e<H.length;e+=1)H[e].r();H=re(H,t,Ct,1,e,n,F,c,ce,Le,null,Me);for(let e=0;e<H.length;e+=1)H[e].a();te()}if(3&t[0]){const n=e[0].filter(ft);ee();for(let e=0;e<Y.length;e+=1)Y[e].r();Y=re(Y,t,jt,1,e,n,G,r,ce,Ie,null,Ae);for(let e=0;e<Y.length;e+=1)Y[e].a();te()}if(3&t[0]){const n=e[0].filter(ht);ee();for(let e=0;e<U.length;e+=1)U[e].r();U=re(U,t,Rt,1,e,n,K,u,ce,We,null,Ee);for(let e=0;e<U.length;e+=1)U[e].a();te()}if(3&t[0]){const n=e[0].filter(pt);ee();for(let e=0;e<L.length;e+=1)L[e].r();L=re(L,t,St,1,e,n,I,f,ce,Ze,null,qe);for(let e=0;e<L.length;e+=1)L[e].a();te()}if(3&t[0]){const n=e[0].filter(dt);ee();for(let e=0;e<W.length;e+=1)W[e].r();W=re(W,t,Et,1,e,n,Z,h,ce,Je,null,Se);for(let e=0;e<W.length;e+=1)W[e].a();te()}if(3&t[0]){const n=e[0].filter(gt);ee();for(let e=0;e<J.length;e+=1)J[e].r();J=re(J,t,Mt,1,e,n,Q,p,ce,Qe,null,ze);for(let e=0;e<J.length;e+=1)J[e].a();te()}if(3&t[0]){const n=e[0].filter(mt);ee();for(let e=0;e<V.length;e+=1)V[e].r();V=re(V,t,Tt,1,e,n,X,y,ce,Ve,null,Re);for(let e=0;e<V.length;e+=1)V[e].a();te()}if(3&t[0]){const n=e[0].filter(yt);ee();for(let e=0;e<ie.length;e+=1)ie[e].r();ie=re(ie,t,Pt,1,e,n,oe,k,ce,Xe,null,Be);for(let e=0;e<ie.length;e+=1)ie[e].a();te()}if(3&t[0]){const n=e[0].filter($t);ee();for(let e=0;e<se.length;e+=1)se[e].r();se=re(se,t,Ft,1,e,n,ae,v,ce,et,null,je);for(let e=0;e<se.length;e+=1)se[e].a();te()}if(3&t[0]){const n=e[0].filter(kt);ee();for(let e=0;e<ue.length;e+=1)ue[e].r();ue=re(ue,t,Gt,1,e,n,fe,x,ce,tt,null,Oe);for(let e=0;e<ue.length;e+=1)ue[e].a();te()}if(3&t[0]){const n=e[0].filter(vt);ee();for(let e=0;e<he.length;e+=1)he[e].r();he=re(he,t,Kt,1,e,n,pe,_,ce,nt,null,Ce);for(let e=0;e<he.length;e+=1)he[e].a();te()}if(3&t[0]){const n=e[0].filter(bt);ee();for(let e=0;e<de.length;e+=1)de[e].r();de=re(de,t,It,1,e,n,ge,C,ce,lt,null,_e);for(let e=0;e<de.length;e+=1)de[e].a();te()}},i(e){if(!j){for(let e=0;e<me.length;e+=1)ne(z[e]);for(let e=0;e<$e.length;e+=1)ne(q[e]);for(let e=0;e<ve.length;e+=1)ne(A[e]);for(let e=0;e<we.length;e+=1)ne(N[e]);for(let e=0;e<wt.length;e+=1)ne(D[e]);for(let e=0;e<_t.length;e+=1)ne(H[e]);for(let e=0;e<Ot.length;e+=1)ne(Y[e]);for(let e=0;e<Bt.length;e+=1)ne(U[e]);for(let e=0;e<zt.length;e+=1)ne(L[e]);for(let e=0;e<qt.length;e+=1)ne(W[e]);for(let e=0;e<At.length;e+=1)ne(J[e]);for(let e=0;e<Nt.length;e+=1)ne(V[e]);for(let e=0;e<Dt.length;e+=1)ne(ie[e]);for(let e=0;e<Ht.length;e+=1)ne(se[e]);for(let e=0;e<Yt.length;e+=1)ne(ue[e]);for(let e=0;e<Ut.length;e+=1)ne(he[e]);for(let e=0;e<Lt.length;e+=1)ne(de[e]);j=!0}},o(e){for(let e=0;e<z.length;e+=1)le(z[e]);for(let e=0;e<q.length;e+=1)le(q[e]);for(let e=0;e<A.length;e+=1)le(A[e]);for(let e=0;e<N.length;e+=1)le(N[e]);for(let e=0;e<D.length;e+=1)le(D[e]);for(let e=0;e<H.length;e+=1)le(H[e]);for(let e=0;e<Y.length;e+=1)le(Y[e]);for(let e=0;e<U.length;e+=1)le(U[e]);for(let e=0;e<L.length;e+=1)le(L[e]);for(let e=0;e<W.length;e+=1)le(W[e]);for(let e=0;e<J.length;e+=1)le(J[e]);for(let e=0;e<V.length;e+=1)le(V[e]);for(let e=0;e<ie.length;e+=1)le(ie[e]);for(let e=0;e<se.length;e+=1)le(se[e]);for(let e=0;e<ue.length;e+=1)le(ue[e]);for(let e=0;e<he.length;e+=1)le(he[e]);for(let e=0;e<de.length;e+=1)le(de[e]);j=!1},d(n){n&&m(t);for(let e=0;e<z.length;e+=1)z[e].d();e[23](null);for(let e=0;e<q.length;e+=1)q[e].d();e[24](null);for(let e=0;e<A.length;e+=1)A[e].d();e[25](null);for(let e=0;e<N.length;e+=1)N[e].d();e[26](null);for(let e=0;e<D.length;e+=1)D[e].d();e[27](null);for(let e=0;e<H.length;e+=1)H[e].d();e[28](null);for(let e=0;e<Y.length;e+=1)Y[e].d();e[29](null);for(let e=0;e<U.length;e+=1)U[e].d();e[30](null);for(let e=0;e<L.length;e+=1)L[e].d();e[31](null);for(let e=0;e<W.length;e+=1)W[e].d();e[32](null);for(let e=0;e<J.length;e+=1)J[e].d();e[33](null);for(let e=0;e<V.length;e+=1)V[e].d();e[34](null);for(let e=0;e<ie.length;e+=1)ie[e].d();e[35](null);for(let e=0;e<se.length;e+=1)se[e].d();e[36](null);for(let e=0;e<ue.length;e+=1)ue[e].d();e[37](null);for(let e=0;e<he.length;e+=1)he[e].d();e[38](null);for(let e=0;e<de.length;e+=1)de[e].d();e[39](null),n&&m(O),B=!1,o(R)}}}const ot=e=>"arcticocean"==e.place,st=e=>"northpacific"==e.place,at=e=>"northamerica"==e.place,ct=e=>"northatlantic"==e.place,rt=e=>"scandinavia"==e.place,ut=e=>"europe"==e.place,ft=e=>"northasia"==e.place,ht=e=>"southamerica"==e.place,pt=e=>"southasia"==e.place,dt=e=>"arabia"==e.place,gt=e=>"westafrica"==e.place,mt=e=>"indianocean"==e.place,yt=e=>"eastafrica"==e.place,$t=e=>"antarctica"==e.place,kt=e=>"southatlantic"==e.place,vt=e=>"southpacific"==e.place,bt=e=>"australia"==e.place;function wt(e,t,n){let{units:l=[]}=t,{choose:i}=t;N((e=>{}));T();let o,s,a,c,r,u,f,h,p,d,g,m,y,$,k,v,b,{places:w={}}=t;const[x,_]=be({duration:e=>Math.sqrt(200*e),fallback(e,t){const n=getComputedStyle(e),l="none"===n.transform?"":n.transform;return{duration:600,easing:ve,css:e=>`\n\t\t\t\t\ttransform: ${l} scale(${e});\n\t\t\t\t\topacity: ${e}\n\t\t\t\t`}}});return e.$$set=e=>{"units"in e&&n(0,l=e.units),"choose"in e&&n(1,i=e.choose),"places"in e&&n(22,w=e.places)},[l,i,o,s,a,c,r,u,f,h,p,d,g,m,y,$,k,v,b,e=>i("place",e.target.getAttribute("name")),x,_,w,function(e){P[e?"unshift":"push"]((()=>{o=e,n(2,o)}))},function(e){P[e?"unshift":"push"]((()=>{s=e,n(3,s)}))},function(e){P[e?"unshift":"push"]((()=>{a=e,n(4,a)}))},function(e){P[e?"unshift":"push"]((()=>{c=e,n(5,c)}))},function(e){P[e?"unshift":"push"]((()=>{r=e,n(6,r)}))},function(e){P[e?"unshift":"push"]((()=>{u=e,n(7,u)}))},function(e){P[e?"unshift":"push"]((()=>{f=e,n(8,f)}))},function(e){P[e?"unshift":"push"]((()=>{h=e,n(9,h)}))},function(e){P[e?"unshift":"push"]((()=>{p=e,n(10,p)}))},function(e){P[e?"unshift":"push"]((()=>{d=e,n(11,d)}))},function(e){P[e?"unshift":"push"]((()=>{g=e,n(12,g)}))},function(e){P[e?"unshift":"push"]((()=>{m=e,n(13,m)}))},function(e){P[e?"unshift":"push"]((()=>{y=e,n(14,y)}))},function(e){P[e?"unshift":"push"]((()=>{$=e,n(15,$)}))},function(e){P[e?"unshift":"push"]((()=>{k=e,n(16,k)}))},function(e){P[e?"unshift":"push"]((()=>{v=e,n(17,v)}))},function(e){P[e?"unshift":"push"]((()=>{b=e,n(18,b)}))}]}class xt extends ge{constructor(e){super(),de(this,e,wt,it,a,{units:0,choose:1,places:22},[-1,-1,-1])}}function _t(e,t,n){const l=e.slice();return l[6]=t[n],l}function Ct(e){let t,n,l=Object.keys(e[6])[0]+"";return{c(){t=$("li"),n=k(l),w(t,"class","svelte-1qdtztt")},m(e,l){g(e,t,l),d(t,n)},p(e,t){1&t&&l!==(l=Object.keys(e[6])[0]+"")&&x(n,l)},d(e){e&&m(t)}}}function Ot(t){let n,l,i,o,s,a,c,r,u,f,h,p=t[0].faction.name+"",v=t[0].doom+"",_=t[0].power+"",C=t[0].books.length+"",O=t[0].faction.bookreqs,j=[];for(let e=0;e<O.length;e+=1)j[e]=Ct(_t(t,O,e));return{c(){n=$("div"),l=k(p),i=k(" | dm "),o=k(v),s=k(" | pw "),a=k(_),c=k(" | sb "),r=k(C),u=$("ul");for(let e=0;e<j.length;e+=1)j[e].c();w(u,"class","details svelte-1qdtztt"),w(n,"class","player2 svelte-1qdtztt")},m(e,p){g(e,n,p),d(n,l),d(n,i),d(n,o),d(n,s),d(n,a),d(n,c),d(n,r),d(n,u);for(let e=0;e<j.length;e+=1)j[e].m(u,null);t[4](n),f||(h=b(n,"click",t[2]),f=!0)},p(e,[t]){if(1&t&&p!==(p=e[0].faction.name+"")&&x(l,p),1&t&&v!==(v=e[0].doom+"")&&x(o,v),1&t&&_!==(_=e[0].power+"")&&x(a,_),1&t&&C!==(C=e[0].books.length+"")&&x(r,C),1&t){let n;for(O=e[0].faction.bookreqs,n=0;n<O.length;n+=1){const l=_t(e,O,n);j[n]?j[n].p(l,t):(j[n]=Ct(l),j[n].c(),j[n].m(u,null))}for(;n<j.length;n+=1)j[n].d(1);j.length=O.length}},i:e,o:e,d(e){e&&m(n),y(j,e),t[4](null),f=!1,h()}}}function jt(e,t,n){let l,{choose:i}=t,{player:o}=t;T();N((e=>{n(1,l.style.background="linear-gradient(70deg,#363636,"+o.faction.color+")",l)}));return e.$$set=e=>{"choose"in e&&n(3,i=e.choose),"player"in e&&n(0,o=e.player)},[o,l,e=>{e.stopPropagation(),i("player",o)},i,function(e){P[e?"unshift":"push"]((()=>{l=e,n(1,l)}))}]}class Bt extends ge{constructor(e){super(),de(this,e,jt,Ot,a,{choose:3,player:0})}}const Rt=(e="",t=[],n=!1,l=0)=>({name:e,adjacent:t,ocean:n,gate:l}),zt=Rt("arcticocean",["northamerica","northatlantic","northpacific","scandinavia","northasia"],!0),St=Rt("northpacific",["arcticocean","northamerica","southamerica","indianocean","southpacific","northasia","southasia"]),qt=Rt("northamerica",["southamerica","northatlantic","accrticocean","northpacific"]),Et=Rt("northatlantic",["southamerica","northamerica","southatlantic","northpacific","arcticocean","europe","westafrica","arabia","scandinavia"],!0),At=Rt("scandinavia",["arcticocean","northatlantic","europe","northasia"]),Mt=Rt("europe",["northatlantic","arabia","northasia","scandinavia"]),Nt=Rt("northasia",["arcticocean","scandinavia","europe","arabia","southasia","northpacific"]),Tt=Rt("arabia",["eastafrica","westafrica","europe","southasia","indianocean","northasia","northatlantic"]),Dt=Rt("southasia",["arabia","northasia","northpacific","indianocean"]),Pt=Rt("southamerica",["northpacific","southpacific","northatlantic","southatlantic","northamerica"]),Ht=Rt("westafrica",["eastafrica","southatlantic","northatlantic","arabia","indianocean"]),Ft=Rt("indianocean",["northpacific","southasia","arabia","eastafrica","westafrica","antarctica","southatlantic","southpacific"],!0),Yt=Rt("southpacific",["australia","indianocean","northpacific","antarctica","southamerica","southpatlantic"],!0),Gt=Rt("southatlantic",["southpacific","southamerica","northatlantic","antarctica","eastafrica","westafrica"],!0),Ut=Rt("eastafrica",["southatlantic","westafrica","arabia","indianocean"]),Kt=Rt("australia",["indianocean","southpacific"]),Lt={arcticocean:zt,northpacific:St,northamerica:qt,northatlantic:Et,scandinavia:At,europe:Mt,northasia:Nt,southamerica:Pt,southasia:Dt,arabia:Tt,westafrica:Ht,indianocean:Ft,eastafrica:Ut,antarctica:Rt("antarctica",["indianocean","southatlantic","southpacific"]),southatlantic:Gt,southpacific:Yt,australia:Kt};let It=e=>({books:["Blood Sacrifice","Frenzy","Ghroth","Necrophagy","The Red Sign","The Thousand Young"],bookreqs:[{"sac 2 cults":e=>!1},{"be in 4 areas":t=>Object.keys(e.places).filter((t=>e.player.units.map((e=>e.place)).includes(t))).length>3},{"be in 6 areas":t=>Object.keys(e.places).filter((t=>e.player.units.map((e=>e.place)).includes(t))).length>5},{"be in 8 areas":t=>Object.keys(e.places).filter((t=>e.player.units.map((e=>e.place)).includes(t))).length>7},{"Awaken Shub Nigur'rath":t=>"goo"==e.choices.awaken.unit?.type},{"be in all enemy areas":t=>e.players.filter((t=>t.units.filter((t=>Object.keys(e.places).filter((t=>e.player.units.map((e=>e.place)).includes(t))).includes(t.place))).length)).length==e.players.length}],goo:"Shub Nigur'rath",mons:{Ghoul:2,Fungi:4,"Dark Young":2},color:"red",start:"westafrica",name:"bg",units:[],addUnit:(e,t)=>{e.owner=t,t.units=[...t.units,e]}}),Wt=e=>{let t=[{"pay 4 pwoer":e=>!1},{"pay 6 pwoer":e=>!1},{"3 gates / 12 power":t=>e.player.units.filter((e=>e.gate)).length>2||e.player.power>11},{"4 gates / 16 power":t=>e.player.units.filter((e=>e.gate)).length>3||e.player.power>15},{capture:t=>n.filter((t=>t.place==e.player.faction)).length},{"Awaken Nyarlathotap":t=>"Nyarlathotap"==e.choices.awaken.unit?.name}],n=[];return{books:["Abduct","Emissary of the Outer Gods","Invisibility","Madness","Seek and Destroy","The Thousand Forms"],bookreqs:t,goo:"Nyarlathotap",mons:{Nightgaunt:3,"Hunting Horror":2,"Flying Polyp":3},color:"blue",start:"southasia",name:"cc",units:n,addUnit:(e,t)=>{e.owner=t,t.units=[...t.units,e]}}},Zt=e=>{let t=Object.keys(e.places).filter((t=>e.places[t].oceans));return{books:["Absorb","Devolve","Dreams","Regenerate","Submerge","Y'hn Nthlei"],bookreqs:[{"1st doom":t=>"doom"==e.phase},{"kill/devour enemy":t=>e.choices.fight.enemy?.kills+e.choices.fight.enemy?.devour==1||e.choices.fight.enemy?.kills+e.choices.fight.enemy?.devour==3},{"kill/devour 2 enemies":t=>e.choices.fight.enemy?.kills+e.choices.fight.enemy?.devour==2||e.choices.fight.enemy?.kills+e.choices.fight.enemy?.devour==3},{"3/4 Ocean Gates":n=>e.player.units.filter((e=>e.gate&&t.includes(e.place))).length>2||Object.values(e.places).filter((e=>e.ocean&&e.gate)).length>3},{"Awaken Cthulhu":t=>"goo"==e.choices.awaken.unit?.type},{"doom + 5 books":t=>"doom"==e.phase&&5==e.player.books.length}],goo:"Cthulhu",mons:{"Deep One":4,Shoggoth:2,Starspawn:2},color:"green",start:"southpacific",name:"gc",units:[],addUnit:(e,t)=>{e.owner=t,t.units=[...t.units,e]}}},Jt=e=>({books:["He Who Must Not Be Named","Passion","Shriek of the Byakhee","The Screaming Dead","The Third Eye","Zin Gaya"],bookreqs:[{"gift 3 doom":e=>!1},{"Desecrate \\|/":t=>Object.values(e.places).filter((e=>e.desecrated&&e.glyphs["\\|/"])).length},{"Desecrate \\o/":t=>Object.values(e.places).filter((e=>e.desecrated&&e.glyphs["\\o/"])).length},{"Desecrate \\-/":t=>Object.values(e.places).filter((e=>e.desecrated&&e.glyphs["\\-/"])).length},{"Awaken King in Yellow":t=>"King in Yellow"==e.choices.awaken.unit?.name},{"Awaken Hastur":t=>"Hastur"==e.choices.awaken.unit?.name}],goo:["King in Yellow","Hastur"],mons:{Undead:2,"Bya'khee":4},color:"yellow",start:"europe",name:"ys",units:[],addUnit:(e,t)=>{e.owner=t,t.units=[...t.units,e]}});function Qt(e,t,n){const l=e.slice();return l[2]=t[n],l}function Vt(e,t,n){const l=e.slice();return l[33]=t[n],l}function Xt(e){let t,n,l,i,o=e[33]+"";function s(...t){return e[4](e[33],...t)}return{c(){t=$("li"),n=k(o),w(t,"class","svelte-1e8e8gy")},m(e,o){g(e,t,o),d(t,n),l||(i=b(t,"click",s),l=!0)},p(t,l){e=t,2&l[0]&&o!==(o=e[33]+"")&&x(n,o)},d(e){e&&m(t),l=!1,i()}}}function en(e){let t,n,l,i,o=e[33].type+"";function s(...t){return e[3](e[33],...t)}return{c(){t=$("li"),n=k(o),w(t,"class","svelte-1e8e8gy")},m(e,o){g(e,t,o),d(t,n),l||(i=b(t,"click",s),l=!0)},p(t,l){e=t,2&l[0]&&o!==(o=e[33].type+"")&&x(n,o)},d(e){e&&m(t),l=!1,i()}}}function tn(e){let t,n;function l(e,n){return(null==t||1&n[0])&&(t=!!e[0].stage.includes("unit")),t?en:Xt}let i=l(e,[-1]),o=i(e);return{c(){o.c(),n=v()},m(e,t){o.m(e,t),g(e,n,t)},p(e,t){i===(i=l(e,t))&&o?o.p(e,t):(o.d(1),o=i(e),o&&(o.c(),o.m(n.parentNode,n)))},d(e){o.d(e),e&&m(n)}}}function nn(e){let t,n,l;return{c(){t=$("li"),t.textContent="done",w(t,"class","svelte-1e8e8gy")},m(i,o){g(i,t,o),n||(l=b(t,"click",(function(){s(e[0].phases[e[0].phase].moves.done)&&e[0].phases[e[0].phase].moves.done.apply(this,arguments)})),n=!0)},p(t,n){e=t},d(e){e&&m(t),n=!1,l()}}}function ln(e){let t,n,l;return{c(){t=$("li"),t.textContent="done",w(t,"class","svelte-1e8e8gy")},m(i,o){g(i,t,o),n||(l=b(t,"click",(function(){s(e[0].phases[e[0].phase].stages[e[0].stage].moves.done)&&e[0].phases[e[0].phase].stages[e[0].stage].moves.done.apply(this,arguments)})),n=!0)},p(t,n){e=t},d(e){e&&m(t),n=!1,l()}}}function on(e){let t,n;return t=new Bt({props:{choose:e[0].choose,player:e[2]}}),{c(){ue(t.$$.fragment)},m(e,l){fe(t,e,l),n=!0},p(e,n){const l={};1&n[0]&&(l.choose=e[0].choose),1&n[0]&&(l.player=e[2]),t.$set(l)},i(e){n||(ne(t.$$.fragment,e),n=!0)},o(e){le(t.$$.fragment,e),n=!1},d(e){he(t,e)}}}function sn(e){let t,l,i,o,s,a,c;const r=[e[0]];let u={};for(let e=0;e<r.length;e+=1)u=n(u,r[e]);t=new xt({props:u});let f=e[1],h=[];for(let t=0;t<f.length;t+=1)h[t]=tn(Vt(e,f,t));function p(e,t){return e[0].phases[e[0].phase].stages&&e[0].phases[e[0].phase].stages[e[0].stage].moves.done?ln:e[0].phases[e[0].phase].moves&&e[0].phases[e[0].phase].moves.done?nn:void 0}let b=p(e),x=b&&b(e),_=e[0].players,C=[];for(let t=0;t<_.length;t+=1)C[t]=on(Qt(e,_,t));const O=e=>le(C[e],1,1,(()=>{C[e]=null}));return{c(){ue(t.$$.fragment),l=$("div"),i=$("div"),o=k("actions"),s=$("ul");for(let e=0;e<h.length;e+=1)h[e].c();a=v(),x&&x.c();for(let e=0;e<C.length;e+=1)C[e].c();w(s,"class","svelte-1e8e8gy"),w(i,"class","actions svelte-1e8e8gy"),w(l,"class","hud svelte-1e8e8gy")},m(e,n){fe(t,e,n),g(e,l,n),d(l,i),d(i,o),d(i,s);for(let e=0;e<h.length;e+=1)h[e].m(s,null);d(s,a),x&&x.m(s,null);for(let e=0;e<C.length;e+=1)C[e].m(l,null);c=!0},p(e,n){const i=1&n[0]?function(e,t){const n={},l={},i={$$scope:1};let o=e.length;for(;o--;){const s=e[o],a=t[o];if(a){for(const e in s)e in a||(l[e]=1);for(const e in a)i[e]||(n[e]=a[e],i[e]=1);e[o]=a}else for(const e in s)i[e]=1}for(const e in l)e in n||(n[e]=void 0);return n}(r,[(o=e[0],"object"==typeof o&&null!==o?o:{})]):{};var o;if(t.$set(i),3&n[0]){let t;for(f=e[1],t=0;t<f.length;t+=1){const l=Vt(e,f,t);h[t]?h[t].p(l,n):(h[t]=tn(l),h[t].c(),h[t].m(s,a))}for(;t<h.length;t+=1)h[t].d(1);h.length=f.length}if(b===(b=p(e))&&x?x.p(e,n):(x&&x.d(1),x=b&&b(e),x&&(x.c(),x.m(s,null))),1&n[0]){let t;for(_=e[0].players,t=0;t<_.length;t+=1){const i=Qt(e,_,t);C[t]?(C[t].p(i,n),ne(C[t],1)):(C[t]=on(i),C[t].c(),ne(C[t],1),C[t].m(l,null))}for(ee(),t=_.length;t<C.length;t+=1)O(t);te()}},i(e){if(!c){ne(t.$$.fragment,e);for(let e=0;e<_.length;e+=1)ne(C[e]);c=!0}},o(e){le(t.$$.fragment,e),C=C.filter(Boolean);for(let e=0;e<C.length;e+=1)le(C[e]);c=!1},d(e){he(t,e),e&&m(l),y(h,e),x&&x.d(),y(C,e)}}}let an=!0;function cn(e,t,n){let l,i,o,s={choices:i,players:undefined,player:o,places:Lt,phases:undefined,turn:undefined,phase:undefined,stage:undefined,units:undefined};l=(e=>({bg:It(e),cc:Wt(e),gc:Zt(e),ys:Jt(e)}))(s);let a=e=>c++,c=0;s.players=Object.values(l).map((e=>((e="",t=[],n=0,l=0)=>({units:t,faction:e,doom:n,power:l,books:[]}))(e))),s.players.map((e=>{e.units=Array(6).fill(null).map((t=>((e="",t={},n="",l=0,i=0,o=0,s=0)=>({id:a(),type:e,owner:t,place:n,cost:l,fight:i,gather:s,tier:o,gate:0}))("cult",e,e.faction.start))),e.units[2].gate=e.faction.start,Lt[e.faction.start].gate=1,e.power=8})),s.turn={lim:1,pi:0},s.choices={book:{book:null},awaken:{unit:null,place:null},move:{unit:null,place:null},fight:{place:null,enemy:null},hire:{place:null},open:{place:null},summon:{unit:null,place:null},steal:{place:null,unit:null}},s.phase="action";let r=[];s.stage="";let u=e=>{n(0,s.turn.lim=1,s),n(0,s.turn.pi++,s),n(0,s.phase=s.players.filter((e=>e.power)).length?"action":"gather",s)},f=e=>{},h=()=>s.players.map((e=>e.faction.bookreqs.map(((t,l)=>{Object.values(t)[0]()&&(e.faction.bookreqs[l]={"waiting...":e=>!1},((e,t,l)=>{let i=""+s.phase,o=""+s.stage,a=0+s.turn.pi;f=e=>{n(0,s.phase=i,s),n(0,s.stage=o,s),n(0,s.turn.pi=a,s)},n(0,s.phase=e,s),n(0,s.stage=t,s),n(0,s.turn.pi=l,s)})("book","book",s.players.indexOf(e)))})))),p=e=>{n(0,s.stage=e,s)},d=e=>{s.phases[s.phase].stages[s.stage].next?p(s.phases[s.phase].stages[s.stage].next):m()},g=e=>{n(0,s.phase=e,s),n(0,s.stage=s.phases[s.phase].start,s),h()},m=e=>{s.phases[s.phase].lim&&n(0,s.turn.lim--,s),n(0,s.phase=s.phases[s.phase].next?s.phases[s.phase].next:"action",s),n(0,s.stage="",s),h(),console.log(s.phases.action.options().length),"action"!=s.phase||s.phases.action.options().length||u()};s.phases={action:{start:"",options:e=>Object.keys(s.phases).filter((e=>s.phases[e].unlim||s.phases[e].lim&&s.turn.lim)),moves:{choose:(e,t)=>{""==e&&g(t)},done:(e,t)=>{n(0,s.player.power=0,s),u()}}},move:{lim:an,start:"unit",stages:{unit:{next:"place",options:e=>s.player.units.filter((e=>s.places[e.place]&&!e.moved)),moves:{choose:(e,t)=>{"unit"==e&&s.player.units.filter((e=>s.places[e.place])).map((e=>e.id)).includes(t.id)&&(n(0,s.choices.move.unit=t,s),d())},done:e=>{m(),s.player.units.map((e=>e.moved=0))}}},place:{next:"unit",options:e=>s.places[s.choices.move.unit.place].adjacent,moves:{choose:(e,t)=>{"place"==e&&s.places[s.choices.move.unit.place].adjacent.includes(t)&&(n(0,s.choices.move.place=t,s),n(0,s.choices.move.unit.gate=0,s),n(0,s.choices.move.unit.place=t,s),n(0,s.choices.move.unit.moved=1,s),n(0,s.player.power--,s),n(0,s.choices.move.unit=null,s),n(0,s.choices.move.place=null,s),k(),0==s.player.power?(m(),s.player.units.map((e=>e.moved=0))):d())}}}}},fight:{lim:an,start:"place",stages:{place:{next:"enemy",options:e=>Object.keys(s.places).filter((e=>s.player.units.filter((t=>t.place==e&&0!=t.fight)).length)),moves:{choose:(e,t)=>{"place"==e&&Object.keys(s.places).filter((e=>s.player.units.filter((t=>t.place==e&&0!=t.fight)).length)).includes(t)&&(n(0,s.choices.fight.place=t,s),d())}}},enemy:{next:"assignpkills",options:e=>s.players.filter((e=>e.faction.name!=s.player.faction.name&&e.units.filter((e=>e.place==s.choices.fight.place)).length)),moves:{choose:(e,t)=>{"enemy"==e&&s.players.filter((e=>e.faction.name!=s.player.faction.name&&e.units.filter((e=>e.place==s.choices.fight.place)).length))&&(n(0,s.choices.fight.enemy=t,s),$(s.player),$(s.choices.fight.enemy),n(0,s.player.power--,s),m())}}},assignpkills:{next:"assignpretreats",options:e=>s.player.units.filter((e=>e.place==s.choices.fight.place)),moves:{choose:(e,t)=>{s.player.units.filter((e=>e.place==s.choices.fight.place)).map((e=>e.id)).includes(t.id)&&(t.place="",n(0,s.player.kills--,s),k()),s.player.kills&&s.player.units.filter((e=>e.place==s.choices.fight.place)).length||d()}}},assignpretreats:{next:"placepretreats",options:e=>s.player.units.filter((e=>e.place==s.choices.fight.place)),moves:{choose:(e,t)=>{s.player.units.filter((e=>e.place==s.choices.fight.place)).map((e=>e.id)).includes(t.id)&&(n(0,s.choice.fight.unit=t,s),d())}}},placepretreats:{next:"assignekills",options:e=>s.places[s.choices.fight.unit.place].adjacent.filter((e=>!s.choices.fight.enemy.units.map((e=>e.place)).includes(e))),moves:{choose:(e,t)=>{s.places[s.choices.fight.unit.place].adjacent.filter((e=>!s.choices.fight.enemy.units.map((e=>e.place)).includes(e))).includes(t)&&(n(0,s.choices.fight.unit.place=t,s),n(0,s.player.pains--,s),k()),s.player.pains&&s.player.units.filter((e=>e.place==s.choices.fight.place)).length?p("assignpretreats"):d()}}},assignekills:{next:"assigneretreats",options:e=>s.choices.fight.enemy.units.filter((e=>e.place==s.choices.fight.place)),moves:{choose:(e,t)=>{s.choices.fight.enemy.units.filter((e=>e.place==s.choices.fight.place)).map((e=>e.id)).includes(t.id)&&(t.place="",n(0,s.choices.fight.enemy.kills--,s),k()),s.choices.fight.enemy.kills&&s.choices.fight.enemy.units.filter((e=>e.place==s.choices.fight.place)).length||d()}}},assigneretreats:{next:"placeeretreats",options:e=>s.choices.fight.enemy.units.filter((e=>e.place==s.choices.fight.place)),moves:{choose:(e,t)=>{s.choices.fight.enemy.units.filter((e=>e.place==s.choices.fight.place)).map((e=>e.id)).includes(t.id)&&(n(0,s.choice.fight.unit=t,s),d())}}},placeeretreats:{options:e=>s.places[i.fight.unit.place].adjacent.filter((e=>!s.player.units.map((e=>e.place)).includes(e))),moves:{choose:(e,t)=>{s.places[i.fight.unit.place].adjacent.filter((e=>!o.units.map((e=>e.place)).includes(e))).includes(t)&&(n(0,s.choices.fight.unit.place=t,s),n(0,s.choices.fight.enemy.pains--,s),k()),s.choices.fight.enemy.pains&&s.choices.fight.enemy.units.filter((e=>e.place==s.choices.fight.place)).length?p("assignpretreats"):(m(),n(0,s.choices.fight.place=null,s),n(0,s.choices.fight.enemy=null,s),n(0,s.choices.fight.unit=null,s))}}}}},hire:{lim:an,start:"place",stages:{place:{options:e=>Object.keys(s.places).filter((e=>s.player.units.map((e=>e.places)).includes(e))),moves:{choose:(e,t)=>{if("place"==e&&s.player.units.map((e=>e.places)).includes(t)){n(0,s.choices.hire.place=t,s);let e=s.player.units.find((e=>""==e.place&&"cult"==e.type));e||g("action"),e.place=t,n(0,s.player.power--,s),n(0,s.choices.hire.place=null,s),m()}}}}}},open:{lim:an,start:"place",stages:{place:{options:e=>Object.keys(s.places).filter((e=>!s.places[e].gate&&s.player.units.filter((e=>"cult"==e.type)).map((e=>e.place)).includes(e))),moves:{choose:(e,t)=>{"place"==e&&s.player.units.filter((e=>"cult"==e.type)).map((e=>e.place)).includes(t)&&(n(0,s.choices.open.place=t,s),n(0,s.places[i.open.place].gate=1,s),n(0,s.player.power-=3,s),m())}}}}},summon:{lim:an,start:"unit",stages:{unit:{next:"place",options:e=>s.player.units.filter((e=>!s.places[e.place]&&e.cost<=s.player.power)),moves:{choose:(e,t)=>{"unit"==e&&!s.places[t.place]&&t.cost<=s.player.power&&(n(0,s.choices.summon.unit=t,s),d())},done:e=>{m()}}},place:{options:e=>s.player.units.filter((e=>e.gate)).map((e=>e.place)),moves:{choose:(e,t)=>{"place"==e&&s.player.units.filter((e=>e.gate)).map((e=>e.place)).includes(t)&&(n(0,s.choices.summon.place=t,s),n(0,s.choices.summon.unit.place=t,s),n(0,s.player.power-=i.summon.unit.cost,s),n(0,s.choices.summon.unit=null,s),n(0,s.choices.summon.place=null,s),k(),d())}}}}},steal:{lim:an,start:"place",stages:{place:{next:"unit",options:e=>Object.keys(s.places).filter((e=>y(e).length)),moves:{choose:(e,t)=>{"place"==e&&y(t).length&&(n(0,s.choices.steal.place=t,s),d())}}},unit:{options:e=>y(s.choices.steal.place),moves:{choose:(e,t)=>{"unit"==e&&y(s.choices.steal.place).map((e=>e.id)).includes(t.id)&&(n(0,s.choices.steal.unit=t,s),t.place=o.faction.name,n(0,s.choices.steal.unit=null,s),n(0,s.choices.steal.place=null,s),m())}}}}},book:{start:"book",stages:{book:{options:e=>s.player.faction.books,moves:{choose:(e,t)=>{"book"==e&&s.player.faction.books.includes(t)&&(n(0,s.choices.book.book=t,s),n(0,s.player.books=[...s.player.books,s.choices.book.book],s),n(0,s.player.faction.bookreqs=s.player.faction.bookreqs.filter((e=>!e["waiting..."])),s),n(0,s.player.faction.books=s.player.faction.books.filter((e=>e!=s.choices.book.book)),s),f())}}}}}};let y=e=>{let t=[];return s.players.map((n=>{t=[...s.units,...n.units.filter((t=>t.place==e))]})),dom=[],t.map((e=>dom[e.owner.faction.name]=dom[e.owner.faction.name]<e.tier?e.tier:dom[e.owner.faction.name])),t.filter((e=>e.tier=0)),t},$=e=>{let t=roll(e.units.filter((e=>e.place==i.fight.place)).map((e=>"function"==typeof e.combat?e.combat():e.combat)));e.kills=t.filter((e=>e>4)).length,e.pains=t.filter((e=>e<5&&e>2)).length},k=e=>{n(0,s),n(0,s)};return e.$$.update=()=>{1&e.$$.dirty[0]&&n(0,s.player=s.players[s.turn.pi%s.players.length],s),1&e.$$.dirty[0]&&n(0,s.units=s.players.reduce(((e,t)=>[...e,...t.units]),[]),s),1&e.$$.dirty[0]&&n(0,s.choose=""==s.stage?s.phases[s.phase].moves.choose:s.phases[s.phase].stages[s.stage].moves.choose,s),1&e.$$.dirty[0]&&n(1,r=""==s.stage?s.phases[s.phase].options():s.phases[s.phase].stages[s.stage].options())},[s,r,o,function(e){s.choose(s.stage,e)},function(e){s.choose(s.stage,e)}]}class rn extends ge{constructor(e){super(),de(this,e,cn,sn,a,{},[-1,-1])}}function un(t){let n,l,i;return l=new rn({}),{c(){n=$("div"),ue(l.$$.fragment),w(n,"class","world svelte-rsr18")},m(e,t){g(e,n,t),fe(l,n,null),i=!0},p:e,i(e){i||(ne(l.$$.fragment,e),i=!0)},o(e){le(l.$$.fragment,e),i=!1},d(e){e&&m(n),he(l)}}}return new class extends ge{constructor(e){super(),de(this,e,null,un,a,{})}}({target:document.body,props:{}})}();
+    ***************************************************************************** */
+
+    function __rest(s, e) {
+        var t = {};
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+            t[p] = s[p];
+        if (s != null && typeof Object.getOwnPropertySymbols === "function")
+            for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+                if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                    t[p[i]] = s[p[i]];
+            }
+        return t;
+    }
+    function crossfade(_a) {
+        var { fallback } = _a, defaults = __rest(_a, ["fallback"]);
+        const to_receive = new Map();
+        const to_send = new Map();
+        function crossfade(from, node, params) {
+            const { delay = 0, duration = d => Math.sqrt(d) * 30, easing = cubicOut } = assign(assign({}, defaults), params);
+            const to = node.getBoundingClientRect();
+            const dx = from.left - to.left;
+            const dy = from.top - to.top;
+            const dw = from.width / to.width;
+            const dh = from.height / to.height;
+            const d = Math.sqrt(dx * dx + dy * dy);
+            const style = getComputedStyle(node);
+            const transform = style.transform === 'none' ? '' : style.transform;
+            const opacity = +style.opacity;
+            return {
+                delay,
+                duration: is_function(duration) ? duration(d) : duration,
+                easing,
+                css: (t, u) => `
+				opacity: ${t * opacity};
+				transform-origin: top left;
+				transform: ${transform} translate(${u * dx}px,${u * dy}px) scale(${t + (1 - t) * dw}, ${t + (1 - t) * dh});
+			`
+            };
+        }
+        function transition(items, counterparts, intro) {
+            return (node, params) => {
+                items.set(params.key, {
+                    rect: node.getBoundingClientRect()
+                });
+                return () => {
+                    if (counterparts.has(params.key)) {
+                        const { rect } = counterparts.get(params.key);
+                        counterparts.delete(params.key);
+                        return crossfade(rect, node, params);
+                    }
+                    // if the node is disappearing altogether
+                    // (i.e. wasn't claimed by the other list)
+                    // then we need to supply an outro
+                    items.delete(params.key);
+                    return fallback && fallback(node, params, intro);
+                };
+            };
+        }
+        return [
+            transition(to_send, to_receive, false),
+            transition(to_receive, to_send, true)
+        ];
+    }
+
+    function flip(node, animation, params) {
+        const style = getComputedStyle(node);
+        const transform = style.transform === 'none' ? '' : style.transform;
+        const scaleX = animation.from.width / node.clientWidth;
+        const scaleY = animation.from.height / node.clientHeight;
+        const dx = (animation.from.left - animation.to.left) / scaleX;
+        const dy = (animation.from.top - animation.to.top) / scaleY;
+        const d = Math.sqrt(dx * dx + dy * dy);
+        const { delay = 0, duration = (d) => Math.sqrt(d) * 120, easing = cubicOut } = params;
+        return {
+            delay,
+            duration: is_function(duration) ? duration(d) : duration,
+            easing,
+            css: (_t, u) => `transform: ${transform} translate(${u * dx}px, ${u * dy}px);`
+        };
+    }
+
+    /* src\components\cw\Map.svelte generated by Svelte v3.29.0 */
+
+    const { Map: Map_1 } = globals;
+    const file$2 = "src\\components\\cw\\Map.svelte";
+
+    function get_each_context(ctx, list, i) {
+    	const child_ctx = ctx.slice();
+    	child_ctx[41] = list[i];
+    	return child_ctx;
+    }
+
+    function get_each_context_1(ctx, list, i) {
+    	const child_ctx = ctx.slice();
+    	child_ctx[41] = list[i];
+    	return child_ctx;
+    }
+
+    function get_each_context_2(ctx, list, i) {
+    	const child_ctx = ctx.slice();
+    	child_ctx[41] = list[i];
+    	return child_ctx;
+    }
+
+    function get_each_context_3(ctx, list, i) {
+    	const child_ctx = ctx.slice();
+    	child_ctx[41] = list[i];
+    	return child_ctx;
+    }
+
+    function get_each_context_4(ctx, list, i) {
+    	const child_ctx = ctx.slice();
+    	child_ctx[41] = list[i];
+    	return child_ctx;
+    }
+
+    function get_each_context_5(ctx, list, i) {
+    	const child_ctx = ctx.slice();
+    	child_ctx[41] = list[i];
+    	return child_ctx;
+    }
+
+    function get_each_context_6(ctx, list, i) {
+    	const child_ctx = ctx.slice();
+    	child_ctx[41] = list[i];
+    	return child_ctx;
+    }
+
+    function get_each_context_7(ctx, list, i) {
+    	const child_ctx = ctx.slice();
+    	child_ctx[41] = list[i];
+    	return child_ctx;
+    }
+
+    function get_each_context_8(ctx, list, i) {
+    	const child_ctx = ctx.slice();
+    	child_ctx[41] = list[i];
+    	return child_ctx;
+    }
+
+    function get_each_context_9(ctx, list, i) {
+    	const child_ctx = ctx.slice();
+    	child_ctx[41] = list[i];
+    	return child_ctx;
+    }
+
+    function get_each_context_10(ctx, list, i) {
+    	const child_ctx = ctx.slice();
+    	child_ctx[41] = list[i];
+    	return child_ctx;
+    }
+
+    function get_each_context_11(ctx, list, i) {
+    	const child_ctx = ctx.slice();
+    	child_ctx[41] = list[i];
+    	return child_ctx;
+    }
+
+    function get_each_context_12(ctx, list, i) {
+    	const child_ctx = ctx.slice();
+    	child_ctx[41] = list[i];
+    	return child_ctx;
+    }
+
+    function get_each_context_13(ctx, list, i) {
+    	const child_ctx = ctx.slice();
+    	child_ctx[41] = list[i];
+    	return child_ctx;
+    }
+
+    function get_each_context_14(ctx, list, i) {
+    	const child_ctx = ctx.slice();
+    	child_ctx[41] = list[i];
+    	return child_ctx;
+    }
+
+    function get_each_context_15(ctx, list, i) {
+    	const child_ctx = ctx.slice();
+    	child_ctx[41] = list[i];
+    	return child_ctx;
+    }
+
+    function get_each_context_16(ctx, list, i) {
+    	const child_ctx = ctx.slice();
+    	child_ctx[41] = list[i];
+    	return child_ctx;
+    }
+
+    // (154:110) {#each units.filter(u=>u.place=='arcticocean') as unit (unit.id)}
+    function create_each_block_16(key_1, ctx) {
+    	let div;
+    	let unit;
+    	let div_intro;
+    	let div_outro;
+    	let rect;
+    	let stop_animation = noop;
+    	let current;
+
+    	unit = new Unit({
+    			props: {
+    				unit: /*unit*/ ctx[41],
+    				choose: /*choose*/ ctx[1]
+    			},
+    			$$inline: true
+    		});
+
+    	const block = {
+    		key: key_1,
+    		first: null,
+    		c: function create() {
+    			div = element("div");
+    			create_component(unit.$$.fragment);
+    			add_location(div, file$2, 153, 175, 3476);
+    			this.first = div;
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+    			mount_component(unit, div, null);
+    			current = true;
+    		},
+    		p: function update(new_ctx, dirty) {
+    			ctx = new_ctx;
+    			const unit_changes = {};
+    			if (dirty[0] & /*units*/ 1) unit_changes.unit = /*unit*/ ctx[41];
+    			if (dirty[0] & /*choose*/ 2) unit_changes.choose = /*choose*/ ctx[1];
+    			unit.$set(unit_changes);
+    		},
+    		r: function measure() {
+    			rect = div.getBoundingClientRect();
+    		},
+    		f: function fix() {
+    			fix_position(div);
+    			stop_animation();
+    			add_transform(div, rect);
+    		},
+    		a: function animate() {
+    			stop_animation();
+    			stop_animation = create_animation(div, rect, flip, { duration: 200 });
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(unit.$$.fragment, local);
+
+    			add_render_callback(() => {
+    				if (div_outro) div_outro.end(1);
+    				if (!div_intro) div_intro = create_in_transition(div, /*receive*/ ctx[22], { key: /*unit*/ ctx[41].id });
+    				div_intro.start();
+    			});
+
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(unit.$$.fragment, local);
+    			if (div_intro) div_intro.invalidate();
+    			div_outro = create_out_transition(div, /*send*/ ctx[21], { key: /*unit*/ ctx[41].id });
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div);
+    			destroy_component(unit);
+    			if (detaching && div_outro) div_outro.end();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_each_block_16.name,
+    		type: "each",
+    		source: "(154:110) {#each units.filter(u=>u.place=='arcticocean') as unit (unit.id)}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (154:479) {#each units.filter(u=>u.place=='northpacific') as unit (unit.id)}
+    function create_each_block_15(key_1, ctx) {
+    	let div;
+    	let unit;
+    	let div_intro;
+    	let div_outro;
+    	let rect;
+    	let stop_animation = noop;
+    	let current;
+
+    	unit = new Unit({
+    			props: {
+    				unit: /*unit*/ ctx[41],
+    				choose: /*choose*/ ctx[1]
+    			},
+    			$$inline: true
+    		});
+
+    	const block = {
+    		key: key_1,
+    		first: null,
+    		c: function create() {
+    			div = element("div");
+    			create_component(unit.$$.fragment);
+    			add_location(div, file$2, 153, 545, 3846);
+    			this.first = div;
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+    			mount_component(unit, div, null);
+    			current = true;
+    		},
+    		p: function update(new_ctx, dirty) {
+    			ctx = new_ctx;
+    			const unit_changes = {};
+    			if (dirty[0] & /*units*/ 1) unit_changes.unit = /*unit*/ ctx[41];
+    			if (dirty[0] & /*choose*/ 2) unit_changes.choose = /*choose*/ ctx[1];
+    			unit.$set(unit_changes);
+    		},
+    		r: function measure() {
+    			rect = div.getBoundingClientRect();
+    		},
+    		f: function fix() {
+    			fix_position(div);
+    			stop_animation();
+    			add_transform(div, rect);
+    		},
+    		a: function animate() {
+    			stop_animation();
+    			stop_animation = create_animation(div, rect, flip, { duration: 200 });
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(unit.$$.fragment, local);
+
+    			add_render_callback(() => {
+    				if (div_outro) div_outro.end(1);
+    				if (!div_intro) div_intro = create_in_transition(div, /*receive*/ ctx[22], { key: /*unit*/ ctx[41].id });
+    				div_intro.start();
+    			});
+
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(unit.$$.fragment, local);
+    			if (div_intro) div_intro.invalidate();
+    			div_outro = create_out_transition(div, /*send*/ ctx[21], { key: /*unit*/ ctx[41].id });
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div);
+    			destroy_component(unit);
+    			if (detaching && div_outro) div_outro.end();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_each_block_15.name,
+    		type: "each",
+    		source: "(154:479) {#each units.filter(u=>u.place=='northpacific') as unit (unit.id)}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (154:850) {#each units.filter(u=>u.place=='northamerica') as unit (unit.id)}
+    function create_each_block_14(key_1, ctx) {
+    	let div;
+    	let unit;
+    	let div_intro;
+    	let div_outro;
+    	let rect;
+    	let stop_animation = noop;
+    	let current;
+
+    	unit = new Unit({
+    			props: {
+    				unit: /*unit*/ ctx[41],
+    				choose: /*choose*/ ctx[1]
+    			},
+    			$$inline: true
+    		});
+
+    	const block = {
+    		key: key_1,
+    		first: null,
+    		c: function create() {
+    			div = element("div");
+    			create_component(unit.$$.fragment);
+    			add_location(div, file$2, 153, 916, 4217);
+    			this.first = div;
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+    			mount_component(unit, div, null);
+    			current = true;
+    		},
+    		p: function update(new_ctx, dirty) {
+    			ctx = new_ctx;
+    			const unit_changes = {};
+    			if (dirty[0] & /*units*/ 1) unit_changes.unit = /*unit*/ ctx[41];
+    			if (dirty[0] & /*choose*/ 2) unit_changes.choose = /*choose*/ ctx[1];
+    			unit.$set(unit_changes);
+    		},
+    		r: function measure() {
+    			rect = div.getBoundingClientRect();
+    		},
+    		f: function fix() {
+    			fix_position(div);
+    			stop_animation();
+    			add_transform(div, rect);
+    		},
+    		a: function animate() {
+    			stop_animation();
+    			stop_animation = create_animation(div, rect, flip, { duration: 200 });
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(unit.$$.fragment, local);
+
+    			add_render_callback(() => {
+    				if (div_outro) div_outro.end(1);
+    				if (!div_intro) div_intro = create_in_transition(div, /*receive*/ ctx[22], { key: /*unit*/ ctx[41].id });
+    				div_intro.start();
+    			});
+
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(unit.$$.fragment, local);
+    			if (div_intro) div_intro.invalidate();
+    			div_outro = create_out_transition(div, /*send*/ ctx[21], { key: /*unit*/ ctx[41].id });
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div);
+    			destroy_component(unit);
+    			if (detaching && div_outro) div_outro.end();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_each_block_14.name,
+    		type: "each",
+    		source: "(154:850) {#each units.filter(u=>u.place=='northamerica') as unit (unit.id)}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (154:1224) {#each units.filter(u=>u.place=='northatlantic') as unit (unit.id)}
+    function create_each_block_13(key_1, ctx) {
+    	let div;
+    	let unit;
+    	let div_intro;
+    	let div_outro;
+    	let rect;
+    	let stop_animation = noop;
+    	let current;
+
+    	unit = new Unit({
+    			props: {
+    				unit: /*unit*/ ctx[41],
+    				choose: /*choose*/ ctx[1]
+    			},
+    			$$inline: true
+    		});
+
+    	const block = {
+    		key: key_1,
+    		first: null,
+    		c: function create() {
+    			div = element("div");
+    			create_component(unit.$$.fragment);
+    			add_location(div, file$2, 153, 1291, 4592);
+    			this.first = div;
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+    			mount_component(unit, div, null);
+    			current = true;
+    		},
+    		p: function update(new_ctx, dirty) {
+    			ctx = new_ctx;
+    			const unit_changes = {};
+    			if (dirty[0] & /*units*/ 1) unit_changes.unit = /*unit*/ ctx[41];
+    			if (dirty[0] & /*choose*/ 2) unit_changes.choose = /*choose*/ ctx[1];
+    			unit.$set(unit_changes);
+    		},
+    		r: function measure() {
+    			rect = div.getBoundingClientRect();
+    		},
+    		f: function fix() {
+    			fix_position(div);
+    			stop_animation();
+    			add_transform(div, rect);
+    		},
+    		a: function animate() {
+    			stop_animation();
+    			stop_animation = create_animation(div, rect, flip, { duration: 200 });
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(unit.$$.fragment, local);
+
+    			add_render_callback(() => {
+    				if (div_outro) div_outro.end(1);
+    				if (!div_intro) div_intro = create_in_transition(div, /*receive*/ ctx[22], { key: /*unit*/ ctx[41].id });
+    				div_intro.start();
+    			});
+
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(unit.$$.fragment, local);
+    			if (div_intro) div_intro.invalidate();
+    			div_outro = create_out_transition(div, /*send*/ ctx[21], { key: /*unit*/ ctx[41].id });
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div);
+    			destroy_component(unit);
+    			if (detaching && div_outro) div_outro.end();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_each_block_13.name,
+    		type: "each",
+    		source: "(154:1224) {#each units.filter(u=>u.place=='northatlantic') as unit (unit.id)}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (154:1594) {#each units.filter(u=>u.place=='scandinavia') as unit (unit.id)}
+    function create_each_block_12(key_1, ctx) {
+    	let div;
+    	let unit;
+    	let div_intro;
+    	let div_outro;
+    	let rect;
+    	let stop_animation = noop;
+    	let current;
+
+    	unit = new Unit({
+    			props: {
+    				unit: /*unit*/ ctx[41],
+    				choose: /*choose*/ ctx[1]
+    			},
+    			$$inline: true
+    		});
+
+    	const block = {
+    		key: key_1,
+    		first: null,
+    		c: function create() {
+    			div = element("div");
+    			create_component(unit.$$.fragment);
+    			add_location(div, file$2, 153, 1659, 4960);
+    			this.first = div;
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+    			mount_component(unit, div, null);
+    			current = true;
+    		},
+    		p: function update(new_ctx, dirty) {
+    			ctx = new_ctx;
+    			const unit_changes = {};
+    			if (dirty[0] & /*units*/ 1) unit_changes.unit = /*unit*/ ctx[41];
+    			if (dirty[0] & /*choose*/ 2) unit_changes.choose = /*choose*/ ctx[1];
+    			unit.$set(unit_changes);
+    		},
+    		r: function measure() {
+    			rect = div.getBoundingClientRect();
+    		},
+    		f: function fix() {
+    			fix_position(div);
+    			stop_animation();
+    			add_transform(div, rect);
+    		},
+    		a: function animate() {
+    			stop_animation();
+    			stop_animation = create_animation(div, rect, flip, { duration: 200 });
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(unit.$$.fragment, local);
+
+    			add_render_callback(() => {
+    				if (div_outro) div_outro.end(1);
+    				if (!div_intro) div_intro = create_in_transition(div, /*receive*/ ctx[22], { key: /*unit*/ ctx[41].id });
+    				div_intro.start();
+    			});
+
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(unit.$$.fragment, local);
+    			if (div_intro) div_intro.invalidate();
+    			div_outro = create_out_transition(div, /*send*/ ctx[21], { key: /*unit*/ ctx[41].id });
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div);
+    			destroy_component(unit);
+    			if (detaching && div_outro) div_outro.end();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_each_block_12.name,
+    		type: "each",
+    		source: "(154:1594) {#each units.filter(u=>u.place=='scandinavia') as unit (unit.id)}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (154:1945) {#each units.filter(u=>u.place=='europe') as unit (unit.id)}
+    function create_each_block_11(key_1, ctx) {
+    	let div;
+    	let unit;
+    	let div_intro;
+    	let div_outro;
+    	let rect;
+    	let stop_animation = noop;
+    	let current;
+
+    	unit = new Unit({
+    			props: {
+    				unit: /*unit*/ ctx[41],
+    				choose: /*choose*/ ctx[1]
+    			},
+    			$$inline: true
+    		});
+
+    	const block = {
+    		key: key_1,
+    		first: null,
+    		c: function create() {
+    			div = element("div");
+    			create_component(unit.$$.fragment);
+    			add_location(div, file$2, 153, 2005, 5306);
+    			this.first = div;
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+    			mount_component(unit, div, null);
+    			current = true;
+    		},
+    		p: function update(new_ctx, dirty) {
+    			ctx = new_ctx;
+    			const unit_changes = {};
+    			if (dirty[0] & /*units*/ 1) unit_changes.unit = /*unit*/ ctx[41];
+    			if (dirty[0] & /*choose*/ 2) unit_changes.choose = /*choose*/ ctx[1];
+    			unit.$set(unit_changes);
+    		},
+    		r: function measure() {
+    			rect = div.getBoundingClientRect();
+    		},
+    		f: function fix() {
+    			fix_position(div);
+    			stop_animation();
+    			add_transform(div, rect);
+    		},
+    		a: function animate() {
+    			stop_animation();
+    			stop_animation = create_animation(div, rect, flip, { duration: 200 });
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(unit.$$.fragment, local);
+
+    			add_render_callback(() => {
+    				if (div_outro) div_outro.end(1);
+    				if (!div_intro) div_intro = create_in_transition(div, /*receive*/ ctx[22], { key: /*unit*/ ctx[41].id });
+    				div_intro.start();
+    			});
+
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(unit.$$.fragment, local);
+    			if (div_intro) div_intro.invalidate();
+    			div_outro = create_out_transition(div, /*send*/ ctx[21], { key: /*unit*/ ctx[41].id });
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div);
+    			destroy_component(unit);
+    			if (detaching && div_outro) div_outro.end();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_each_block_11.name,
+    		type: "each",
+    		source: "(154:1945) {#each units.filter(u=>u.place=='europe') as unit (unit.id)}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (154:2295) {#each units.filter(u=>u.place=='northasia') as unit (unit.id)}
+    function create_each_block_10(key_1, ctx) {
+    	let div;
+    	let unit;
+    	let div_intro;
+    	let div_outro;
+    	let rect;
+    	let stop_animation = noop;
+    	let current;
+
+    	unit = new Unit({
+    			props: {
+    				unit: /*unit*/ ctx[41],
+    				choose: /*choose*/ ctx[1]
+    			},
+    			$$inline: true
+    		});
+
+    	const block = {
+    		key: key_1,
+    		first: null,
+    		c: function create() {
+    			div = element("div");
+    			create_component(unit.$$.fragment);
+    			add_location(div, file$2, 153, 2358, 5659);
+    			this.first = div;
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+    			mount_component(unit, div, null);
+    			current = true;
+    		},
+    		p: function update(new_ctx, dirty) {
+    			ctx = new_ctx;
+    			const unit_changes = {};
+    			if (dirty[0] & /*units*/ 1) unit_changes.unit = /*unit*/ ctx[41];
+    			if (dirty[0] & /*choose*/ 2) unit_changes.choose = /*choose*/ ctx[1];
+    			unit.$set(unit_changes);
+    		},
+    		r: function measure() {
+    			rect = div.getBoundingClientRect();
+    		},
+    		f: function fix() {
+    			fix_position(div);
+    			stop_animation();
+    			add_transform(div, rect);
+    		},
+    		a: function animate() {
+    			stop_animation();
+    			stop_animation = create_animation(div, rect, flip, { duration: 200 });
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(unit.$$.fragment, local);
+
+    			add_render_callback(() => {
+    				if (div_outro) div_outro.end(1);
+    				if (!div_intro) div_intro = create_in_transition(div, /*receive*/ ctx[22], { key: /*unit*/ ctx[41].id });
+    				div_intro.start();
+    			});
+
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(unit.$$.fragment, local);
+    			if (div_intro) div_intro.invalidate();
+    			div_outro = create_out_transition(div, /*send*/ ctx[21], { key: /*unit*/ ctx[41].id });
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div);
+    			destroy_component(unit);
+    			if (detaching && div_outro) div_outro.end();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_each_block_10.name,
+    		type: "each",
+    		source: "(154:2295) {#each units.filter(u=>u.place=='northasia') as unit (unit.id)}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (154:2660) {#each units.filter(u=>u.place=='southamerica') as unit (unit.id)}
+    function create_each_block_9(key_1, ctx) {
+    	let div;
+    	let unit;
+    	let div_intro;
+    	let div_outro;
+    	let rect;
+    	let stop_animation = noop;
+    	let current;
+
+    	unit = new Unit({
+    			props: {
+    				unit: /*unit*/ ctx[41],
+    				choose: /*choose*/ ctx[1]
+    			},
+    			$$inline: true
+    		});
+
+    	const block = {
+    		key: key_1,
+    		first: null,
+    		c: function create() {
+    			div = element("div");
+    			create_component(unit.$$.fragment);
+    			add_location(div, file$2, 153, 2726, 6027);
+    			this.first = div;
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+    			mount_component(unit, div, null);
+    			current = true;
+    		},
+    		p: function update(new_ctx, dirty) {
+    			ctx = new_ctx;
+    			const unit_changes = {};
+    			if (dirty[0] & /*units*/ 1) unit_changes.unit = /*unit*/ ctx[41];
+    			if (dirty[0] & /*choose*/ 2) unit_changes.choose = /*choose*/ ctx[1];
+    			unit.$set(unit_changes);
+    		},
+    		r: function measure() {
+    			rect = div.getBoundingClientRect();
+    		},
+    		f: function fix() {
+    			fix_position(div);
+    			stop_animation();
+    			add_transform(div, rect);
+    		},
+    		a: function animate() {
+    			stop_animation();
+    			stop_animation = create_animation(div, rect, flip, { duration: 200 });
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(unit.$$.fragment, local);
+
+    			add_render_callback(() => {
+    				if (div_outro) div_outro.end(1);
+    				if (!div_intro) div_intro = create_in_transition(div, /*receive*/ ctx[22], { key: /*unit*/ ctx[41].id });
+    				div_intro.start();
+    			});
+
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(unit.$$.fragment, local);
+    			if (div_intro) div_intro.invalidate();
+    			div_outro = create_out_transition(div, /*send*/ ctx[21], { key: /*unit*/ ctx[41].id });
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div);
+    			destroy_component(unit);
+    			if (detaching && div_outro) div_outro.end();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_each_block_9.name,
+    		type: "each",
+    		source: "(154:2660) {#each units.filter(u=>u.place=='southamerica') as unit (unit.id)}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (154:3022) {#each units.filter(u=>u.place=='southasia') as unit (unit.id)}
+    function create_each_block_8(key_1, ctx) {
+    	let div;
+    	let unit;
+    	let div_intro;
+    	let div_outro;
+    	let rect;
+    	let stop_animation = noop;
+    	let current;
+
+    	unit = new Unit({
+    			props: {
+    				unit: /*unit*/ ctx[41],
+    				choose: /*choose*/ ctx[1]
+    			},
+    			$$inline: true
+    		});
+
+    	const block = {
+    		key: key_1,
+    		first: null,
+    		c: function create() {
+    			div = element("div");
+    			create_component(unit.$$.fragment);
+    			add_location(div, file$2, 153, 3085, 6386);
+    			this.first = div;
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+    			mount_component(unit, div, null);
+    			current = true;
+    		},
+    		p: function update(new_ctx, dirty) {
+    			ctx = new_ctx;
+    			const unit_changes = {};
+    			if (dirty[0] & /*units*/ 1) unit_changes.unit = /*unit*/ ctx[41];
+    			if (dirty[0] & /*choose*/ 2) unit_changes.choose = /*choose*/ ctx[1];
+    			unit.$set(unit_changes);
+    		},
+    		r: function measure() {
+    			rect = div.getBoundingClientRect();
+    		},
+    		f: function fix() {
+    			fix_position(div);
+    			stop_animation();
+    			add_transform(div, rect);
+    		},
+    		a: function animate() {
+    			stop_animation();
+    			stop_animation = create_animation(div, rect, flip, { duration: 200 });
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(unit.$$.fragment, local);
+
+    			add_render_callback(() => {
+    				if (div_outro) div_outro.end(1);
+    				if (!div_intro) div_intro = create_in_transition(div, /*receive*/ ctx[22], { key: /*unit*/ ctx[41].id });
+    				div_intro.start();
+    			});
+
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(unit.$$.fragment, local);
+    			if (div_intro) div_intro.invalidate();
+    			div_outro = create_out_transition(div, /*send*/ ctx[21], { key: /*unit*/ ctx[41].id });
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div);
+    			destroy_component(unit);
+    			if (detaching && div_outro) div_outro.end();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_each_block_8.name,
+    		type: "each",
+    		source: "(154:3022) {#each units.filter(u=>u.place=='southasia') as unit (unit.id)}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (154:3369) {#each units.filter(u=>u.place=='arabia') as unit (unit.id)}
+    function create_each_block_7(key_1, ctx) {
+    	let div;
+    	let unit;
+    	let div_intro;
+    	let div_outro;
+    	let rect;
+    	let stop_animation = noop;
+    	let current;
+
+    	unit = new Unit({
+    			props: {
+    				unit: /*unit*/ ctx[41],
+    				choose: /*choose*/ ctx[1]
+    			},
+    			$$inline: true
+    		});
+
+    	const block = {
+    		key: key_1,
+    		first: null,
+    		c: function create() {
+    			div = element("div");
+    			create_component(unit.$$.fragment);
+    			add_location(div, file$2, 153, 3429, 6730);
+    			this.first = div;
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+    			mount_component(unit, div, null);
+    			current = true;
+    		},
+    		p: function update(new_ctx, dirty) {
+    			ctx = new_ctx;
+    			const unit_changes = {};
+    			if (dirty[0] & /*units*/ 1) unit_changes.unit = /*unit*/ ctx[41];
+    			if (dirty[0] & /*choose*/ 2) unit_changes.choose = /*choose*/ ctx[1];
+    			unit.$set(unit_changes);
+    		},
+    		r: function measure() {
+    			rect = div.getBoundingClientRect();
+    		},
+    		f: function fix() {
+    			fix_position(div);
+    			stop_animation();
+    			add_transform(div, rect);
+    		},
+    		a: function animate() {
+    			stop_animation();
+    			stop_animation = create_animation(div, rect, flip, { duration: 200 });
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(unit.$$.fragment, local);
+
+    			add_render_callback(() => {
+    				if (div_outro) div_outro.end(1);
+    				if (!div_intro) div_intro = create_in_transition(div, /*receive*/ ctx[22], { key: /*unit*/ ctx[41].id });
+    				div_intro.start();
+    			});
+
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(unit.$$.fragment, local);
+    			if (div_intro) div_intro.invalidate();
+    			div_outro = create_out_transition(div, /*send*/ ctx[21], { key: /*unit*/ ctx[41].id });
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div);
+    			destroy_component(unit);
+    			if (detaching && div_outro) div_outro.end();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_each_block_7.name,
+    		type: "each",
+    		source: "(154:3369) {#each units.filter(u=>u.place=='arabia') as unit (unit.id)}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (154:3722) {#each units.filter(u=>u.place=='westafrica') as unit (unit.id)}
+    function create_each_block_6(key_1, ctx) {
+    	let div;
+    	let unit;
+    	let div_intro;
+    	let div_outro;
+    	let rect;
+    	let stop_animation = noop;
+    	let current;
+
+    	unit = new Unit({
+    			props: {
+    				unit: /*unit*/ ctx[41],
+    				choose: /*choose*/ ctx[1]
+    			},
+    			$$inline: true
+    		});
+
+    	const block = {
+    		key: key_1,
+    		first: null,
+    		c: function create() {
+    			div = element("div");
+    			create_component(unit.$$.fragment);
+    			add_location(div, file$2, 153, 3786, 7087);
+    			this.first = div;
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+    			mount_component(unit, div, null);
+    			current = true;
+    		},
+    		p: function update(new_ctx, dirty) {
+    			ctx = new_ctx;
+    			const unit_changes = {};
+    			if (dirty[0] & /*units*/ 1) unit_changes.unit = /*unit*/ ctx[41];
+    			if (dirty[0] & /*choose*/ 2) unit_changes.choose = /*choose*/ ctx[1];
+    			unit.$set(unit_changes);
+    		},
+    		r: function measure() {
+    			rect = div.getBoundingClientRect();
+    		},
+    		f: function fix() {
+    			fix_position(div);
+    			stop_animation();
+    			add_transform(div, rect);
+    		},
+    		a: function animate() {
+    			stop_animation();
+    			stop_animation = create_animation(div, rect, flip, { duration: 200 });
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(unit.$$.fragment, local);
+
+    			add_render_callback(() => {
+    				if (div_outro) div_outro.end(1);
+    				if (!div_intro) div_intro = create_in_transition(div, /*receive*/ ctx[22], { key: /*unit*/ ctx[41].id });
+    				div_intro.start();
+    			});
+
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(unit.$$.fragment, local);
+    			if (div_intro) div_intro.invalidate();
+    			div_outro = create_out_transition(div, /*send*/ ctx[21], { key: /*unit*/ ctx[41].id });
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div);
+    			destroy_component(unit);
+    			if (detaching && div_outro) div_outro.end();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_each_block_6.name,
+    		type: "each",
+    		source: "(154:3722) {#each units.filter(u=>u.place=='westafrica') as unit (unit.id)}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (154:4086) {#each units.filter(u=>u.place=='indianocean') as unit (unit.id)}
+    function create_each_block_5(key_1, ctx) {
+    	let div;
+    	let unit;
+    	let div_intro;
+    	let div_outro;
+    	let rect;
+    	let stop_animation = noop;
+    	let current;
+
+    	unit = new Unit({
+    			props: {
+    				unit: /*unit*/ ctx[41],
+    				choose: /*choose*/ ctx[1]
+    			},
+    			$$inline: true
+    		});
+
+    	const block = {
+    		key: key_1,
+    		first: null,
+    		c: function create() {
+    			div = element("div");
+    			create_component(unit.$$.fragment);
+    			add_location(div, file$2, 153, 4151, 7452);
+    			this.first = div;
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+    			mount_component(unit, div, null);
+    			current = true;
+    		},
+    		p: function update(new_ctx, dirty) {
+    			ctx = new_ctx;
+    			const unit_changes = {};
+    			if (dirty[0] & /*units*/ 1) unit_changes.unit = /*unit*/ ctx[41];
+    			if (dirty[0] & /*choose*/ 2) unit_changes.choose = /*choose*/ ctx[1];
+    			unit.$set(unit_changes);
+    		},
+    		r: function measure() {
+    			rect = div.getBoundingClientRect();
+    		},
+    		f: function fix() {
+    			fix_position(div);
+    			stop_animation();
+    			add_transform(div, rect);
+    		},
+    		a: function animate() {
+    			stop_animation();
+    			stop_animation = create_animation(div, rect, flip, { duration: 200 });
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(unit.$$.fragment, local);
+
+    			add_render_callback(() => {
+    				if (div_outro) div_outro.end(1);
+    				if (!div_intro) div_intro = create_in_transition(div, /*receive*/ ctx[22], { key: /*unit*/ ctx[41].id });
+    				div_intro.start();
+    			});
+
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(unit.$$.fragment, local);
+    			if (div_intro) div_intro.invalidate();
+    			div_outro = create_out_transition(div, /*send*/ ctx[21], { key: /*unit*/ ctx[41].id });
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div);
+    			destroy_component(unit);
+    			if (detaching && div_outro) div_outro.end();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_each_block_5.name,
+    		type: "each",
+    		source: "(154:4086) {#each units.filter(u=>u.place=='indianocean') as unit (unit.id)}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (154:4449) {#each units.filter(u=>u.place=='eastafrica') as unit (unit.id)}
+    function create_each_block_4(key_1, ctx) {
+    	let div;
+    	let unit;
+    	let div_intro;
+    	let div_outro;
+    	let rect;
+    	let stop_animation = noop;
+    	let current;
+
+    	unit = new Unit({
+    			props: {
+    				unit: /*unit*/ ctx[41],
+    				choose: /*choose*/ ctx[1]
+    			},
+    			$$inline: true
+    		});
+
+    	const block = {
+    		key: key_1,
+    		first: null,
+    		c: function create() {
+    			div = element("div");
+    			create_component(unit.$$.fragment);
+    			add_location(div, file$2, 153, 4513, 7814);
+    			this.first = div;
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+    			mount_component(unit, div, null);
+    			current = true;
+    		},
+    		p: function update(new_ctx, dirty) {
+    			ctx = new_ctx;
+    			const unit_changes = {};
+    			if (dirty[0] & /*units*/ 1) unit_changes.unit = /*unit*/ ctx[41];
+    			if (dirty[0] & /*choose*/ 2) unit_changes.choose = /*choose*/ ctx[1];
+    			unit.$set(unit_changes);
+    		},
+    		r: function measure() {
+    			rect = div.getBoundingClientRect();
+    		},
+    		f: function fix() {
+    			fix_position(div);
+    			stop_animation();
+    			add_transform(div, rect);
+    		},
+    		a: function animate() {
+    			stop_animation();
+    			stop_animation = create_animation(div, rect, flip, { duration: 200 });
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(unit.$$.fragment, local);
+
+    			add_render_callback(() => {
+    				if (div_outro) div_outro.end(1);
+    				if (!div_intro) div_intro = create_in_transition(div, /*receive*/ ctx[22], { key: /*unit*/ ctx[41].id });
+    				div_intro.start();
+    			});
+
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(unit.$$.fragment, local);
+    			if (div_intro) div_intro.invalidate();
+    			div_outro = create_out_transition(div, /*send*/ ctx[21], { key: /*unit*/ ctx[41].id });
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div);
+    			destroy_component(unit);
+    			if (detaching && div_outro) div_outro.end();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_each_block_4.name,
+    		type: "each",
+    		source: "(154:4449) {#each units.filter(u=>u.place=='eastafrica') as unit (unit.id)}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (154:4810) {#each units.filter(u=>u.place=='antarctica') as unit (unit.id)}
+    function create_each_block_3(key_1, ctx) {
+    	let div;
+    	let unit;
+    	let div_intro;
+    	let div_outro;
+    	let rect;
+    	let stop_animation = noop;
+    	let current;
+
+    	unit = new Unit({
+    			props: {
+    				unit: /*unit*/ ctx[41],
+    				choose: /*choose*/ ctx[1]
+    			},
+    			$$inline: true
+    		});
+
+    	const block = {
+    		key: key_1,
+    		first: null,
+    		c: function create() {
+    			div = element("div");
+    			create_component(unit.$$.fragment);
+    			add_location(div, file$2, 153, 4874, 8175);
+    			this.first = div;
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+    			mount_component(unit, div, null);
+    			current = true;
+    		},
+    		p: function update(new_ctx, dirty) {
+    			ctx = new_ctx;
+    			const unit_changes = {};
+    			if (dirty[0] & /*units*/ 1) unit_changes.unit = /*unit*/ ctx[41];
+    			if (dirty[0] & /*choose*/ 2) unit_changes.choose = /*choose*/ ctx[1];
+    			unit.$set(unit_changes);
+    		},
+    		r: function measure() {
+    			rect = div.getBoundingClientRect();
+    		},
+    		f: function fix() {
+    			fix_position(div);
+    			stop_animation();
+    			add_transform(div, rect);
+    		},
+    		a: function animate() {
+    			stop_animation();
+    			stop_animation = create_animation(div, rect, flip, { duration: 200 });
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(unit.$$.fragment, local);
+
+    			add_render_callback(() => {
+    				if (div_outro) div_outro.end(1);
+    				if (!div_intro) div_intro = create_in_transition(div, /*receive*/ ctx[22], { key: /*unit*/ ctx[41].id });
+    				div_intro.start();
+    			});
+
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(unit.$$.fragment, local);
+    			if (div_intro) div_intro.invalidate();
+    			div_outro = create_out_transition(div, /*send*/ ctx[21], { key: /*unit*/ ctx[41].id });
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div);
+    			destroy_component(unit);
+    			if (detaching && div_outro) div_outro.end();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_each_block_3.name,
+    		type: "each",
+    		source: "(154:4810) {#each units.filter(u=>u.place=='antarctica') as unit (unit.id)}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (154:5180) {#each units.filter(u=>u.place=='southatlantic') as unit (unit.id)}
+    function create_each_block_2(key_1, ctx) {
+    	let div;
+    	let unit;
+    	let div_intro;
+    	let div_outro;
+    	let rect;
+    	let stop_animation = noop;
+    	let current;
+
+    	unit = new Unit({
+    			props: {
+    				unit: /*unit*/ ctx[41],
+    				choose: /*choose*/ ctx[1]
+    			},
+    			$$inline: true
+    		});
+
+    	const block = {
+    		key: key_1,
+    		first: null,
+    		c: function create() {
+    			div = element("div");
+    			create_component(unit.$$.fragment);
+    			add_location(div, file$2, 153, 5247, 8548);
+    			this.first = div;
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+    			mount_component(unit, div, null);
+    			current = true;
+    		},
+    		p: function update(new_ctx, dirty) {
+    			ctx = new_ctx;
+    			const unit_changes = {};
+    			if (dirty[0] & /*units*/ 1) unit_changes.unit = /*unit*/ ctx[41];
+    			if (dirty[0] & /*choose*/ 2) unit_changes.choose = /*choose*/ ctx[1];
+    			unit.$set(unit_changes);
+    		},
+    		r: function measure() {
+    			rect = div.getBoundingClientRect();
+    		},
+    		f: function fix() {
+    			fix_position(div);
+    			stop_animation();
+    			add_transform(div, rect);
+    		},
+    		a: function animate() {
+    			stop_animation();
+    			stop_animation = create_animation(div, rect, flip, { duration: 200 });
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(unit.$$.fragment, local);
+
+    			add_render_callback(() => {
+    				if (div_outro) div_outro.end(1);
+    				if (!div_intro) div_intro = create_in_transition(div, /*receive*/ ctx[22], { key: /*unit*/ ctx[41].id });
+    				div_intro.start();
+    			});
+
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(unit.$$.fragment, local);
+    			if (div_intro) div_intro.invalidate();
+    			div_outro = create_out_transition(div, /*send*/ ctx[21], { key: /*unit*/ ctx[41].id });
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div);
+    			destroy_component(unit);
+    			if (detaching && div_outro) div_outro.end();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_each_block_2.name,
+    		type: "each",
+    		source: "(154:5180) {#each units.filter(u=>u.place=='southatlantic') as unit (unit.id)}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (154:5553) {#each units.filter(u=>u.place=='southpacific') as unit (unit.id)}
+    function create_each_block_1(key_1, ctx) {
+    	let div;
+    	let unit;
+    	let div_intro;
+    	let div_outro;
+    	let rect;
+    	let stop_animation = noop;
+    	let current;
+
+    	unit = new Unit({
+    			props: {
+    				unit: /*unit*/ ctx[41],
+    				choose: /*choose*/ ctx[1]
+    			},
+    			$$inline: true
+    		});
+
+    	const block = {
+    		key: key_1,
+    		first: null,
+    		c: function create() {
+    			div = element("div");
+    			create_component(unit.$$.fragment);
+    			add_location(div, file$2, 153, 5619, 8920);
+    			this.first = div;
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+    			mount_component(unit, div, null);
+    			current = true;
+    		},
+    		p: function update(new_ctx, dirty) {
+    			ctx = new_ctx;
+    			const unit_changes = {};
+    			if (dirty[0] & /*units*/ 1) unit_changes.unit = /*unit*/ ctx[41];
+    			if (dirty[0] & /*choose*/ 2) unit_changes.choose = /*choose*/ ctx[1];
+    			unit.$set(unit_changes);
+    		},
+    		r: function measure() {
+    			rect = div.getBoundingClientRect();
+    		},
+    		f: function fix() {
+    			fix_position(div);
+    			stop_animation();
+    			add_transform(div, rect);
+    		},
+    		a: function animate() {
+    			stop_animation();
+    			stop_animation = create_animation(div, rect, flip, { duration: 200 });
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(unit.$$.fragment, local);
+
+    			add_render_callback(() => {
+    				if (div_outro) div_outro.end(1);
+    				if (!div_intro) div_intro = create_in_transition(div, /*receive*/ ctx[22], { key: /*unit*/ ctx[41].id });
+    				div_intro.start();
+    			});
+
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(unit.$$.fragment, local);
+    			if (div_intro) div_intro.invalidate();
+    			div_outro = create_out_transition(div, /*send*/ ctx[21], { key: /*unit*/ ctx[41].id });
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div);
+    			destroy_component(unit);
+    			if (detaching && div_outro) div_outro.end();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_each_block_1.name,
+    		type: "each",
+    		source: "(154:5553) {#each units.filter(u=>u.place=='southpacific') as unit (unit.id)}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (154:5915) {#each units.filter(u=>u.place=='australia') as unit (unit.id)}
+    function create_each_block(key_1, ctx) {
+    	let div;
+    	let unit;
+    	let div_intro;
+    	let div_outro;
+    	let rect;
+    	let stop_animation = noop;
+    	let current;
+
+    	unit = new Unit({
+    			props: {
+    				unit: /*unit*/ ctx[41],
+    				choose: /*choose*/ ctx[1]
+    			},
+    			$$inline: true
+    		});
+
+    	const block = {
+    		key: key_1,
+    		first: null,
+    		c: function create() {
+    			div = element("div");
+    			create_component(unit.$$.fragment);
+    			add_location(div, file$2, 153, 5978, 9279);
+    			this.first = div;
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+    			mount_component(unit, div, null);
+    			current = true;
+    		},
+    		p: function update(new_ctx, dirty) {
+    			ctx = new_ctx;
+    			const unit_changes = {};
+    			if (dirty[0] & /*units*/ 1) unit_changes.unit = /*unit*/ ctx[41];
+    			if (dirty[0] & /*choose*/ 2) unit_changes.choose = /*choose*/ ctx[1];
+    			unit.$set(unit_changes);
+    		},
+    		r: function measure() {
+    			rect = div.getBoundingClientRect();
+    		},
+    		f: function fix() {
+    			fix_position(div);
+    			stop_animation();
+    			add_transform(div, rect);
+    		},
+    		a: function animate() {
+    			stop_animation();
+    			stop_animation = create_animation(div, rect, flip, { duration: 200 });
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(unit.$$.fragment, local);
+
+    			add_render_callback(() => {
+    				if (div_outro) div_outro.end(1);
+    				if (!div_intro) div_intro = create_in_transition(div, /*receive*/ ctx[22], { key: /*unit*/ ctx[41].id });
+    				div_intro.start();
+    			});
+
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(unit.$$.fragment, local);
+    			if (div_intro) div_intro.invalidate();
+    			div_outro = create_out_transition(div, /*send*/ ctx[21], { key: /*unit*/ ctx[41].id });
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div);
+    			destroy_component(unit);
+    			if (detaching && div_outro) div_outro.end();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_each_block.name,
+    		type: "each",
+    		source: "(154:5915) {#each units.filter(u=>u.place=='australia') as unit (unit.id)}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function create_fragment$2(ctx) {
+    	let div17;
+    	let div0;
+    	let each_blocks_16 = [];
+    	let each0_lookup = new Map_1();
+    	let each0_anchor;
+    	let gate0;
+    	let div1;
+    	let each_blocks_15 = [];
+    	let each1_lookup = new Map_1();
+    	let each1_anchor;
+    	let gate1;
+    	let div2;
+    	let each_blocks_14 = [];
+    	let each2_lookup = new Map_1();
+    	let each2_anchor;
+    	let gate2;
+    	let div3;
+    	let each_blocks_13 = [];
+    	let each3_lookup = new Map_1();
+    	let each3_anchor;
+    	let gate3;
+    	let div4;
+    	let each_blocks_12 = [];
+    	let each4_lookup = new Map_1();
+    	let each4_anchor;
+    	let gate4;
+    	let div5;
+    	let each_blocks_11 = [];
+    	let each5_lookup = new Map_1();
+    	let each5_anchor;
+    	let gate5;
+    	let div6;
+    	let each_blocks_10 = [];
+    	let each6_lookup = new Map_1();
+    	let each6_anchor;
+    	let gate6;
+    	let div7;
+    	let each_blocks_9 = [];
+    	let each7_lookup = new Map_1();
+    	let each7_anchor;
+    	let gate7;
+    	let div8;
+    	let each_blocks_8 = [];
+    	let each8_lookup = new Map_1();
+    	let each8_anchor;
+    	let gate8;
+    	let div9;
+    	let each_blocks_7 = [];
+    	let each9_lookup = new Map_1();
+    	let each9_anchor;
+    	let gate9;
+    	let div10;
+    	let each_blocks_6 = [];
+    	let each10_lookup = new Map_1();
+    	let each10_anchor;
+    	let gate10;
+    	let div11;
+    	let each_blocks_5 = [];
+    	let each11_lookup = new Map_1();
+    	let each11_anchor;
+    	let gate11;
+    	let div12;
+    	let each_blocks_4 = [];
+    	let each12_lookup = new Map_1();
+    	let each12_anchor;
+    	let gate12;
+    	let div13;
+    	let each_blocks_3 = [];
+    	let each13_lookup = new Map_1();
+    	let each13_anchor;
+    	let gate13;
+    	let div14;
+    	let each_blocks_2 = [];
+    	let each14_lookup = new Map_1();
+    	let each14_anchor;
+    	let gate14;
+    	let div15;
+    	let each_blocks_1 = [];
+    	let each15_lookup = new Map_1();
+    	let each15_anchor;
+    	let gate15;
+    	let div16;
+    	let each_blocks = [];
+    	let each16_lookup = new Map_1();
+    	let each16_anchor;
+    	let gate16;
+    	let div18;
+    	let current;
+    	let mounted;
+    	let dispose;
+    	let each_value_16 = /*units*/ ctx[0].filter(func);
+    	validate_each_argument(each_value_16);
+    	const get_key = ctx => /*unit*/ ctx[41].id;
+    	validate_each_keys(ctx, each_value_16, get_each_context_16, get_key);
+
+    	for (let i = 0; i < each_value_16.length; i += 1) {
+    		let child_ctx = get_each_context_16(ctx, each_value_16, i);
+    		let key = get_key(child_ctx);
+    		each0_lookup.set(key, each_blocks_16[i] = create_each_block_16(key, child_ctx));
+    	}
+
+    	gate0 = new Gate({
+    			props: {
+    				places: /*places*/ ctx[2],
+    				name: "arcticocean",
+    				choose: /*choose*/ ctx[1]
+    			},
+    			$$inline: true
+    		});
+
+    	let each_value_15 = /*units*/ ctx[0].filter(func_1);
+    	validate_each_argument(each_value_15);
+    	const get_key_1 = ctx => /*unit*/ ctx[41].id;
+    	validate_each_keys(ctx, each_value_15, get_each_context_15, get_key_1);
+
+    	for (let i = 0; i < each_value_15.length; i += 1) {
+    		let child_ctx = get_each_context_15(ctx, each_value_15, i);
+    		let key = get_key_1(child_ctx);
+    		each1_lookup.set(key, each_blocks_15[i] = create_each_block_15(key, child_ctx));
+    	}
+
+    	gate1 = new Gate({
+    			props: {
+    				places: /*places*/ ctx[2],
+    				name: "northpacific",
+    				choose: /*choose*/ ctx[1]
+    			},
+    			$$inline: true
+    		});
+
+    	let each_value_14 = /*units*/ ctx[0].filter(func_2);
+    	validate_each_argument(each_value_14);
+    	const get_key_2 = ctx => /*unit*/ ctx[41].id;
+    	validate_each_keys(ctx, each_value_14, get_each_context_14, get_key_2);
+
+    	for (let i = 0; i < each_value_14.length; i += 1) {
+    		let child_ctx = get_each_context_14(ctx, each_value_14, i);
+    		let key = get_key_2(child_ctx);
+    		each2_lookup.set(key, each_blocks_14[i] = create_each_block_14(key, child_ctx));
+    	}
+
+    	gate2 = new Gate({
+    			props: {
+    				places: /*places*/ ctx[2],
+    				name: "northamerica",
+    				choose: /*choose*/ ctx[1]
+    			},
+    			$$inline: true
+    		});
+
+    	let each_value_13 = /*units*/ ctx[0].filter(func_3);
+    	validate_each_argument(each_value_13);
+    	const get_key_3 = ctx => /*unit*/ ctx[41].id;
+    	validate_each_keys(ctx, each_value_13, get_each_context_13, get_key_3);
+
+    	for (let i = 0; i < each_value_13.length; i += 1) {
+    		let child_ctx = get_each_context_13(ctx, each_value_13, i);
+    		let key = get_key_3(child_ctx);
+    		each3_lookup.set(key, each_blocks_13[i] = create_each_block_13(key, child_ctx));
+    	}
+
+    	gate3 = new Gate({
+    			props: {
+    				places: /*places*/ ctx[2],
+    				name: "northatlantic",
+    				choose: /*choose*/ ctx[1]
+    			},
+    			$$inline: true
+    		});
+
+    	let each_value_12 = /*units*/ ctx[0].filter(func_4);
+    	validate_each_argument(each_value_12);
+    	const get_key_4 = ctx => /*unit*/ ctx[41].id;
+    	validate_each_keys(ctx, each_value_12, get_each_context_12, get_key_4);
+
+    	for (let i = 0; i < each_value_12.length; i += 1) {
+    		let child_ctx = get_each_context_12(ctx, each_value_12, i);
+    		let key = get_key_4(child_ctx);
+    		each4_lookup.set(key, each_blocks_12[i] = create_each_block_12(key, child_ctx));
+    	}
+
+    	gate4 = new Gate({
+    			props: {
+    				places: /*places*/ ctx[2],
+    				name: "scandinavia",
+    				choose: /*choose*/ ctx[1]
+    			},
+    			$$inline: true
+    		});
+
+    	let each_value_11 = /*units*/ ctx[0].filter(func_5);
+    	validate_each_argument(each_value_11);
+    	const get_key_5 = ctx => /*unit*/ ctx[41].id;
+    	validate_each_keys(ctx, each_value_11, get_each_context_11, get_key_5);
+
+    	for (let i = 0; i < each_value_11.length; i += 1) {
+    		let child_ctx = get_each_context_11(ctx, each_value_11, i);
+    		let key = get_key_5(child_ctx);
+    		each5_lookup.set(key, each_blocks_11[i] = create_each_block_11(key, child_ctx));
+    	}
+
+    	gate5 = new Gate({
+    			props: {
+    				places: /*places*/ ctx[2],
+    				name: "europe",
+    				choose: /*choose*/ ctx[1]
+    			},
+    			$$inline: true
+    		});
+
+    	let each_value_10 = /*units*/ ctx[0].filter(func_6);
+    	validate_each_argument(each_value_10);
+    	const get_key_6 = ctx => /*unit*/ ctx[41].id;
+    	validate_each_keys(ctx, each_value_10, get_each_context_10, get_key_6);
+
+    	for (let i = 0; i < each_value_10.length; i += 1) {
+    		let child_ctx = get_each_context_10(ctx, each_value_10, i);
+    		let key = get_key_6(child_ctx);
+    		each6_lookup.set(key, each_blocks_10[i] = create_each_block_10(key, child_ctx));
+    	}
+
+    	gate6 = new Gate({
+    			props: {
+    				places: /*places*/ ctx[2],
+    				name: "northasia",
+    				choose: /*choose*/ ctx[1]
+    			},
+    			$$inline: true
+    		});
+
+    	let each_value_9 = /*units*/ ctx[0].filter(func_7);
+    	validate_each_argument(each_value_9);
+    	const get_key_7 = ctx => /*unit*/ ctx[41].id;
+    	validate_each_keys(ctx, each_value_9, get_each_context_9, get_key_7);
+
+    	for (let i = 0; i < each_value_9.length; i += 1) {
+    		let child_ctx = get_each_context_9(ctx, each_value_9, i);
+    		let key = get_key_7(child_ctx);
+    		each7_lookup.set(key, each_blocks_9[i] = create_each_block_9(key, child_ctx));
+    	}
+
+    	gate7 = new Gate({
+    			props: {
+    				places: /*places*/ ctx[2],
+    				name: "southamerica",
+    				choose: /*choose*/ ctx[1]
+    			},
+    			$$inline: true
+    		});
+
+    	let each_value_8 = /*units*/ ctx[0].filter(func_8);
+    	validate_each_argument(each_value_8);
+    	const get_key_8 = ctx => /*unit*/ ctx[41].id;
+    	validate_each_keys(ctx, each_value_8, get_each_context_8, get_key_8);
+
+    	for (let i = 0; i < each_value_8.length; i += 1) {
+    		let child_ctx = get_each_context_8(ctx, each_value_8, i);
+    		let key = get_key_8(child_ctx);
+    		each8_lookup.set(key, each_blocks_8[i] = create_each_block_8(key, child_ctx));
+    	}
+
+    	gate8 = new Gate({
+    			props: {
+    				places: /*places*/ ctx[2],
+    				name: "southasia",
+    				choose: /*choose*/ ctx[1]
+    			},
+    			$$inline: true
+    		});
+
+    	let each_value_7 = /*units*/ ctx[0].filter(func_9);
+    	validate_each_argument(each_value_7);
+    	const get_key_9 = ctx => /*unit*/ ctx[41].id;
+    	validate_each_keys(ctx, each_value_7, get_each_context_7, get_key_9);
+
+    	for (let i = 0; i < each_value_7.length; i += 1) {
+    		let child_ctx = get_each_context_7(ctx, each_value_7, i);
+    		let key = get_key_9(child_ctx);
+    		each9_lookup.set(key, each_blocks_7[i] = create_each_block_7(key, child_ctx));
+    	}
+
+    	gate9 = new Gate({
+    			props: {
+    				places: /*places*/ ctx[2],
+    				name: "arabia",
+    				choose: /*choose*/ ctx[1]
+    			},
+    			$$inline: true
+    		});
+
+    	let each_value_6 = /*units*/ ctx[0].filter(func_10);
+    	validate_each_argument(each_value_6);
+    	const get_key_10 = ctx => /*unit*/ ctx[41].id;
+    	validate_each_keys(ctx, each_value_6, get_each_context_6, get_key_10);
+
+    	for (let i = 0; i < each_value_6.length; i += 1) {
+    		let child_ctx = get_each_context_6(ctx, each_value_6, i);
+    		let key = get_key_10(child_ctx);
+    		each10_lookup.set(key, each_blocks_6[i] = create_each_block_6(key, child_ctx));
+    	}
+
+    	gate10 = new Gate({
+    			props: {
+    				places: /*places*/ ctx[2],
+    				name: "westafrica",
+    				choose: /*choose*/ ctx[1]
+    			},
+    			$$inline: true
+    		});
+
+    	let each_value_5 = /*units*/ ctx[0].filter(func_11);
+    	validate_each_argument(each_value_5);
+    	const get_key_11 = ctx => /*unit*/ ctx[41].id;
+    	validate_each_keys(ctx, each_value_5, get_each_context_5, get_key_11);
+
+    	for (let i = 0; i < each_value_5.length; i += 1) {
+    		let child_ctx = get_each_context_5(ctx, each_value_5, i);
+    		let key = get_key_11(child_ctx);
+    		each11_lookup.set(key, each_blocks_5[i] = create_each_block_5(key, child_ctx));
+    	}
+
+    	gate11 = new Gate({
+    			props: {
+    				places: /*places*/ ctx[2],
+    				name: "indianocean",
+    				choose: /*choose*/ ctx[1]
+    			},
+    			$$inline: true
+    		});
+
+    	let each_value_4 = /*units*/ ctx[0].filter(func_12);
+    	validate_each_argument(each_value_4);
+    	const get_key_12 = ctx => /*unit*/ ctx[41].id;
+    	validate_each_keys(ctx, each_value_4, get_each_context_4, get_key_12);
+
+    	for (let i = 0; i < each_value_4.length; i += 1) {
+    		let child_ctx = get_each_context_4(ctx, each_value_4, i);
+    		let key = get_key_12(child_ctx);
+    		each12_lookup.set(key, each_blocks_4[i] = create_each_block_4(key, child_ctx));
+    	}
+
+    	gate12 = new Gate({
+    			props: {
+    				places: /*places*/ ctx[2],
+    				name: "eastafrica",
+    				choose: /*choose*/ ctx[1]
+    			},
+    			$$inline: true
+    		});
+
+    	let each_value_3 = /*units*/ ctx[0].filter(func_13);
+    	validate_each_argument(each_value_3);
+    	const get_key_13 = ctx => /*unit*/ ctx[41].id;
+    	validate_each_keys(ctx, each_value_3, get_each_context_3, get_key_13);
+
+    	for (let i = 0; i < each_value_3.length; i += 1) {
+    		let child_ctx = get_each_context_3(ctx, each_value_3, i);
+    		let key = get_key_13(child_ctx);
+    		each13_lookup.set(key, each_blocks_3[i] = create_each_block_3(key, child_ctx));
+    	}
+
+    	gate13 = new Gate({
+    			props: {
+    				places: /*places*/ ctx[2],
+    				name: "antarctica",
+    				choose: /*choose*/ ctx[1]
+    			},
+    			$$inline: true
+    		});
+
+    	let each_value_2 = /*units*/ ctx[0].filter(func_14);
+    	validate_each_argument(each_value_2);
+    	const get_key_14 = ctx => /*unit*/ ctx[41].id;
+    	validate_each_keys(ctx, each_value_2, get_each_context_2, get_key_14);
+
+    	for (let i = 0; i < each_value_2.length; i += 1) {
+    		let child_ctx = get_each_context_2(ctx, each_value_2, i);
+    		let key = get_key_14(child_ctx);
+    		each14_lookup.set(key, each_blocks_2[i] = create_each_block_2(key, child_ctx));
+    	}
+
+    	gate14 = new Gate({
+    			props: {
+    				places: /*places*/ ctx[2],
+    				name: "southatlantic",
+    				choose: /*choose*/ ctx[1]
+    			},
+    			$$inline: true
+    		});
+
+    	let each_value_1 = /*units*/ ctx[0].filter(func_15);
+    	validate_each_argument(each_value_1);
+    	const get_key_15 = ctx => /*unit*/ ctx[41].id;
+    	validate_each_keys(ctx, each_value_1, get_each_context_1, get_key_15);
+
+    	for (let i = 0; i < each_value_1.length; i += 1) {
+    		let child_ctx = get_each_context_1(ctx, each_value_1, i);
+    		let key = get_key_15(child_ctx);
+    		each15_lookup.set(key, each_blocks_1[i] = create_each_block_1(key, child_ctx));
+    	}
+
+    	gate15 = new Gate({
+    			props: {
+    				places: /*places*/ ctx[2],
+    				name: "southpacific",
+    				choose: /*choose*/ ctx[1]
+    			},
+    			$$inline: true
+    		});
+
+    	let each_value = /*units*/ ctx[0].filter(func_16);
+    	validate_each_argument(each_value);
+    	const get_key_16 = ctx => /*unit*/ ctx[41].id;
+    	validate_each_keys(ctx, each_value, get_each_context, get_key_16);
+
+    	for (let i = 0; i < each_value.length; i += 1) {
+    		let child_ctx = get_each_context(ctx, each_value, i);
+    		let key = get_key_16(child_ctx);
+    		each16_lookup.set(key, each_blocks[i] = create_each_block(key, child_ctx));
+    	}
+
+    	gate16 = new Gate({
+    			props: {
+    				places: /*places*/ ctx[2],
+    				name: "australia",
+    				choose: /*choose*/ ctx[1]
+    			},
+    			$$inline: true
+    		});
+
+    	const block = {
+    		c: function create() {
+    			div17 = element("div");
+    			div0 = element("div");
+
+    			for (let i = 0; i < each_blocks_16.length; i += 1) {
+    				each_blocks_16[i].c();
+    			}
+
+    			each0_anchor = empty();
+    			create_component(gate0.$$.fragment);
+    			div1 = element("div");
+
+    			for (let i = 0; i < each_blocks_15.length; i += 1) {
+    				each_blocks_15[i].c();
+    			}
+
+    			each1_anchor = empty();
+    			create_component(gate1.$$.fragment);
+    			div2 = element("div");
+
+    			for (let i = 0; i < each_blocks_14.length; i += 1) {
+    				each_blocks_14[i].c();
+    			}
+
+    			each2_anchor = empty();
+    			create_component(gate2.$$.fragment);
+    			div3 = element("div");
+
+    			for (let i = 0; i < each_blocks_13.length; i += 1) {
+    				each_blocks_13[i].c();
+    			}
+
+    			each3_anchor = empty();
+    			create_component(gate3.$$.fragment);
+    			div4 = element("div");
+
+    			for (let i = 0; i < each_blocks_12.length; i += 1) {
+    				each_blocks_12[i].c();
+    			}
+
+    			each4_anchor = empty();
+    			create_component(gate4.$$.fragment);
+    			div5 = element("div");
+
+    			for (let i = 0; i < each_blocks_11.length; i += 1) {
+    				each_blocks_11[i].c();
+    			}
+
+    			each5_anchor = empty();
+    			create_component(gate5.$$.fragment);
+    			div6 = element("div");
+
+    			for (let i = 0; i < each_blocks_10.length; i += 1) {
+    				each_blocks_10[i].c();
+    			}
+
+    			each6_anchor = empty();
+    			create_component(gate6.$$.fragment);
+    			div7 = element("div");
+
+    			for (let i = 0; i < each_blocks_9.length; i += 1) {
+    				each_blocks_9[i].c();
+    			}
+
+    			each7_anchor = empty();
+    			create_component(gate7.$$.fragment);
+    			div8 = element("div");
+
+    			for (let i = 0; i < each_blocks_8.length; i += 1) {
+    				each_blocks_8[i].c();
+    			}
+
+    			each8_anchor = empty();
+    			create_component(gate8.$$.fragment);
+    			div9 = element("div");
+
+    			for (let i = 0; i < each_blocks_7.length; i += 1) {
+    				each_blocks_7[i].c();
+    			}
+
+    			each9_anchor = empty();
+    			create_component(gate9.$$.fragment);
+    			div10 = element("div");
+
+    			for (let i = 0; i < each_blocks_6.length; i += 1) {
+    				each_blocks_6[i].c();
+    			}
+
+    			each10_anchor = empty();
+    			create_component(gate10.$$.fragment);
+    			div11 = element("div");
+
+    			for (let i = 0; i < each_blocks_5.length; i += 1) {
+    				each_blocks_5[i].c();
+    			}
+
+    			each11_anchor = empty();
+    			create_component(gate11.$$.fragment);
+    			div12 = element("div");
+
+    			for (let i = 0; i < each_blocks_4.length; i += 1) {
+    				each_blocks_4[i].c();
+    			}
+
+    			each12_anchor = empty();
+    			create_component(gate12.$$.fragment);
+    			div13 = element("div");
+
+    			for (let i = 0; i < each_blocks_3.length; i += 1) {
+    				each_blocks_3[i].c();
+    			}
+
+    			each13_anchor = empty();
+    			create_component(gate13.$$.fragment);
+    			div14 = element("div");
+
+    			for (let i = 0; i < each_blocks_2.length; i += 1) {
+    				each_blocks_2[i].c();
+    			}
+
+    			each14_anchor = empty();
+    			create_component(gate14.$$.fragment);
+    			div15 = element("div");
+
+    			for (let i = 0; i < each_blocks_1.length; i += 1) {
+    				each_blocks_1[i].c();
+    			}
+
+    			each15_anchor = empty();
+    			create_component(gate15.$$.fragment);
+    			div16 = element("div");
+
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].c();
+    			}
+
+    			each16_anchor = empty();
+    			create_component(gate16.$$.fragment);
+    			div18 = element("div");
+    			attr_dev(div0, "class", "l arcticocean svelte-1dg1m99");
+    			attr_dev(div0, "name", "arcticocean");
+    			add_location(div0, file$2, 153, 19, 3320);
+    			attr_dev(div1, "class", "l northpacific svelte-1dg1m99");
+    			attr_dev(div1, "name", "northpacific");
+    			add_location(div1, file$2, 153, 385, 3686);
+    			attr_dev(div2, "class", "l northamerica svelte-1dg1m99");
+    			attr_dev(div2, "name", "northamerica");
+    			add_location(div2, file$2, 153, 756, 4057);
+    			attr_dev(div3, "class", "l northatlantic svelte-1dg1m99");
+    			attr_dev(div3, "name", "northatlantic");
+    			add_location(div3, file$2, 153, 1127, 4428);
+    			attr_dev(div4, "class", "l scandinavia svelte-1dg1m99");
+    			attr_dev(div4, "name", "scandinavia");
+    			add_location(div4, file$2, 153, 1503, 4804);
+    			attr_dev(div5, "class", "l europe svelte-1dg1m99");
+    			attr_dev(div5, "name", "europe");
+    			add_location(div5, file$2, 153, 1869, 5170);
+    			attr_dev(div6, "class", "l northasia svelte-1dg1m99");
+    			attr_dev(div6, "name", "northasia");
+    			add_location(div6, file$2, 153, 2210, 5511);
+    			attr_dev(div7, "class", "l southamerica svelte-1dg1m99");
+    			attr_dev(div7, "name", "southamerica");
+    			add_location(div7, file$2, 153, 2566, 5867);
+    			attr_dev(div8, "class", "l southasia svelte-1dg1m99");
+    			attr_dev(div8, "name", "southasia");
+    			add_location(div8, file$2, 153, 2937, 6238);
+    			attr_dev(div9, "class", "l arabia svelte-1dg1m99");
+    			attr_dev(div9, "name", "arabia");
+    			add_location(div9, file$2, 153, 3293, 6594);
+    			attr_dev(div10, "class", "l westafrica svelte-1dg1m99");
+    			attr_dev(div10, "name", "westafrica");
+    			add_location(div10, file$2, 153, 3634, 6935);
+    			attr_dev(div11, "class", "l indianocean svelte-1dg1m99");
+    			attr_dev(div11, "name", "indianocean");
+    			add_location(div11, file$2, 153, 3995, 7296);
+    			attr_dev(div12, "class", "l eastafrica svelte-1dg1m99");
+    			attr_dev(div12, "name", "eastafrica");
+    			add_location(div12, file$2, 153, 4361, 7662);
+    			attr_dev(div13, "class", "l antarctica svelte-1dg1m99");
+    			attr_dev(div13, "name", "antarctica");
+    			add_location(div13, file$2, 153, 4722, 8023);
+    			attr_dev(div14, "class", "l southatlantic svelte-1dg1m99");
+    			attr_dev(div14, "name", "southatlantic");
+    			add_location(div14, file$2, 153, 5083, 8384);
+    			attr_dev(div15, "class", "l southpacific svelte-1dg1m99");
+    			attr_dev(div15, "name", "southpacific");
+    			add_location(div15, file$2, 153, 5459, 8760);
+    			attr_dev(div16, "class", "l australia svelte-1dg1m99");
+    			attr_dev(div16, "name", "australia");
+    			add_location(div16, file$2, 153, 5830, 9131);
+    			attr_dev(div17, "class", "grid2 svelte-1dg1m99");
+    			add_location(div17, file$2, 153, 0, 3301);
+    			attr_dev(div18, "class", "grid svelte-1dg1m99");
+    			add_location(div18, file$2, 153, 6192, 9493);
+    		},
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div17, anchor);
+    			append_dev(div17, div0);
+
+    			for (let i = 0; i < each_blocks_16.length; i += 1) {
+    				each_blocks_16[i].m(div0, null);
+    			}
+
+    			append_dev(div0, each0_anchor);
+    			mount_component(gate0, div0, null);
+    			/*div0_binding*/ ctx[23](div0);
+    			append_dev(div17, div1);
+
+    			for (let i = 0; i < each_blocks_15.length; i += 1) {
+    				each_blocks_15[i].m(div1, null);
+    			}
+
+    			append_dev(div1, each1_anchor);
+    			mount_component(gate1, div1, null);
+    			/*div1_binding*/ ctx[24](div1);
+    			append_dev(div17, div2);
+
+    			for (let i = 0; i < each_blocks_14.length; i += 1) {
+    				each_blocks_14[i].m(div2, null);
+    			}
+
+    			append_dev(div2, each2_anchor);
+    			mount_component(gate2, div2, null);
+    			/*div2_binding*/ ctx[25](div2);
+    			append_dev(div17, div3);
+
+    			for (let i = 0; i < each_blocks_13.length; i += 1) {
+    				each_blocks_13[i].m(div3, null);
+    			}
+
+    			append_dev(div3, each3_anchor);
+    			mount_component(gate3, div3, null);
+    			/*div3_binding*/ ctx[26](div3);
+    			append_dev(div17, div4);
+
+    			for (let i = 0; i < each_blocks_12.length; i += 1) {
+    				each_blocks_12[i].m(div4, null);
+    			}
+
+    			append_dev(div4, each4_anchor);
+    			mount_component(gate4, div4, null);
+    			/*div4_binding*/ ctx[27](div4);
+    			append_dev(div17, div5);
+
+    			for (let i = 0; i < each_blocks_11.length; i += 1) {
+    				each_blocks_11[i].m(div5, null);
+    			}
+
+    			append_dev(div5, each5_anchor);
+    			mount_component(gate5, div5, null);
+    			/*div5_binding*/ ctx[28](div5);
+    			append_dev(div17, div6);
+
+    			for (let i = 0; i < each_blocks_10.length; i += 1) {
+    				each_blocks_10[i].m(div6, null);
+    			}
+
+    			append_dev(div6, each6_anchor);
+    			mount_component(gate6, div6, null);
+    			/*div6_binding*/ ctx[29](div6);
+    			append_dev(div17, div7);
+
+    			for (let i = 0; i < each_blocks_9.length; i += 1) {
+    				each_blocks_9[i].m(div7, null);
+    			}
+
+    			append_dev(div7, each7_anchor);
+    			mount_component(gate7, div7, null);
+    			/*div7_binding*/ ctx[30](div7);
+    			append_dev(div17, div8);
+
+    			for (let i = 0; i < each_blocks_8.length; i += 1) {
+    				each_blocks_8[i].m(div8, null);
+    			}
+
+    			append_dev(div8, each8_anchor);
+    			mount_component(gate8, div8, null);
+    			/*div8_binding*/ ctx[31](div8);
+    			append_dev(div17, div9);
+
+    			for (let i = 0; i < each_blocks_7.length; i += 1) {
+    				each_blocks_7[i].m(div9, null);
+    			}
+
+    			append_dev(div9, each9_anchor);
+    			mount_component(gate9, div9, null);
+    			/*div9_binding*/ ctx[32](div9);
+    			append_dev(div17, div10);
+
+    			for (let i = 0; i < each_blocks_6.length; i += 1) {
+    				each_blocks_6[i].m(div10, null);
+    			}
+
+    			append_dev(div10, each10_anchor);
+    			mount_component(gate10, div10, null);
+    			/*div10_binding*/ ctx[33](div10);
+    			append_dev(div17, div11);
+
+    			for (let i = 0; i < each_blocks_5.length; i += 1) {
+    				each_blocks_5[i].m(div11, null);
+    			}
+
+    			append_dev(div11, each11_anchor);
+    			mount_component(gate11, div11, null);
+    			/*div11_binding*/ ctx[34](div11);
+    			append_dev(div17, div12);
+
+    			for (let i = 0; i < each_blocks_4.length; i += 1) {
+    				each_blocks_4[i].m(div12, null);
+    			}
+
+    			append_dev(div12, each12_anchor);
+    			mount_component(gate12, div12, null);
+    			/*div12_binding*/ ctx[35](div12);
+    			append_dev(div17, div13);
+
+    			for (let i = 0; i < each_blocks_3.length; i += 1) {
+    				each_blocks_3[i].m(div13, null);
+    			}
+
+    			append_dev(div13, each13_anchor);
+    			mount_component(gate13, div13, null);
+    			/*div13_binding*/ ctx[36](div13);
+    			append_dev(div17, div14);
+
+    			for (let i = 0; i < each_blocks_2.length; i += 1) {
+    				each_blocks_2[i].m(div14, null);
+    			}
+
+    			append_dev(div14, each14_anchor);
+    			mount_component(gate14, div14, null);
+    			/*div14_binding*/ ctx[37](div14);
+    			append_dev(div17, div15);
+
+    			for (let i = 0; i < each_blocks_1.length; i += 1) {
+    				each_blocks_1[i].m(div15, null);
+    			}
+
+    			append_dev(div15, each15_anchor);
+    			mount_component(gate15, div15, null);
+    			/*div15_binding*/ ctx[38](div15);
+    			append_dev(div17, div16);
+
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].m(div16, null);
+    			}
+
+    			append_dev(div16, each16_anchor);
+    			mount_component(gate16, div16, null);
+    			/*div16_binding*/ ctx[39](div16);
+    			insert_dev(target, div18, anchor);
+    			current = true;
+
+    			if (!mounted) {
+    				dispose = [
+    					listen_dev(div0, "click", /*click*/ ctx[20], false, false, false),
+    					listen_dev(div1, "click", /*click*/ ctx[20], false, false, false),
+    					listen_dev(div2, "click", /*click*/ ctx[20], false, false, false),
+    					listen_dev(div3, "click", /*click*/ ctx[20], false, false, false),
+    					listen_dev(div4, "click", /*click*/ ctx[20], false, false, false),
+    					listen_dev(div5, "click", /*click*/ ctx[20], false, false, false),
+    					listen_dev(div6, "click", /*click*/ ctx[20], false, false, false),
+    					listen_dev(div7, "click", /*click*/ ctx[20], false, false, false),
+    					listen_dev(div8, "click", /*click*/ ctx[20], false, false, false),
+    					listen_dev(div9, "click", /*click*/ ctx[20], false, false, false),
+    					listen_dev(div10, "click", /*click*/ ctx[20], false, false, false),
+    					listen_dev(div11, "click", /*click*/ ctx[20], false, false, false),
+    					listen_dev(div12, "click", /*click*/ ctx[20], false, false, false),
+    					listen_dev(div13, "click", /*click*/ ctx[20], false, false, false),
+    					listen_dev(div14, "click", /*click*/ ctx[20], false, false, false),
+    					listen_dev(div15, "click", /*click*/ ctx[20], false, false, false),
+    					listen_dev(div16, "click", /*click*/ ctx[20], false, false, false)
+    				];
+
+    				mounted = true;
+    			}
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty[0] & /*units, choose*/ 3) {
+    				const each_value_16 = /*units*/ ctx[0].filter(func);
+    				validate_each_argument(each_value_16);
+    				group_outros();
+    				for (let i = 0; i < each_blocks_16.length; i += 1) each_blocks_16[i].r();
+    				validate_each_keys(ctx, each_value_16, get_each_context_16, get_key);
+    				each_blocks_16 = update_keyed_each(each_blocks_16, dirty, get_key, 1, ctx, each_value_16, each0_lookup, div0, fix_and_outro_and_destroy_block, create_each_block_16, each0_anchor, get_each_context_16);
+    				for (let i = 0; i < each_blocks_16.length; i += 1) each_blocks_16[i].a();
+    				check_outros();
+    			}
+
+    			const gate0_changes = {};
+    			if (dirty[0] & /*places*/ 4) gate0_changes.places = /*places*/ ctx[2];
+    			if (dirty[0] & /*choose*/ 2) gate0_changes.choose = /*choose*/ ctx[1];
+    			gate0.$set(gate0_changes);
+
+    			if (dirty[0] & /*units, choose*/ 3) {
+    				const each_value_15 = /*units*/ ctx[0].filter(func_1);
+    				validate_each_argument(each_value_15);
+    				group_outros();
+    				for (let i = 0; i < each_blocks_15.length; i += 1) each_blocks_15[i].r();
+    				validate_each_keys(ctx, each_value_15, get_each_context_15, get_key_1);
+    				each_blocks_15 = update_keyed_each(each_blocks_15, dirty, get_key_1, 1, ctx, each_value_15, each1_lookup, div1, fix_and_outro_and_destroy_block, create_each_block_15, each1_anchor, get_each_context_15);
+    				for (let i = 0; i < each_blocks_15.length; i += 1) each_blocks_15[i].a();
+    				check_outros();
+    			}
+
+    			const gate1_changes = {};
+    			if (dirty[0] & /*places*/ 4) gate1_changes.places = /*places*/ ctx[2];
+    			if (dirty[0] & /*choose*/ 2) gate1_changes.choose = /*choose*/ ctx[1];
+    			gate1.$set(gate1_changes);
+
+    			if (dirty[0] & /*units, choose*/ 3) {
+    				const each_value_14 = /*units*/ ctx[0].filter(func_2);
+    				validate_each_argument(each_value_14);
+    				group_outros();
+    				for (let i = 0; i < each_blocks_14.length; i += 1) each_blocks_14[i].r();
+    				validate_each_keys(ctx, each_value_14, get_each_context_14, get_key_2);
+    				each_blocks_14 = update_keyed_each(each_blocks_14, dirty, get_key_2, 1, ctx, each_value_14, each2_lookup, div2, fix_and_outro_and_destroy_block, create_each_block_14, each2_anchor, get_each_context_14);
+    				for (let i = 0; i < each_blocks_14.length; i += 1) each_blocks_14[i].a();
+    				check_outros();
+    			}
+
+    			const gate2_changes = {};
+    			if (dirty[0] & /*places*/ 4) gate2_changes.places = /*places*/ ctx[2];
+    			if (dirty[0] & /*choose*/ 2) gate2_changes.choose = /*choose*/ ctx[1];
+    			gate2.$set(gate2_changes);
+
+    			if (dirty[0] & /*units, choose*/ 3) {
+    				const each_value_13 = /*units*/ ctx[0].filter(func_3);
+    				validate_each_argument(each_value_13);
+    				group_outros();
+    				for (let i = 0; i < each_blocks_13.length; i += 1) each_blocks_13[i].r();
+    				validate_each_keys(ctx, each_value_13, get_each_context_13, get_key_3);
+    				each_blocks_13 = update_keyed_each(each_blocks_13, dirty, get_key_3, 1, ctx, each_value_13, each3_lookup, div3, fix_and_outro_and_destroy_block, create_each_block_13, each3_anchor, get_each_context_13);
+    				for (let i = 0; i < each_blocks_13.length; i += 1) each_blocks_13[i].a();
+    				check_outros();
+    			}
+
+    			const gate3_changes = {};
+    			if (dirty[0] & /*places*/ 4) gate3_changes.places = /*places*/ ctx[2];
+    			if (dirty[0] & /*choose*/ 2) gate3_changes.choose = /*choose*/ ctx[1];
+    			gate3.$set(gate3_changes);
+
+    			if (dirty[0] & /*units, choose*/ 3) {
+    				const each_value_12 = /*units*/ ctx[0].filter(func_4);
+    				validate_each_argument(each_value_12);
+    				group_outros();
+    				for (let i = 0; i < each_blocks_12.length; i += 1) each_blocks_12[i].r();
+    				validate_each_keys(ctx, each_value_12, get_each_context_12, get_key_4);
+    				each_blocks_12 = update_keyed_each(each_blocks_12, dirty, get_key_4, 1, ctx, each_value_12, each4_lookup, div4, fix_and_outro_and_destroy_block, create_each_block_12, each4_anchor, get_each_context_12);
+    				for (let i = 0; i < each_blocks_12.length; i += 1) each_blocks_12[i].a();
+    				check_outros();
+    			}
+
+    			const gate4_changes = {};
+    			if (dirty[0] & /*places*/ 4) gate4_changes.places = /*places*/ ctx[2];
+    			if (dirty[0] & /*choose*/ 2) gate4_changes.choose = /*choose*/ ctx[1];
+    			gate4.$set(gate4_changes);
+
+    			if (dirty[0] & /*units, choose*/ 3) {
+    				const each_value_11 = /*units*/ ctx[0].filter(func_5);
+    				validate_each_argument(each_value_11);
+    				group_outros();
+    				for (let i = 0; i < each_blocks_11.length; i += 1) each_blocks_11[i].r();
+    				validate_each_keys(ctx, each_value_11, get_each_context_11, get_key_5);
+    				each_blocks_11 = update_keyed_each(each_blocks_11, dirty, get_key_5, 1, ctx, each_value_11, each5_lookup, div5, fix_and_outro_and_destroy_block, create_each_block_11, each5_anchor, get_each_context_11);
+    				for (let i = 0; i < each_blocks_11.length; i += 1) each_blocks_11[i].a();
+    				check_outros();
+    			}
+
+    			const gate5_changes = {};
+    			if (dirty[0] & /*places*/ 4) gate5_changes.places = /*places*/ ctx[2];
+    			if (dirty[0] & /*choose*/ 2) gate5_changes.choose = /*choose*/ ctx[1];
+    			gate5.$set(gate5_changes);
+
+    			if (dirty[0] & /*units, choose*/ 3) {
+    				const each_value_10 = /*units*/ ctx[0].filter(func_6);
+    				validate_each_argument(each_value_10);
+    				group_outros();
+    				for (let i = 0; i < each_blocks_10.length; i += 1) each_blocks_10[i].r();
+    				validate_each_keys(ctx, each_value_10, get_each_context_10, get_key_6);
+    				each_blocks_10 = update_keyed_each(each_blocks_10, dirty, get_key_6, 1, ctx, each_value_10, each6_lookup, div6, fix_and_outro_and_destroy_block, create_each_block_10, each6_anchor, get_each_context_10);
+    				for (let i = 0; i < each_blocks_10.length; i += 1) each_blocks_10[i].a();
+    				check_outros();
+    			}
+
+    			const gate6_changes = {};
+    			if (dirty[0] & /*places*/ 4) gate6_changes.places = /*places*/ ctx[2];
+    			if (dirty[0] & /*choose*/ 2) gate6_changes.choose = /*choose*/ ctx[1];
+    			gate6.$set(gate6_changes);
+
+    			if (dirty[0] & /*units, choose*/ 3) {
+    				const each_value_9 = /*units*/ ctx[0].filter(func_7);
+    				validate_each_argument(each_value_9);
+    				group_outros();
+    				for (let i = 0; i < each_blocks_9.length; i += 1) each_blocks_9[i].r();
+    				validate_each_keys(ctx, each_value_9, get_each_context_9, get_key_7);
+    				each_blocks_9 = update_keyed_each(each_blocks_9, dirty, get_key_7, 1, ctx, each_value_9, each7_lookup, div7, fix_and_outro_and_destroy_block, create_each_block_9, each7_anchor, get_each_context_9);
+    				for (let i = 0; i < each_blocks_9.length; i += 1) each_blocks_9[i].a();
+    				check_outros();
+    			}
+
+    			const gate7_changes = {};
+    			if (dirty[0] & /*places*/ 4) gate7_changes.places = /*places*/ ctx[2];
+    			if (dirty[0] & /*choose*/ 2) gate7_changes.choose = /*choose*/ ctx[1];
+    			gate7.$set(gate7_changes);
+
+    			if (dirty[0] & /*units, choose*/ 3) {
+    				const each_value_8 = /*units*/ ctx[0].filter(func_8);
+    				validate_each_argument(each_value_8);
+    				group_outros();
+    				for (let i = 0; i < each_blocks_8.length; i += 1) each_blocks_8[i].r();
+    				validate_each_keys(ctx, each_value_8, get_each_context_8, get_key_8);
+    				each_blocks_8 = update_keyed_each(each_blocks_8, dirty, get_key_8, 1, ctx, each_value_8, each8_lookup, div8, fix_and_outro_and_destroy_block, create_each_block_8, each8_anchor, get_each_context_8);
+    				for (let i = 0; i < each_blocks_8.length; i += 1) each_blocks_8[i].a();
+    				check_outros();
+    			}
+
+    			const gate8_changes = {};
+    			if (dirty[0] & /*places*/ 4) gate8_changes.places = /*places*/ ctx[2];
+    			if (dirty[0] & /*choose*/ 2) gate8_changes.choose = /*choose*/ ctx[1];
+    			gate8.$set(gate8_changes);
+
+    			if (dirty[0] & /*units, choose*/ 3) {
+    				const each_value_7 = /*units*/ ctx[0].filter(func_9);
+    				validate_each_argument(each_value_7);
+    				group_outros();
+    				for (let i = 0; i < each_blocks_7.length; i += 1) each_blocks_7[i].r();
+    				validate_each_keys(ctx, each_value_7, get_each_context_7, get_key_9);
+    				each_blocks_7 = update_keyed_each(each_blocks_7, dirty, get_key_9, 1, ctx, each_value_7, each9_lookup, div9, fix_and_outro_and_destroy_block, create_each_block_7, each9_anchor, get_each_context_7);
+    				for (let i = 0; i < each_blocks_7.length; i += 1) each_blocks_7[i].a();
+    				check_outros();
+    			}
+
+    			const gate9_changes = {};
+    			if (dirty[0] & /*places*/ 4) gate9_changes.places = /*places*/ ctx[2];
+    			if (dirty[0] & /*choose*/ 2) gate9_changes.choose = /*choose*/ ctx[1];
+    			gate9.$set(gate9_changes);
+
+    			if (dirty[0] & /*units, choose*/ 3) {
+    				const each_value_6 = /*units*/ ctx[0].filter(func_10);
+    				validate_each_argument(each_value_6);
+    				group_outros();
+    				for (let i = 0; i < each_blocks_6.length; i += 1) each_blocks_6[i].r();
+    				validate_each_keys(ctx, each_value_6, get_each_context_6, get_key_10);
+    				each_blocks_6 = update_keyed_each(each_blocks_6, dirty, get_key_10, 1, ctx, each_value_6, each10_lookup, div10, fix_and_outro_and_destroy_block, create_each_block_6, each10_anchor, get_each_context_6);
+    				for (let i = 0; i < each_blocks_6.length; i += 1) each_blocks_6[i].a();
+    				check_outros();
+    			}
+
+    			const gate10_changes = {};
+    			if (dirty[0] & /*places*/ 4) gate10_changes.places = /*places*/ ctx[2];
+    			if (dirty[0] & /*choose*/ 2) gate10_changes.choose = /*choose*/ ctx[1];
+    			gate10.$set(gate10_changes);
+
+    			if (dirty[0] & /*units, choose*/ 3) {
+    				const each_value_5 = /*units*/ ctx[0].filter(func_11);
+    				validate_each_argument(each_value_5);
+    				group_outros();
+    				for (let i = 0; i < each_blocks_5.length; i += 1) each_blocks_5[i].r();
+    				validate_each_keys(ctx, each_value_5, get_each_context_5, get_key_11);
+    				each_blocks_5 = update_keyed_each(each_blocks_5, dirty, get_key_11, 1, ctx, each_value_5, each11_lookup, div11, fix_and_outro_and_destroy_block, create_each_block_5, each11_anchor, get_each_context_5);
+    				for (let i = 0; i < each_blocks_5.length; i += 1) each_blocks_5[i].a();
+    				check_outros();
+    			}
+
+    			const gate11_changes = {};
+    			if (dirty[0] & /*places*/ 4) gate11_changes.places = /*places*/ ctx[2];
+    			if (dirty[0] & /*choose*/ 2) gate11_changes.choose = /*choose*/ ctx[1];
+    			gate11.$set(gate11_changes);
+
+    			if (dirty[0] & /*units, choose*/ 3) {
+    				const each_value_4 = /*units*/ ctx[0].filter(func_12);
+    				validate_each_argument(each_value_4);
+    				group_outros();
+    				for (let i = 0; i < each_blocks_4.length; i += 1) each_blocks_4[i].r();
+    				validate_each_keys(ctx, each_value_4, get_each_context_4, get_key_12);
+    				each_blocks_4 = update_keyed_each(each_blocks_4, dirty, get_key_12, 1, ctx, each_value_4, each12_lookup, div12, fix_and_outro_and_destroy_block, create_each_block_4, each12_anchor, get_each_context_4);
+    				for (let i = 0; i < each_blocks_4.length; i += 1) each_blocks_4[i].a();
+    				check_outros();
+    			}
+
+    			const gate12_changes = {};
+    			if (dirty[0] & /*places*/ 4) gate12_changes.places = /*places*/ ctx[2];
+    			if (dirty[0] & /*choose*/ 2) gate12_changes.choose = /*choose*/ ctx[1];
+    			gate12.$set(gate12_changes);
+
+    			if (dirty[0] & /*units, choose*/ 3) {
+    				const each_value_3 = /*units*/ ctx[0].filter(func_13);
+    				validate_each_argument(each_value_3);
+    				group_outros();
+    				for (let i = 0; i < each_blocks_3.length; i += 1) each_blocks_3[i].r();
+    				validate_each_keys(ctx, each_value_3, get_each_context_3, get_key_13);
+    				each_blocks_3 = update_keyed_each(each_blocks_3, dirty, get_key_13, 1, ctx, each_value_3, each13_lookup, div13, fix_and_outro_and_destroy_block, create_each_block_3, each13_anchor, get_each_context_3);
+    				for (let i = 0; i < each_blocks_3.length; i += 1) each_blocks_3[i].a();
+    				check_outros();
+    			}
+
+    			const gate13_changes = {};
+    			if (dirty[0] & /*places*/ 4) gate13_changes.places = /*places*/ ctx[2];
+    			if (dirty[0] & /*choose*/ 2) gate13_changes.choose = /*choose*/ ctx[1];
+    			gate13.$set(gate13_changes);
+
+    			if (dirty[0] & /*units, choose*/ 3) {
+    				const each_value_2 = /*units*/ ctx[0].filter(func_14);
+    				validate_each_argument(each_value_2);
+    				group_outros();
+    				for (let i = 0; i < each_blocks_2.length; i += 1) each_blocks_2[i].r();
+    				validate_each_keys(ctx, each_value_2, get_each_context_2, get_key_14);
+    				each_blocks_2 = update_keyed_each(each_blocks_2, dirty, get_key_14, 1, ctx, each_value_2, each14_lookup, div14, fix_and_outro_and_destroy_block, create_each_block_2, each14_anchor, get_each_context_2);
+    				for (let i = 0; i < each_blocks_2.length; i += 1) each_blocks_2[i].a();
+    				check_outros();
+    			}
+
+    			const gate14_changes = {};
+    			if (dirty[0] & /*places*/ 4) gate14_changes.places = /*places*/ ctx[2];
+    			if (dirty[0] & /*choose*/ 2) gate14_changes.choose = /*choose*/ ctx[1];
+    			gate14.$set(gate14_changes);
+
+    			if (dirty[0] & /*units, choose*/ 3) {
+    				const each_value_1 = /*units*/ ctx[0].filter(func_15);
+    				validate_each_argument(each_value_1);
+    				group_outros();
+    				for (let i = 0; i < each_blocks_1.length; i += 1) each_blocks_1[i].r();
+    				validate_each_keys(ctx, each_value_1, get_each_context_1, get_key_15);
+    				each_blocks_1 = update_keyed_each(each_blocks_1, dirty, get_key_15, 1, ctx, each_value_1, each15_lookup, div15, fix_and_outro_and_destroy_block, create_each_block_1, each15_anchor, get_each_context_1);
+    				for (let i = 0; i < each_blocks_1.length; i += 1) each_blocks_1[i].a();
+    				check_outros();
+    			}
+
+    			const gate15_changes = {};
+    			if (dirty[0] & /*places*/ 4) gate15_changes.places = /*places*/ ctx[2];
+    			if (dirty[0] & /*choose*/ 2) gate15_changes.choose = /*choose*/ ctx[1];
+    			gate15.$set(gate15_changes);
+
+    			if (dirty[0] & /*units, choose*/ 3) {
+    				const each_value = /*units*/ ctx[0].filter(func_16);
+    				validate_each_argument(each_value);
+    				group_outros();
+    				for (let i = 0; i < each_blocks.length; i += 1) each_blocks[i].r();
+    				validate_each_keys(ctx, each_value, get_each_context, get_key_16);
+    				each_blocks = update_keyed_each(each_blocks, dirty, get_key_16, 1, ctx, each_value, each16_lookup, div16, fix_and_outro_and_destroy_block, create_each_block, each16_anchor, get_each_context);
+    				for (let i = 0; i < each_blocks.length; i += 1) each_blocks[i].a();
+    				check_outros();
+    			}
+
+    			const gate16_changes = {};
+    			if (dirty[0] & /*places*/ 4) gate16_changes.places = /*places*/ ctx[2];
+    			if (dirty[0] & /*choose*/ 2) gate16_changes.choose = /*choose*/ ctx[1];
+    			gate16.$set(gate16_changes);
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+
+    			for (let i = 0; i < each_value_16.length; i += 1) {
+    				transition_in(each_blocks_16[i]);
+    			}
+
+    			transition_in(gate0.$$.fragment, local);
+
+    			for (let i = 0; i < each_value_15.length; i += 1) {
+    				transition_in(each_blocks_15[i]);
+    			}
+
+    			transition_in(gate1.$$.fragment, local);
+
+    			for (let i = 0; i < each_value_14.length; i += 1) {
+    				transition_in(each_blocks_14[i]);
+    			}
+
+    			transition_in(gate2.$$.fragment, local);
+
+    			for (let i = 0; i < each_value_13.length; i += 1) {
+    				transition_in(each_blocks_13[i]);
+    			}
+
+    			transition_in(gate3.$$.fragment, local);
+
+    			for (let i = 0; i < each_value_12.length; i += 1) {
+    				transition_in(each_blocks_12[i]);
+    			}
+
+    			transition_in(gate4.$$.fragment, local);
+
+    			for (let i = 0; i < each_value_11.length; i += 1) {
+    				transition_in(each_blocks_11[i]);
+    			}
+
+    			transition_in(gate5.$$.fragment, local);
+
+    			for (let i = 0; i < each_value_10.length; i += 1) {
+    				transition_in(each_blocks_10[i]);
+    			}
+
+    			transition_in(gate6.$$.fragment, local);
+
+    			for (let i = 0; i < each_value_9.length; i += 1) {
+    				transition_in(each_blocks_9[i]);
+    			}
+
+    			transition_in(gate7.$$.fragment, local);
+
+    			for (let i = 0; i < each_value_8.length; i += 1) {
+    				transition_in(each_blocks_8[i]);
+    			}
+
+    			transition_in(gate8.$$.fragment, local);
+
+    			for (let i = 0; i < each_value_7.length; i += 1) {
+    				transition_in(each_blocks_7[i]);
+    			}
+
+    			transition_in(gate9.$$.fragment, local);
+
+    			for (let i = 0; i < each_value_6.length; i += 1) {
+    				transition_in(each_blocks_6[i]);
+    			}
+
+    			transition_in(gate10.$$.fragment, local);
+
+    			for (let i = 0; i < each_value_5.length; i += 1) {
+    				transition_in(each_blocks_5[i]);
+    			}
+
+    			transition_in(gate11.$$.fragment, local);
+
+    			for (let i = 0; i < each_value_4.length; i += 1) {
+    				transition_in(each_blocks_4[i]);
+    			}
+
+    			transition_in(gate12.$$.fragment, local);
+
+    			for (let i = 0; i < each_value_3.length; i += 1) {
+    				transition_in(each_blocks_3[i]);
+    			}
+
+    			transition_in(gate13.$$.fragment, local);
+
+    			for (let i = 0; i < each_value_2.length; i += 1) {
+    				transition_in(each_blocks_2[i]);
+    			}
+
+    			transition_in(gate14.$$.fragment, local);
+
+    			for (let i = 0; i < each_value_1.length; i += 1) {
+    				transition_in(each_blocks_1[i]);
+    			}
+
+    			transition_in(gate15.$$.fragment, local);
+
+    			for (let i = 0; i < each_value.length; i += 1) {
+    				transition_in(each_blocks[i]);
+    			}
+
+    			transition_in(gate16.$$.fragment, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			for (let i = 0; i < each_blocks_16.length; i += 1) {
+    				transition_out(each_blocks_16[i]);
+    			}
+
+    			transition_out(gate0.$$.fragment, local);
+
+    			for (let i = 0; i < each_blocks_15.length; i += 1) {
+    				transition_out(each_blocks_15[i]);
+    			}
+
+    			transition_out(gate1.$$.fragment, local);
+
+    			for (let i = 0; i < each_blocks_14.length; i += 1) {
+    				transition_out(each_blocks_14[i]);
+    			}
+
+    			transition_out(gate2.$$.fragment, local);
+
+    			for (let i = 0; i < each_blocks_13.length; i += 1) {
+    				transition_out(each_blocks_13[i]);
+    			}
+
+    			transition_out(gate3.$$.fragment, local);
+
+    			for (let i = 0; i < each_blocks_12.length; i += 1) {
+    				transition_out(each_blocks_12[i]);
+    			}
+
+    			transition_out(gate4.$$.fragment, local);
+
+    			for (let i = 0; i < each_blocks_11.length; i += 1) {
+    				transition_out(each_blocks_11[i]);
+    			}
+
+    			transition_out(gate5.$$.fragment, local);
+
+    			for (let i = 0; i < each_blocks_10.length; i += 1) {
+    				transition_out(each_blocks_10[i]);
+    			}
+
+    			transition_out(gate6.$$.fragment, local);
+
+    			for (let i = 0; i < each_blocks_9.length; i += 1) {
+    				transition_out(each_blocks_9[i]);
+    			}
+
+    			transition_out(gate7.$$.fragment, local);
+
+    			for (let i = 0; i < each_blocks_8.length; i += 1) {
+    				transition_out(each_blocks_8[i]);
+    			}
+
+    			transition_out(gate8.$$.fragment, local);
+
+    			for (let i = 0; i < each_blocks_7.length; i += 1) {
+    				transition_out(each_blocks_7[i]);
+    			}
+
+    			transition_out(gate9.$$.fragment, local);
+
+    			for (let i = 0; i < each_blocks_6.length; i += 1) {
+    				transition_out(each_blocks_6[i]);
+    			}
+
+    			transition_out(gate10.$$.fragment, local);
+
+    			for (let i = 0; i < each_blocks_5.length; i += 1) {
+    				transition_out(each_blocks_5[i]);
+    			}
+
+    			transition_out(gate11.$$.fragment, local);
+
+    			for (let i = 0; i < each_blocks_4.length; i += 1) {
+    				transition_out(each_blocks_4[i]);
+    			}
+
+    			transition_out(gate12.$$.fragment, local);
+
+    			for (let i = 0; i < each_blocks_3.length; i += 1) {
+    				transition_out(each_blocks_3[i]);
+    			}
+
+    			transition_out(gate13.$$.fragment, local);
+
+    			for (let i = 0; i < each_blocks_2.length; i += 1) {
+    				transition_out(each_blocks_2[i]);
+    			}
+
+    			transition_out(gate14.$$.fragment, local);
+
+    			for (let i = 0; i < each_blocks_1.length; i += 1) {
+    				transition_out(each_blocks_1[i]);
+    			}
+
+    			transition_out(gate15.$$.fragment, local);
+
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				transition_out(each_blocks[i]);
+    			}
+
+    			transition_out(gate16.$$.fragment, local);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div17);
+
+    			for (let i = 0; i < each_blocks_16.length; i += 1) {
+    				each_blocks_16[i].d();
+    			}
+
+    			destroy_component(gate0);
+    			/*div0_binding*/ ctx[23](null);
+
+    			for (let i = 0; i < each_blocks_15.length; i += 1) {
+    				each_blocks_15[i].d();
+    			}
+
+    			destroy_component(gate1);
+    			/*div1_binding*/ ctx[24](null);
+
+    			for (let i = 0; i < each_blocks_14.length; i += 1) {
+    				each_blocks_14[i].d();
+    			}
+
+    			destroy_component(gate2);
+    			/*div2_binding*/ ctx[25](null);
+
+    			for (let i = 0; i < each_blocks_13.length; i += 1) {
+    				each_blocks_13[i].d();
+    			}
+
+    			destroy_component(gate3);
+    			/*div3_binding*/ ctx[26](null);
+
+    			for (let i = 0; i < each_blocks_12.length; i += 1) {
+    				each_blocks_12[i].d();
+    			}
+
+    			destroy_component(gate4);
+    			/*div4_binding*/ ctx[27](null);
+
+    			for (let i = 0; i < each_blocks_11.length; i += 1) {
+    				each_blocks_11[i].d();
+    			}
+
+    			destroy_component(gate5);
+    			/*div5_binding*/ ctx[28](null);
+
+    			for (let i = 0; i < each_blocks_10.length; i += 1) {
+    				each_blocks_10[i].d();
+    			}
+
+    			destroy_component(gate6);
+    			/*div6_binding*/ ctx[29](null);
+
+    			for (let i = 0; i < each_blocks_9.length; i += 1) {
+    				each_blocks_9[i].d();
+    			}
+
+    			destroy_component(gate7);
+    			/*div7_binding*/ ctx[30](null);
+
+    			for (let i = 0; i < each_blocks_8.length; i += 1) {
+    				each_blocks_8[i].d();
+    			}
+
+    			destroy_component(gate8);
+    			/*div8_binding*/ ctx[31](null);
+
+    			for (let i = 0; i < each_blocks_7.length; i += 1) {
+    				each_blocks_7[i].d();
+    			}
+
+    			destroy_component(gate9);
+    			/*div9_binding*/ ctx[32](null);
+
+    			for (let i = 0; i < each_blocks_6.length; i += 1) {
+    				each_blocks_6[i].d();
+    			}
+
+    			destroy_component(gate10);
+    			/*div10_binding*/ ctx[33](null);
+
+    			for (let i = 0; i < each_blocks_5.length; i += 1) {
+    				each_blocks_5[i].d();
+    			}
+
+    			destroy_component(gate11);
+    			/*div11_binding*/ ctx[34](null);
+
+    			for (let i = 0; i < each_blocks_4.length; i += 1) {
+    				each_blocks_4[i].d();
+    			}
+
+    			destroy_component(gate12);
+    			/*div12_binding*/ ctx[35](null);
+
+    			for (let i = 0; i < each_blocks_3.length; i += 1) {
+    				each_blocks_3[i].d();
+    			}
+
+    			destroy_component(gate13);
+    			/*div13_binding*/ ctx[36](null);
+
+    			for (let i = 0; i < each_blocks_2.length; i += 1) {
+    				each_blocks_2[i].d();
+    			}
+
+    			destroy_component(gate14);
+    			/*div14_binding*/ ctx[37](null);
+
+    			for (let i = 0; i < each_blocks_1.length; i += 1) {
+    				each_blocks_1[i].d();
+    			}
+
+    			destroy_component(gate15);
+    			/*div15_binding*/ ctx[38](null);
+
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].d();
+    			}
+
+    			destroy_component(gate16);
+    			/*div16_binding*/ ctx[39](null);
+    			if (detaching) detach_dev(div18);
+    			mounted = false;
+    			run_all(dispose);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_fragment$2.name,
+    		type: "component",
+    		source: "",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    const func = u => u.place == "arcticocean";
+    const func_1 = u => u.place == "northpacific";
+    const func_2 = u => u.place == "northamerica";
+    const func_3 = u => u.place == "northatlantic";
+    const func_4 = u => u.place == "scandinavia";
+    const func_5 = u => u.place == "europe";
+    const func_6 = u => u.place == "northasia";
+    const func_7 = u => u.place == "southamerica";
+    const func_8 = u => u.place == "southasia";
+    const func_9 = u => u.place == "arabia";
+    const func_10 = u => u.place == "westafrica";
+    const func_11 = u => u.place == "indianocean";
+    const func_12 = u => u.place == "eastafrica";
+    const func_13 = u => u.place == "antarctica";
+    const func_14 = u => u.place == "southatlantic";
+    const func_15 = u => u.place == "southpacific";
+    const func_16 = u => u.place == "australia";
+
+    function instance$2($$self, $$props, $$invalidate) {
+    	let { $$slots: slots = {}, $$scope } = $$props;
+    	validate_slots("Map", slots, []);
+    	let { units = [] } = $$props;
+    	let { choose } = $$props;
+
+    	onMount(x => {
+    		
+    	});
+
+    	let dispatch = createEventDispatcher();
+    	let click = e => choose("place", e.target.getAttribute("name"));
+
+    	let arcticocean,
+    		northpacific,
+    		northamerica,
+    		northatlantic,
+    		scandinavia,
+    		europe,
+    		northasia,
+    		southamerica,
+    		southasia,
+    		arabia,
+    		westafrica,
+    		indianocean,
+    		eastafrica,
+    		antarctica,
+    		southatlantic,
+    		southpacific,
+    		australia;
+
+    	let { places = {} } = $$props;
+
+    	const [send, receive] = crossfade({
+    		duration: d => Math.sqrt(d * 200),
+    		fallback(node, params) {
+    			const style = getComputedStyle(node);
+    			const transform = style.transform === "none" ? "" : style.transform;
+
+    			return {
+    				duration: 600,
+    				easing: quintOut,
+    				css: t => `
+					transform: ${transform} scale(${t});
+					opacity: ${t}
+				`
+    			};
+    		}
+    	});
+
+    	const writable_props = ["units", "choose", "places"];
+
+    	Object.keys($$props).forEach(key => {
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<Map> was created with unknown prop '${key}'`);
+    	});
+
+    	function div0_binding($$value) {
+    		binding_callbacks[$$value ? "unshift" : "push"](() => {
+    			arcticocean = $$value;
+    			$$invalidate(3, arcticocean);
+    		});
+    	}
+
+    	function div1_binding($$value) {
+    		binding_callbacks[$$value ? "unshift" : "push"](() => {
+    			northpacific = $$value;
+    			$$invalidate(4, northpacific);
+    		});
+    	}
+
+    	function div2_binding($$value) {
+    		binding_callbacks[$$value ? "unshift" : "push"](() => {
+    			northamerica = $$value;
+    			$$invalidate(5, northamerica);
+    		});
+    	}
+
+    	function div3_binding($$value) {
+    		binding_callbacks[$$value ? "unshift" : "push"](() => {
+    			northatlantic = $$value;
+    			$$invalidate(6, northatlantic);
+    		});
+    	}
+
+    	function div4_binding($$value) {
+    		binding_callbacks[$$value ? "unshift" : "push"](() => {
+    			scandinavia = $$value;
+    			$$invalidate(7, scandinavia);
+    		});
+    	}
+
+    	function div5_binding($$value) {
+    		binding_callbacks[$$value ? "unshift" : "push"](() => {
+    			europe = $$value;
+    			$$invalidate(8, europe);
+    		});
+    	}
+
+    	function div6_binding($$value) {
+    		binding_callbacks[$$value ? "unshift" : "push"](() => {
+    			northasia = $$value;
+    			$$invalidate(9, northasia);
+    		});
+    	}
+
+    	function div7_binding($$value) {
+    		binding_callbacks[$$value ? "unshift" : "push"](() => {
+    			southamerica = $$value;
+    			$$invalidate(10, southamerica);
+    		});
+    	}
+
+    	function div8_binding($$value) {
+    		binding_callbacks[$$value ? "unshift" : "push"](() => {
+    			southasia = $$value;
+    			$$invalidate(11, southasia);
+    		});
+    	}
+
+    	function div9_binding($$value) {
+    		binding_callbacks[$$value ? "unshift" : "push"](() => {
+    			arabia = $$value;
+    			$$invalidate(12, arabia);
+    		});
+    	}
+
+    	function div10_binding($$value) {
+    		binding_callbacks[$$value ? "unshift" : "push"](() => {
+    			westafrica = $$value;
+    			$$invalidate(13, westafrica);
+    		});
+    	}
+
+    	function div11_binding($$value) {
+    		binding_callbacks[$$value ? "unshift" : "push"](() => {
+    			indianocean = $$value;
+    			$$invalidate(14, indianocean);
+    		});
+    	}
+
+    	function div12_binding($$value) {
+    		binding_callbacks[$$value ? "unshift" : "push"](() => {
+    			eastafrica = $$value;
+    			$$invalidate(15, eastafrica);
+    		});
+    	}
+
+    	function div13_binding($$value) {
+    		binding_callbacks[$$value ? "unshift" : "push"](() => {
+    			antarctica = $$value;
+    			$$invalidate(16, antarctica);
+    		});
+    	}
+
+    	function div14_binding($$value) {
+    		binding_callbacks[$$value ? "unshift" : "push"](() => {
+    			southatlantic = $$value;
+    			$$invalidate(17, southatlantic);
+    		});
+    	}
+
+    	function div15_binding($$value) {
+    		binding_callbacks[$$value ? "unshift" : "push"](() => {
+    			southpacific = $$value;
+    			$$invalidate(18, southpacific);
+    		});
+    	}
+
+    	function div16_binding($$value) {
+    		binding_callbacks[$$value ? "unshift" : "push"](() => {
+    			australia = $$value;
+    			$$invalidate(19, australia);
+    		});
+    	}
+
+    	$$self.$$set = $$props => {
+    		if ("units" in $$props) $$invalidate(0, units = $$props.units);
+    		if ("choose" in $$props) $$invalidate(1, choose = $$props.choose);
+    		if ("places" in $$props) $$invalidate(2, places = $$props.places);
+    	};
+
+    	$$self.$capture_state = () => ({
+    		createEventDispatcher,
+    		Unit,
+    		Gate,
+    		onMount,
+    		units,
+    		choose,
+    		dispatch,
+    		click,
+    		arcticocean,
+    		northpacific,
+    		northamerica,
+    		northatlantic,
+    		scandinavia,
+    		europe,
+    		northasia,
+    		southamerica,
+    		southasia,
+    		arabia,
+    		westafrica,
+    		indianocean,
+    		eastafrica,
+    		antarctica,
+    		southatlantic,
+    		southpacific,
+    		australia,
+    		places,
+    		quintOut,
+    		crossfade,
+    		flip,
+    		send,
+    		receive
+    	});
+
+    	$$self.$inject_state = $$props => {
+    		if ("units" in $$props) $$invalidate(0, units = $$props.units);
+    		if ("choose" in $$props) $$invalidate(1, choose = $$props.choose);
+    		if ("dispatch" in $$props) dispatch = $$props.dispatch;
+    		if ("click" in $$props) $$invalidate(20, click = $$props.click);
+    		if ("arcticocean" in $$props) $$invalidate(3, arcticocean = $$props.arcticocean);
+    		if ("northpacific" in $$props) $$invalidate(4, northpacific = $$props.northpacific);
+    		if ("northamerica" in $$props) $$invalidate(5, northamerica = $$props.northamerica);
+    		if ("northatlantic" in $$props) $$invalidate(6, northatlantic = $$props.northatlantic);
+    		if ("scandinavia" in $$props) $$invalidate(7, scandinavia = $$props.scandinavia);
+    		if ("europe" in $$props) $$invalidate(8, europe = $$props.europe);
+    		if ("northasia" in $$props) $$invalidate(9, northasia = $$props.northasia);
+    		if ("southamerica" in $$props) $$invalidate(10, southamerica = $$props.southamerica);
+    		if ("southasia" in $$props) $$invalidate(11, southasia = $$props.southasia);
+    		if ("arabia" in $$props) $$invalidate(12, arabia = $$props.arabia);
+    		if ("westafrica" in $$props) $$invalidate(13, westafrica = $$props.westafrica);
+    		if ("indianocean" in $$props) $$invalidate(14, indianocean = $$props.indianocean);
+    		if ("eastafrica" in $$props) $$invalidate(15, eastafrica = $$props.eastafrica);
+    		if ("antarctica" in $$props) $$invalidate(16, antarctica = $$props.antarctica);
+    		if ("southatlantic" in $$props) $$invalidate(17, southatlantic = $$props.southatlantic);
+    		if ("southpacific" in $$props) $$invalidate(18, southpacific = $$props.southpacific);
+    		if ("australia" in $$props) $$invalidate(19, australia = $$props.australia);
+    		if ("places" in $$props) $$invalidate(2, places = $$props.places);
+    	};
+
+    	if ($$props && "$$inject" in $$props) {
+    		$$self.$inject_state($$props.$$inject);
+    	}
+
+    	return [
+    		units,
+    		choose,
+    		places,
+    		arcticocean,
+    		northpacific,
+    		northamerica,
+    		northatlantic,
+    		scandinavia,
+    		europe,
+    		northasia,
+    		southamerica,
+    		southasia,
+    		arabia,
+    		westafrica,
+    		indianocean,
+    		eastafrica,
+    		antarctica,
+    		southatlantic,
+    		southpacific,
+    		australia,
+    		click,
+    		send,
+    		receive,
+    		div0_binding,
+    		div1_binding,
+    		div2_binding,
+    		div3_binding,
+    		div4_binding,
+    		div5_binding,
+    		div6_binding,
+    		div7_binding,
+    		div8_binding,
+    		div9_binding,
+    		div10_binding,
+    		div11_binding,
+    		div12_binding,
+    		div13_binding,
+    		div14_binding,
+    		div15_binding,
+    		div16_binding
+    	];
+    }
+
+    class Map$1 extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance$2, create_fragment$2, safe_not_equal, { units: 0, choose: 1, places: 2 }, [-1, -1, -1]);
+
+    		dispatch_dev("SvelteRegisterComponent", {
+    			component: this,
+    			tagName: "Map",
+    			options,
+    			id: create_fragment$2.name
+    		});
+
+    		const { ctx } = this.$$;
+    		const props = options.props || {};
+
+    		if (/*choose*/ ctx[1] === undefined && !("choose" in props)) {
+    			console.warn("<Map> was created without expected prop 'choose'");
+    		}
+    	}
+
+    	get units() {
+    		throw new Error("<Map>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set units(value) {
+    		throw new Error("<Map>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get choose() {
+    		throw new Error("<Map>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set choose(value) {
+    		throw new Error("<Map>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get places() {
+    		throw new Error("<Map>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set places(value) {
+    		throw new Error("<Map>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+    }
+
+    /* src\components\cw\Actions.svelte generated by Svelte v3.29.0 */
+
+    const { console: console_1 } = globals;
+    const file$3 = "src\\components\\cw\\Actions.svelte";
+
+    function get_each_context$1(ctx, list, i) {
+    	const child_ctx = ctx.slice();
+    	child_ctx[10] = list[i];
+    	return child_ctx;
+    }
+
+    // (323:5) {#each actions as action}
+    function create_each_block$1(ctx) {
+    	let li;
+    	let t_value = /*action*/ ctx[10] + "";
+    	let t;
+    	let mounted;
+    	let dispose;
+
+    	function click_handler(...args) {
+    		return /*click_handler*/ ctx[3](/*action*/ ctx[10], ...args);
+    	}
+
+    	const block = {
+    		c: function create() {
+    			li = element("li");
+    			t = text(t_value);
+    			add_location(li, file$3, 322, 30, 15355);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, li, anchor);
+    			append_dev(li, t);
+
+    			if (!mounted) {
+    				dispose = listen_dev(li, "click", click_handler, false, false, false);
+    				mounted = true;
+    			}
+    		},
+    		p: function update(new_ctx, dirty) {
+    			ctx = new_ctx;
+    			if (dirty & /*actions*/ 1 && t_value !== (t_value = /*action*/ ctx[10] + "")) set_data_dev(t, t_value);
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(li);
+    			mounted = false;
+    			dispose();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_each_block$1.name,
+    		type: "each",
+    		source: "(323:5) {#each actions as action}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function create_fragment$3(ctx) {
+    	let ul;
+    	let each_value = /*actions*/ ctx[0];
+    	validate_each_argument(each_value);
+    	let each_blocks = [];
+
+    	for (let i = 0; i < each_value.length; i += 1) {
+    		each_blocks[i] = create_each_block$1(get_each_context$1(ctx, each_value, i));
+    	}
+
+    	const block = {
+    		c: function create() {
+    			ul = element("ul");
+
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].c();
+    			}
+
+    			add_location(ul, file$3, 322, 0, 15325);
+    		},
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, ul, anchor);
+
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].m(ul, null);
+    			}
+    		},
+    		p: function update(ctx, [dirty]) {
+    			if (dirty & /*choose, stage, actions*/ 7) {
+    				each_value = /*actions*/ ctx[0];
+    				validate_each_argument(each_value);
+    				let i;
+
+    				for (i = 0; i < each_value.length; i += 1) {
+    					const child_ctx = get_each_context$1(ctx, each_value, i);
+
+    					if (each_blocks[i]) {
+    						each_blocks[i].p(child_ctx, dirty);
+    					} else {
+    						each_blocks[i] = create_each_block$1(child_ctx);
+    						each_blocks[i].c();
+    						each_blocks[i].m(ul, null);
+    					}
+    				}
+
+    				for (; i < each_blocks.length; i += 1) {
+    					each_blocks[i].d(1);
+    				}
+
+    				each_blocks.length = each_value.length;
+    			}
+    		},
+    		i: noop,
+    		o: noop,
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(ul);
+    			destroy_each(each_blocks, detaching);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_fragment$3.name,
+    		type: "component",
+    		source: "",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function instance$3($$self, $$props, $$invalidate) {
+    	let { $$slots: slots = {}, $$scope } = $$props;
+    	validate_slots("Actions", slots, []);
+    	let { actions = [] } = $$props;
+
+    	let phase = "action",
+    		stage = "",
+    		choose = x => {
+    			
+    		};
+
+    	let setStage = s => {
+    		$$invalidate(1, stage = s);
+    	};
+
+    	let setPhase = p => {
+    		console.log(p);
+    		$$invalidate(4, phase = p);
+    		$$invalidate(1, stage = phases[phase].start);
+    	};
+
+    	// let endStage = s => stage = s 
+    	// let endPhase = s => stage = s 
+    	let phases = {
+    		action: {
+    			start: "",
+    			options: f => ["move", "fight", "hire", "open", "summon", "steal"],
+    			moves: { choose: (np, c) => setPhase(c) }, // move :  x => {setPhase('move')},
+    			// fight : x => {setPhase('fight')},
+    			
+    		}, // hire :  x => {setPhase('hire')},
+    		// open :  x => {setPhase('open')},
+    		// summon :x => {setPhase('summon')},
+    		// steal : x => {setPhase('steal')},
+    		// beep :  x => {setPhase('beep')} 
+    		move: {
+    			start: "unit",
+    			stages: {
+    				unit: {
+    					next: "place",
+    					options: f => player.units.filter(u => places[u.place]),
+    					moves: {
+    						choose: (np, c) => {
+    							if (np == "unit" && places[c.place]) {
+    								choices.move.unit = choice; /*&& !(places[c.place].tokens.includes('iceage') && player.power < 2)*/
+    								endStage();
+    							}
+    						},
+    						done: f => {
+    							endPhase();
+    						}
+    					}
+    				},
+    				place: {
+    					next: "unit",
+    					options: f => places[choices.move.unit.place].adjacent,
+    					moves: {
+    						choose: (np, c) => {
+    							if (np == "place" && places[choices.move.unit.place].adjacent.includes(c)) {
+    								choices.move.place = c;
+    								choices.move.unit.gate = 0;
+    								choices.move.unit.place = c;
+    								player.power--;
+    								choices.move.unit = null;
+    								choices.move.place = null;
+    								units = units;
+    								if (player.power == 0) endPhase(); else endStage();
+    							}
+    						}
+    					}
+    				}
+    			}
+    		},
+    		fight: {
+    			start: "place",
+    			stages: {
+    				place: {
+    					next: "enemy",
+    					options: f => places.filter(p => player.units.filter(u => u.place == p && u.fight != 0).length),
+    					moves: {
+    						choose: (np, c) => {
+    							if (np == "place" && places.filter(p => player.units.filter(u => u.place == p && u.fight != 0).length).includes(c)) {
+    								choices.fight.place = c;
+    								endStage();
+    							}
+    						}
+    					}
+    				},
+    				enemy: {
+    					next: "assignpkills",
+    					options: f => players.filter(p => p.faction.name != player.faction.name && p.units.filter(u => u.place == choices.fight.place).length),
+    					moves: {
+    						choose: (np, c) => {
+    							if (np == "enemy" && players.filter(p => p.faction.name != player.faction.name && p.units.filter(u => u.place == choices.fight.place).length)) {
+    								choices.fight.enemy = c; /*&& !(places[c.place].tokens.includes('iceage') && player.power < 2)*/
+    								calcDamage(player);
+    								calcDamage(choices.fight.enemy);
+    								player.power--;
+    								endPhase();
+    							}
+    						}
+    					}
+    				},
+    				assignpkills: {
+    					next: "assignpretreats",
+    					options: f => player.units.filter(u => u.place == choices.fight.place),
+    					moves: {
+    						choose: (np, c) => {
+    							if (player.units.filter(u => u.place == choices.fight.place).map(u => u.id).includes(c.id)) {
+    								c.place = "";
+    								player.kills--;
+    								units = units;
+    							}
+
+    							if (!player.kills || !player.units.filter(u => u.place == choices.fight.place).length) endStage();
+    						}
+    					}
+    				},
+    				assignpretreats: {
+    					next: "placepretreats",
+    					options: f => player.units.filter(u => u.place == choices.fight.place),
+    					moves: {
+    						choose: (np, c) => {
+    							if (player.units.filter(u => u.place == choices.fight.place).map(u => u.id).includes(c.id)) {
+    								choice.fight.unit = c;
+    								endStage();
+    							}
+    						}
+    					}
+    				},
+    				placepretreats: {
+    					next: "assignekills",
+    					options: f => places[choices.fight.unit.place].adjacent.filter(p => !choices.fight.enemy.units.map(u => u.place).includes(p)),
+    					moves: {
+    						choose: (np, c) => {
+    							if (places[choices.fight.unit.place].adjacent.filter(p => !choices.fight.enemy.units.map(u => u.place).includes(p)).includes(c)) {
+    								choices.fight.unit.place = c;
+    								player.pains--;
+    								units = units;
+    							}
+
+    							if (!player.pains || !player.units.filter(u => u.place == choices.fight.place).length) endStage(); else setStage("assignpretreats");
+    						}
+    					}
+    				},
+    				assignekills: {
+    					next: "assigneretreats",
+    					options: f => choices.fight.enemy.units.filter(u => u.place == choices.fight.place),
+    					moves: {
+    						choose: (np, c) => {
+    							if (choices.fight.enemy.units.filter(u => u.place == choices.fight.place).map(u => u.id).includes(c.id)) {
+    								c.place = "";
+    								choices.fight.enemy.kills--;
+    								units = units;
+    							}
+
+    							if (!choices.fight.enemy.kills || !choices.fight.enemy.units.filter(u => u.place == choices.fight.place).length) endStage();
+    						}
+    					}
+    				},
+    				assigneretreats: {
+    					next: "placeeretreats",
+    					options: f => choices.fight.enemy.units.filter(u => u.place == choices.fight.place),
+    					moves: {
+    						choose: (np, c) => {
+    							if (choices.fight.enemy.units.filter(u => u.place == choices.fight.place).map(u => u.id).includes(c.id)) {
+    								choice.fight.unit = c;
+    								endStage();
+    							}
+    						}
+    					}
+    				},
+    				placeeretreats: {
+    					options: f => places[choices.fight.unit.place].adjacent.filter(p => !player.units.map(u => u.place).includes(p)),
+    					moves: {
+    						choose: (np, c) => {
+    							if (places[choices.fight.unit.place].adjacent.filter(p => !player.units.map(u => u.place).includes(p)).includes(c)) {
+    								choices.fight.unit.place = c;
+    								choices.fight.enemy.pains--;
+    								units = units;
+    							}
+
+    							if (!choices.fight.enemy.pains || !choices.fight.enemy.units.filter(u => u.place == choices.fight.place).length) {
+    								endPhase();
+    								choices.fight.place = null;
+    								choices.fight.enemy = null;
+    								choices.fight.unit = null;
+    							} else setStage("assignpretreats");
+    						}
+    					}
+    				}
+    			}
+    		},
+    		hire: {
+    			start: "place",
+    			stages: {
+    				place: {
+    					options: f => places.filter(p => player.units.map(u => u.places).includes(p)),
+    					moves: {
+    						choose: (np, c) => {
+    							if (np == "place" && player.units.map(u => u.places).includes(c)) {
+    								choices.hire.place = c;
+    								let u = player.units.find(u => u.place == "" && u.type == "cult");
+    								if (!u) setPhase("action");
+    								u.place = c;
+    								player.power--;
+    								choices.hire.place = null;
+    								endPhase();
+    							}
+    						}
+    					}
+    				}
+    			}
+    		},
+    		open: {
+    			start: "place",
+    			stages: {
+    				place: {
+    					options: f => places.filter(p => player.units.filter(u => u.type == "cult").map(u => u.places).includes(p)),
+    					moves: {
+    						choose: (np, c) => {
+    							if (np == "place" && player.units.filter(u => u.type == "cult").map(u => u.places).includes(c)) {
+    								choices.open.place = c;
+    								places[choices.open.place].gate = 1;
+    								player.power -= 3;
+    								endPhase();
+    							}
+    						}
+    					}
+    				}
+    			}
+    		},
+    		summon: {
+    			start: "unit",
+    			stages: {
+    				unit: {
+    					next: "place",
+    					options: f => player.units.filter(u => !places[u.place] && u.cost <= player.power),
+    					moves: {
+    						choose: (np, c) => {
+    							if (np == "unit" && !places[c.place] && c.cost <= player.power) {
+    								choices.summon.unit = c; /*&& !(places[c.place].tokens.includes('iceage') && player.power < 2)*/
+    								endStage();
+    							}
+    						},
+    						done: f => {
+    							endPhase();
+    						}
+    					}
+    				},
+    				place: {
+    					options: f => player.units.filter(u => u.gate).map(u => u.place),
+    					moves: {
+    						choose: (np, c) => {
+    							if (np == "place" && player.units.filter(u => u.gate).map(u => u.place).includes(c)) {
+    								choices.summon.place = c;
+    								choices.summon.unit.place = c;
+    								player.power -= choices.summon.unit.cost;
+    								choices.summon.unit = null;
+    								choices.summon.place = null;
+    								units = units;
+    								endStage();
+    							}
+    						}
+    					}
+    				}
+    			}
+    		},
+    		steal: {
+    			start: "place",
+    			stages: {
+    				place: {
+    					next: "unit",
+    					options: f => places.filter(p => stealableUnitsIn(p).length),
+    					moves: {
+    						choose: (np, c) => {
+    							if (np == "place" && stealableUnitsIn(c).length) {
+    								choices.steal.place = c;
+    								endStage();
+    							}
+    						}
+    					}
+    				},
+    				unit: {
+    					options: f => stealableUnitsIn(choices.steal.place),
+    					moves: {
+    						choose: (np, c) => {
+    							if (np == "unit" && stealableUnitsIn(choices.steal.place).map(u => u.id).includes(c.id)) {
+    								choices.summon.unit = c; /*&& !(places[c.place].tokens.includes('iceage') && player.power < 2)*/
+    								c.place = player.faction.name;
+    								choices.steal.unit = null;
+    								choices.steal.place = null;
+    								endPhase();
+    							}
+    						}
+    					}
+    				}
+    			}
+    		}
+    	};
+
+    	let stealableUnitsIn = p => {
+    		let tmpunits = [];
+
+    		players.map(pl => {
+    			tmpunits = [...units, ...pl.units.filter(u => u.place == p)];
+    		});
+
+    		dom = [];
+
+    		tmpunits.map(u => dom[u.owner.faction.name] = dom[u.owner.faction.name] < u.tier
+    		? u.tier
+    		: dom[u.owner.faction.name]);
+
+    		tmpunits.filter(u => u.tier = 0 );
+    		return tmpunits;
+    	};
+
+    	let calcDamage = p => {
+    		let r = roll(p.units.filter(u => u.place == choices.fight.place).map(u => typeof u.combat == "function" ? u.combat() : u.combat));
+    		p.kills = r.filter(e => e > 4).length;
+    		p.pains = r.filter(e => e < 5 && e > 2).length;
+    	};
+
+    	const writable_props = ["actions"];
+
+    	Object.keys($$props).forEach(key => {
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console_1.warn(`<Actions> was created with unknown prop '${key}'`);
+    	});
+
+    	const click_handler = function c(action) {
+    		choose(stage, action);
+    	};
+
+    	$$self.$$set = $$props => {
+    		if ("actions" in $$props) $$invalidate(0, actions = $$props.actions);
+    	};
+
+    	$$self.$capture_state = () => ({
+    		actions,
+    		phase,
+    		stage,
+    		choose,
+    		setStage,
+    		setPhase,
+    		phases,
+    		stealableUnitsIn,
+    		calcDamage
+    	});
+
+    	$$self.$inject_state = $$props => {
+    		if ("actions" in $$props) $$invalidate(0, actions = $$props.actions);
+    		if ("phase" in $$props) $$invalidate(4, phase = $$props.phase);
+    		if ("stage" in $$props) $$invalidate(1, stage = $$props.stage);
+    		if ("choose" in $$props) $$invalidate(2, choose = $$props.choose);
+    		if ("setStage" in $$props) setStage = $$props.setStage;
+    		if ("setPhase" in $$props) setPhase = $$props.setPhase;
+    		if ("phases" in $$props) $$invalidate(7, phases = $$props.phases);
+    		if ("stealableUnitsIn" in $$props) stealableUnitsIn = $$props.stealableUnitsIn;
+    		if ("calcDamage" in $$props) calcDamage = $$props.calcDamage;
+    	};
+
+    	if ($$props && "$$inject" in $$props) {
+    		$$self.$inject_state($$props.$$inject);
+    	}
+
+    	$$self.$$.update = () => {
+    		if ($$self.$$.dirty & /*stage, phase*/ 18) {
+    			 $$invalidate(0, actions = stage == ""
+    			? phases[phase].options()
+    			: phases[phase].stages[stage].options());
+    		}
+
+    		if ($$self.$$.dirty & /*stage, phase*/ 18) {
+    			 $$invalidate(2, choose = stage == ""
+    			? phases[phase].moves.choose
+    			: phases[phase].stages[stage].moves.choose);
+    		}
+    	};
+
+    	return [actions, stage, choose, click_handler];
+    }
+
+    class Actions extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance$3, create_fragment$3, safe_not_equal, { actions: 0 });
+
+    		dispatch_dev("SvelteRegisterComponent", {
+    			component: this,
+    			tagName: "Actions",
+    			options,
+    			id: create_fragment$3.name
+    		});
+    	}
+
+    	get actions() {
+    		throw new Error("<Actions>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set actions(value) {
+    		throw new Error("<Actions>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+    }
+
+    /* src\components\cw\Player.svelte generated by Svelte v3.29.0 */
+
+    const { Object: Object_1 } = globals;
+    const file$4 = "src\\components\\cw\\Player.svelte";
+
+    function get_each_context$2(ctx, list, i) {
+    	const child_ctx = ctx.slice();
+    	child_ctx[8] = list[i];
+    	return child_ctx;
+    }
+
+    function get_each_context_1$1(ctx, list, i) {
+    	const child_ctx = ctx.slice();
+    	child_ctx[8] = list[i];
+    	return child_ctx;
+    }
+
+    function get_each_context_2$1(ctx, list, i) {
+    	const child_ctx = ctx.slice();
+    	child_ctx[13] = list[i];
+    	return child_ctx;
+    }
+
+    function get_each_context_3$1(ctx, list, i) {
+    	const child_ctx = ctx.slice();
+    	child_ctx[13] = list[i];
+    	return child_ctx;
+    }
+
+    // (72:165) {#each player.faction.bookreqs as book}
+    function create_each_block_3$1(ctx) {
+    	let li;
+    	let t_value = Object.keys(/*book*/ ctx[13])[0] + "";
+    	let t;
+
+    	const block = {
+    		c: function create() {
+    			li = element("li");
+    			t = text(t_value);
+    			attr_dev(li, "class", "svelte-rlqyg1");
+    			add_location(li, file$4, 71, 204, 1848);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, li, anchor);
+    			append_dev(li, t);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*player*/ 2 && t_value !== (t_value = Object.keys(/*book*/ ctx[13])[0] + "")) set_data_dev(t, t_value);
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(li);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_each_block_3$1.name,
+    		type: "each",
+    		source: "(72:165) {#each player.faction.bookreqs as book}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (72:242) {#each player.books as book}
+    function create_each_block_2$1(ctx) {
+    	let li;
+    	let t_value = /*book*/ ctx[13] + "";
+    	let t;
+
+    	const block = {
+    		c: function create() {
+    			li = element("li");
+    			t = text(t_value);
+    			attr_dev(li, "class", "active svelte-rlqyg1");
+    			add_location(li, file$4, 71, 270, 1914);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, li, anchor);
+    			append_dev(li, t);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*player*/ 2 && t_value !== (t_value = /*book*/ ctx[13] + "")) set_data_dev(t, t_value);
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(li);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_each_block_2$1.name,
+    		type: "each",
+    		source: "(72:242) {#each player.books as book}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (72:376) {#each player.units.filter( u => u.place == '') as unit}
+    function create_each_block_1$1(ctx) {
+    	let unit;
+    	let current;
+
+    	unit = new Unit({
+    			props: {
+    				unit: /*unit*/ ctx[8],
+    				choose: /*choose*/ ctx[0]
+    			},
+    			$$inline: true
+    		});
+
+    	const block = {
+    		c: function create() {
+    			create_component(unit.$$.fragment);
+    		},
+    		m: function mount(target, anchor) {
+    			mount_component(unit, target, anchor);
+    			current = true;
+    		},
+    		p: function update(ctx, dirty) {
+    			const unit_changes = {};
+    			if (dirty & /*player*/ 2) unit_changes.unit = /*unit*/ ctx[8];
+    			if (dirty & /*choose*/ 1) unit_changes.choose = /*choose*/ ctx[0];
+    			unit.$set(unit_changes);
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(unit.$$.fragment, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(unit.$$.fragment, local);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			destroy_component(unit, detaching);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_each_block_1$1.name,
+    		type: "each",
+    		source: "(72:376) {#each player.units.filter( u => u.place == '') as unit}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (72:477) {#each G.units.filter( u => u.place == player.faction.name) as unit}
+    function create_each_block$2(ctx) {
+    	let unit;
+    	let current;
+
+    	unit = new Unit({
+    			props: {
+    				unit: /*unit*/ ctx[8],
+    				choose: /*choose*/ ctx[0]
+    			},
+    			$$inline: true
+    		});
+
+    	const block = {
+    		c: function create() {
+    			create_component(unit.$$.fragment);
+    		},
+    		m: function mount(target, anchor) {
+    			mount_component(unit, target, anchor);
+    			current = true;
+    		},
+    		p: function update(ctx, dirty) {
+    			const unit_changes = {};
+    			if (dirty & /*G, player*/ 6) unit_changes.unit = /*unit*/ ctx[8];
+    			if (dirty & /*choose*/ 1) unit_changes.choose = /*choose*/ ctx[0];
+    			unit.$set(unit_changes);
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(unit.$$.fragment, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(unit.$$.fragment, local);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			destroy_component(unit, detaching);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_each_block$2.name,
+    		type: "each",
+    		source: "(72:477) {#each G.units.filter( u => u.place == player.faction.name) as unit}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function create_fragment$4(ctx) {
+    	let div1;
+    	let t0_value = /*player*/ ctx[1].faction.name + "";
+    	let t0;
+    	let t1;
+    	let t2_value = /*player*/ ctx[1].doom + "";
+    	let t2;
+    	let t3;
+    	let t4_value = /*player*/ ctx[1].power + "";
+    	let t4;
+    	let t5;
+    	let t6_value = /*player*/ ctx[1].books.length + "";
+    	let t6;
+    	let ul;
+    	let each0_anchor;
+    	let div0;
+    	let each2_anchor;
+    	let current;
+    	let mounted;
+    	let dispose;
+    	let each_value_3 = /*player*/ ctx[1].faction.bookreqs;
+    	validate_each_argument(each_value_3);
+    	let each_blocks_3 = [];
+
+    	for (let i = 0; i < each_value_3.length; i += 1) {
+    		each_blocks_3[i] = create_each_block_3$1(get_each_context_3$1(ctx, each_value_3, i));
+    	}
+
+    	let each_value_2 = /*player*/ ctx[1].books;
+    	validate_each_argument(each_value_2);
+    	let each_blocks_2 = [];
+
+    	for (let i = 0; i < each_value_2.length; i += 1) {
+    		each_blocks_2[i] = create_each_block_2$1(get_each_context_2$1(ctx, each_value_2, i));
+    	}
+
+    	let each_value_1 = /*player*/ ctx[1].units.filter(func$1);
+    	validate_each_argument(each_value_1);
+    	let each_blocks_1 = [];
+
+    	for (let i = 0; i < each_value_1.length; i += 1) {
+    		each_blocks_1[i] = create_each_block_1$1(get_each_context_1$1(ctx, each_value_1, i));
+    	}
+
+    	const out = i => transition_out(each_blocks_1[i], 1, 1, () => {
+    		each_blocks_1[i] = null;
+    	});
+
+    	let each_value = /*G*/ ctx[2].units.filter(/*func_1*/ ctx[5]);
+    	validate_each_argument(each_value);
+    	let each_blocks = [];
+
+    	for (let i = 0; i < each_value.length; i += 1) {
+    		each_blocks[i] = create_each_block$2(get_each_context$2(ctx, each_value, i));
+    	}
+
+    	const out_1 = i => transition_out(each_blocks[i], 1, 1, () => {
+    		each_blocks[i] = null;
+    	});
+
+    	const block = {
+    		c: function create() {
+    			div1 = element("div");
+    			t0 = text(t0_value);
+    			t1 = text(" | dm ");
+    			t2 = text(t2_value);
+    			t3 = text(" | pw ");
+    			t4 = text(t4_value);
+    			t5 = text(" | sb ");
+    			t6 = text(t6_value);
+    			ul = element("ul");
+
+    			for (let i = 0; i < each_blocks_3.length; i += 1) {
+    				each_blocks_3[i].c();
+    			}
+
+    			each0_anchor = empty();
+
+    			for (let i = 0; i < each_blocks_2.length; i += 1) {
+    				each_blocks_2[i].c();
+    			}
+
+    			div0 = element("div");
+
+    			for (let i = 0; i < each_blocks_1.length; i += 1) {
+    				each_blocks_1[i].c();
+    			}
+
+    			each2_anchor = empty();
+
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].c();
+    			}
+
+    			set_style(div0, "display", "grid");
+    			set_style(div0, "grid-template-columns", "auto auto auto auto");
+    			add_location(div0, file$4, 71, 307, 1951);
+    			attr_dev(ul, "class", "details svelte-rlqyg1");
+    			add_location(ul, file$4, 71, 144, 1788);
+    			attr_dev(div1, "class", "player2 svelte-rlqyg1");
+    			add_location(div1, file$4, 71, 0, 1644);
+    		},
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div1, anchor);
+    			append_dev(div1, t0);
+    			append_dev(div1, t1);
+    			append_dev(div1, t2);
+    			append_dev(div1, t3);
+    			append_dev(div1, t4);
+    			append_dev(div1, t5);
+    			append_dev(div1, t6);
+    			append_dev(div1, ul);
+
+    			for (let i = 0; i < each_blocks_3.length; i += 1) {
+    				each_blocks_3[i].m(ul, null);
+    			}
+
+    			append_dev(ul, each0_anchor);
+
+    			for (let i = 0; i < each_blocks_2.length; i += 1) {
+    				each_blocks_2[i].m(ul, null);
+    			}
+
+    			append_dev(ul, div0);
+
+    			for (let i = 0; i < each_blocks_1.length; i += 1) {
+    				each_blocks_1[i].m(div0, null);
+    			}
+
+    			append_dev(div0, each2_anchor);
+
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].m(div0, null);
+    			}
+
+    			/*div1_binding*/ ctx[6](div1);
+    			current = true;
+
+    			if (!mounted) {
+    				dispose = listen_dev(div1, "click", /*click*/ ctx[4], false, false, false);
+    				mounted = true;
+    			}
+    		},
+    		p: function update(ctx, [dirty]) {
+    			if ((!current || dirty & /*player*/ 2) && t0_value !== (t0_value = /*player*/ ctx[1].faction.name + "")) set_data_dev(t0, t0_value);
+    			if ((!current || dirty & /*player*/ 2) && t2_value !== (t2_value = /*player*/ ctx[1].doom + "")) set_data_dev(t2, t2_value);
+    			if ((!current || dirty & /*player*/ 2) && t4_value !== (t4_value = /*player*/ ctx[1].power + "")) set_data_dev(t4, t4_value);
+    			if ((!current || dirty & /*player*/ 2) && t6_value !== (t6_value = /*player*/ ctx[1].books.length + "")) set_data_dev(t6, t6_value);
+
+    			if (dirty & /*Object, player*/ 2) {
+    				each_value_3 = /*player*/ ctx[1].faction.bookreqs;
+    				validate_each_argument(each_value_3);
+    				let i;
+
+    				for (i = 0; i < each_value_3.length; i += 1) {
+    					const child_ctx = get_each_context_3$1(ctx, each_value_3, i);
+
+    					if (each_blocks_3[i]) {
+    						each_blocks_3[i].p(child_ctx, dirty);
+    					} else {
+    						each_blocks_3[i] = create_each_block_3$1(child_ctx);
+    						each_blocks_3[i].c();
+    						each_blocks_3[i].m(ul, each0_anchor);
+    					}
+    				}
+
+    				for (; i < each_blocks_3.length; i += 1) {
+    					each_blocks_3[i].d(1);
+    				}
+
+    				each_blocks_3.length = each_value_3.length;
+    			}
+
+    			if (dirty & /*player*/ 2) {
+    				each_value_2 = /*player*/ ctx[1].books;
+    				validate_each_argument(each_value_2);
+    				let i;
+
+    				for (i = 0; i < each_value_2.length; i += 1) {
+    					const child_ctx = get_each_context_2$1(ctx, each_value_2, i);
+
+    					if (each_blocks_2[i]) {
+    						each_blocks_2[i].p(child_ctx, dirty);
+    					} else {
+    						each_blocks_2[i] = create_each_block_2$1(child_ctx);
+    						each_blocks_2[i].c();
+    						each_blocks_2[i].m(ul, div0);
+    					}
+    				}
+
+    				for (; i < each_blocks_2.length; i += 1) {
+    					each_blocks_2[i].d(1);
+    				}
+
+    				each_blocks_2.length = each_value_2.length;
+    			}
+
+    			if (dirty & /*player, choose*/ 3) {
+    				each_value_1 = /*player*/ ctx[1].units.filter(func$1);
+    				validate_each_argument(each_value_1);
+    				let i;
+
+    				for (i = 0; i < each_value_1.length; i += 1) {
+    					const child_ctx = get_each_context_1$1(ctx, each_value_1, i);
+
+    					if (each_blocks_1[i]) {
+    						each_blocks_1[i].p(child_ctx, dirty);
+    						transition_in(each_blocks_1[i], 1);
+    					} else {
+    						each_blocks_1[i] = create_each_block_1$1(child_ctx);
+    						each_blocks_1[i].c();
+    						transition_in(each_blocks_1[i], 1);
+    						each_blocks_1[i].m(div0, each2_anchor);
+    					}
+    				}
+
+    				group_outros();
+
+    				for (i = each_value_1.length; i < each_blocks_1.length; i += 1) {
+    					out(i);
+    				}
+
+    				check_outros();
+    			}
+
+    			if (dirty & /*G, player, choose*/ 7) {
+    				each_value = /*G*/ ctx[2].units.filter(/*func_1*/ ctx[5]);
+    				validate_each_argument(each_value);
+    				let i;
+
+    				for (i = 0; i < each_value.length; i += 1) {
+    					const child_ctx = get_each_context$2(ctx, each_value, i);
+
+    					if (each_blocks[i]) {
+    						each_blocks[i].p(child_ctx, dirty);
+    						transition_in(each_blocks[i], 1);
+    					} else {
+    						each_blocks[i] = create_each_block$2(child_ctx);
+    						each_blocks[i].c();
+    						transition_in(each_blocks[i], 1);
+    						each_blocks[i].m(div0, null);
+    					}
+    				}
+
+    				group_outros();
+
+    				for (i = each_value.length; i < each_blocks.length; i += 1) {
+    					out_1(i);
+    				}
+
+    				check_outros();
+    			}
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+
+    			for (let i = 0; i < each_value_1.length; i += 1) {
+    				transition_in(each_blocks_1[i]);
+    			}
+
+    			for (let i = 0; i < each_value.length; i += 1) {
+    				transition_in(each_blocks[i]);
+    			}
+
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			each_blocks_1 = each_blocks_1.filter(Boolean);
+
+    			for (let i = 0; i < each_blocks_1.length; i += 1) {
+    				transition_out(each_blocks_1[i]);
+    			}
+
+    			each_blocks = each_blocks.filter(Boolean);
+
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				transition_out(each_blocks[i]);
+    			}
+
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div1);
+    			destroy_each(each_blocks_3, detaching);
+    			destroy_each(each_blocks_2, detaching);
+    			destroy_each(each_blocks_1, detaching);
+    			destroy_each(each_blocks, detaching);
+    			/*div1_binding*/ ctx[6](null);
+    			mounted = false;
+    			dispose();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_fragment$4.name,
+    		type: "component",
+    		source: "",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    const func$1 = u => u.place == "";
+
+    function instance$4($$self, $$props, $$invalidate) {
+    	let { $$slots: slots = {}, $$scope } = $$props;
+    	validate_slots("Player", slots, []);
+    	let { choose } = $$props, { player } = $$props, { G } = $$props;
+    	let dispatch = createEventDispatcher();
+    	let el;
+
+    	onMount(x => {
+    		$$invalidate(3, el.style.color = player.faction.color, el); //'linear-gradient(70deg,#363636,'+player.faction.color+')'
+    	});
+
+    	let click = e => {
+    		e.stopPropagation();
+    		choose("player", player);
+    	};
+
+    	const writable_props = ["choose", "player", "G"];
+
+    	Object_1.keys($$props).forEach(key => {
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<Player> was created with unknown prop '${key}'`);
+    	});
+
+    	const func_1 = u => u.place == player.faction.name;
+
+    	function div1_binding($$value) {
+    		binding_callbacks[$$value ? "unshift" : "push"](() => {
+    			el = $$value;
+    			$$invalidate(3, el);
+    		});
+    	}
+
+    	$$self.$$set = $$props => {
+    		if ("choose" in $$props) $$invalidate(0, choose = $$props.choose);
+    		if ("player" in $$props) $$invalidate(1, player = $$props.player);
+    		if ("G" in $$props) $$invalidate(2, G = $$props.G);
+    	};
+
+    	$$self.$capture_state = () => ({
+    		choose,
+    		player,
+    		G,
+    		Unit,
+    		createEventDispatcher,
+    		dispatch,
+    		onMount,
+    		el,
+    		click
+    	});
+
+    	$$self.$inject_state = $$props => {
+    		if ("choose" in $$props) $$invalidate(0, choose = $$props.choose);
+    		if ("player" in $$props) $$invalidate(1, player = $$props.player);
+    		if ("G" in $$props) $$invalidate(2, G = $$props.G);
+    		if ("dispatch" in $$props) dispatch = $$props.dispatch;
+    		if ("el" in $$props) $$invalidate(3, el = $$props.el);
+    		if ("click" in $$props) $$invalidate(4, click = $$props.click);
+    	};
+
+    	if ($$props && "$$inject" in $$props) {
+    		$$self.$inject_state($$props.$$inject);
+    	}
+
+    	return [choose, player, G, el, click, func_1, div1_binding];
+    }
+
+    class Player extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance$4, create_fragment$4, safe_not_equal, { choose: 0, player: 1, G: 2 });
+
+    		dispatch_dev("SvelteRegisterComponent", {
+    			component: this,
+    			tagName: "Player",
+    			options,
+    			id: create_fragment$4.name
+    		});
+
+    		const { ctx } = this.$$;
+    		const props = options.props || {};
+
+    		if (/*choose*/ ctx[0] === undefined && !("choose" in props)) {
+    			console.warn("<Player> was created without expected prop 'choose'");
+    		}
+
+    		if (/*player*/ ctx[1] === undefined && !("player" in props)) {
+    			console.warn("<Player> was created without expected prop 'player'");
+    		}
+
+    		if (/*G*/ ctx[2] === undefined && !("G" in props)) {
+    			console.warn("<Player> was created without expected prop 'G'");
+    		}
+    	}
+
+    	get choose() {
+    		throw new Error("<Player>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set choose(value) {
+    		throw new Error("<Player>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get player() {
+    		throw new Error("<Player>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set player(value) {
+    		throw new Error("<Player>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get G() {
+    		throw new Error("<Player>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set G(value) {
+    		throw new Error("<Player>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+    }
+
+    const place = (name='',adjacent=[],ocean=false,gate=0) => ({glyphs:[],name,adjacent,ocean,gate,renderGate:f=>{}});
+    const 
+        arcticocean = place('arcticocean',['northamerica','northatlantic','northpacific','scandinavia','northasia'],true),
+        northpacific = place('northpacific',['arcticocean','northamerica','southamerica','indianocean','southpacific','northasia','southasia']),
+        northamerica = place('northamerica',['southamerica','northatlantic','accrticocean','northpacific']),
+        northatlantic = place('northatlantic',['southamerica','northamerica','southatlantic','northpacific','arcticocean','europe','westafrica','arabia','scandinavia'],true),
+        scandinavia = place('scandinavia',['arcticocean','northatlantic','europe','northasia']),
+        europe = place('europe',['northatlantic','arabia','northasia','scandinavia']),
+        northasia = place('northasia',['arcticocean','scandinavia','europe','arabia','southasia','northpacific']),
+        arabia = place('arabia',['eastafrica','westafrica','europe','southasia','indianocean','northasia','northatlantic']),
+        southasia = place('southasia',['arabia','northasia','northpacific','indianocean']),
+        southamerica = place('southamerica',['northpacific','southpacific','northatlantic','southatlantic','northamerica']),
+        westafrica = place('westafrica',['eastafrica','southatlantic','northatlantic','arabia','indianocean']),
+        indianocean = place('indianocean',['northpacific','southasia','arabia','eastafrica','westafrica','antarctica','southatlantic','southpacific'],true),
+        southpacific = place('southpacific',['australia','indianocean','northpacific','antarctica','southamerica','southatlantic'],true),
+        southatlantic = place('southatlantic',['southpacific','southamerica','northatlantic','antarctica','eastafrica','westafrica'],true),
+        eastafrica = place('eastafrica',['southatlantic','westafrica','arabia','indianocean']),
+        australia = place('australia',['indianocean','southpacific']),
+        antarctica = place('antarctica',['indianocean','southatlantic','southpacific']);
+        const places$1 = {arcticocean, northpacific, northamerica, northatlantic, scandinavia, europe, northasia, southamerica, southasia, arabia, westafrica, indianocean, eastafrica, antarctica, southatlantic, southpacific, australia};
+
+    let G;
+    let phs;
+    let faction = (g,p) => {
+        G = g;
+        phs = p;
+        let books = ["Blood Sacrifice","Frenzy","Ghroth","Necrophagy","The Red Sign","The Thousand Young"];
+        let bookinit = {
+            "Blood Sacrifice":blood,
+            "Frenzy":frenzy,
+            "Ghroth":ghroth,
+            "Necrophagy":necrophagy,
+            "The Red Sign":redsign,
+            "The Thousand Young":thousand
+        };
+        let bookreqs = [
+            {'sac 2 cults':f=>false },
+            {'be in 4 areas':f=> Object.keys(G.places).filter( p => G.player.units.map( u => u.place ).includes(p) ).length > 3 },
+            {'be in 6 areas':f=> Object.keys(G.places).filter( p => G.player.units.map( u => u.place ).includes(p) ).length > 5 },
+            {'be in 8 areas':f=> Object.keys(G.places).filter( p => G.player.units.map( u => u.place ).includes(p) ).length > 7 },
+            {"Awaken Shub Nigur'rath":f=> G.choices.awaken.unit?.type=="Shub Nigur'rath"},
+            {'be in all enemy areas':f=> G.players.filter( pl => pl.units.filter( un => Object.keys(G.places).filter( p => G.player.units.map( u => u.place ).includes(p) ).includes(un.place) ).length).length == G.players.length  }
+        ];
+        let goo = "Shub Nigur'rath";
+        let mons = {'Ghoul':2,Fungi:4,'Dark Young':2};
+        let color = 'red';
+        let start = 'westafrica';
+        let name = 'bg';
+        let units = [];
+        let addUnit = (u,p) => {
+            u.owner = p;
+            p.units = [...p.units,u];
+        };
+        let awakenshub = {
+            awakenplaces: () => G.player.units.filter( u => u.gate ).map( u => u.place ),
+            awakenreq: ()=>G.player.power > 7 && G.player.units.filter( u => u.place != '' && u.type == 'cult').length > 1 && G.player.units.filter( u => u.gate ).length,
+            cost: ()=>{ G.player.power-=8; G.player.sac = 2; phs.setStage('bg-sacunit');},
+        };
+        let initUnits = p => {
+            p.units = [
+                ...p.units,
+                {...G.unit("Shub Nigur'rath",p,'',8,()=>p.units.filter( u => u.type == 'cult').length,2),...awakenshub},
+                ...[0,1,].map( f=> G.unit('Ghoul',p,'',1,0,1)),
+                ...[0,1,2,3].map( f=> G.unit('Fungi',p,'',2,1,1)),
+                ...[0,1,2].map( f=> G.unit('Dark Young',p,'',3,2,1,1)),
+            ];
+        };
+        
+        fertility();
+        bgsac();
+        sac2cult();
+        avatar();
+        let faction = {books,bookreqs,bookinit,goo,mons,color,start,name,units,addUnit,initUnits};
+        
+        return faction
+    };
+
+    let lim = 1, init$1 = f => {};
+    // let templ = {
+    //     phase : {
+    //         lim,
+    //         init,
+    //         req : f => true,
+    //         start : '',
+    //         stages: {               
+    //             stage : {
+    //                 next : '',
+    //                 options : f => [],
+    //                 moves : {
+    //                     choose : (np, c) => {
+    //                         phs.endStage()
+    //                     },
+    //                     done : f => {
+    //                         endPhase()
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
+
+    let sac2cult = () => phs.addPhase('sac 2 cultists',{
+        lim,
+        req : f => G.player.faction.name=='bg' && G.player.faction.bookreqs.find( b => b['sac 2 cults'] ),
+        start : 'unit',
+        stages: {               
+            unit : {
+                init : f => G.player.sacs = 2,
+                options : f => G.player.units.filter( u => u.type == 'cult' && Object.keys(G.places).includes(u.place) ),
+                moves : {
+                    choose : (np, c) => {
+                        if ( ( np == 'unit' || np == 'sac 2 cultists' ) && G.player.units.filter( u => u.type == 'cult' && Object.keys(G.places).includes(u.place) ).includes(c)) {
+                            G.player.sacs--;
+                            c.place = '';
+                            c.gate = 0;
+                            if (G.player.sacs == 0) {
+                                G.player.faction.bookreqs[0]['sac 2 cults'] = f => true;
+                                phs.endPhase();
+                            }
+                            else G.forceRerender();
+                        }
+                    }
+                }
+            }
+        }
+    });
+    let bgsac = () => phs.addStage('bg-sacunit',{
+        init : f => G.player.sacs = 2,
+        options : f => G.player.units.filter( u => u.type == 'cult' && Object.keys(G.places).includes(u.place) ),
+        moves : {
+            choose : (np, c) => {
+                if ( (np == 'unit' || np == 'bg-sacunit') && G.player.units.filter( u => u.type == 'cult' ).includes(c) ) {
+                    G.player.sacs--;
+                    c.place = '';
+                    c.gate = 0;
+                    G.forceRerender();
+                    if (G.player.sacs == 0) phs.endStage();
+                }
+            }
+        }
+    },'awaken');
+
+    let avatar = () => {
+        G.choices.avatar = {place:null,faction:null,unit:null};
+        phs.addPhase('avatar',{
+            lim,
+            init: init$1,
+            req : f => G.player.faction.name=='bg' && G.player.units.find( u => u.type == "Shub Nigur'rath" && u.place != '' ) && G.player.power >= 1,
+            start : 'place',
+            stages: {               
+                place : {
+                    next : 'faction',
+                    options : f => Object.keys(G.places).filter( p => G.units.map( u => u.place ).includes(p) ),
+                    moves : {
+                        choose : (np, c) => {
+                            if ( np == 'place' && G.units.map( u => u.place ).includes(c)) {
+                                G.choices.avatar.place = c;
+                                phs.endStage();
+                            }
+                        }
+                    }
+                },
+                faction : {
+                    next : 'unit',
+                    options : f => G.players.filter( p => p.units.map( u => u.place).includes( G.choices.avatar.place ) ).map( p => p.faction.name ),
+                    moves : {
+                        choose : (np, c) => {
+                            if  ( np == 'faction' && G.players.filter( p => p.units.map( u => u.place).includes( G.choices.avatar.place ) ).map( p => p.faction.name ).includes(c) ){
+                                G.choices.avatar.faction = G.players.find( p => p.faction.name == c);
+                                G.stage = 'resolve';
+                                phs.interuptStage('avatar','unit',G.players.indexOf(G.choices.avatar.faction));
+                            }
+                            else if ( np == 'player' && G.players.filter( p => p.units.map( u => u.place).includes( G.choices.avatar.place ) ).includes(c) ) {
+                                G.choices.avatar.faction = c;
+                                G.stage = 'resolve';
+                                phs.interuptStage('avatar','unit',G.players.indexOf(G.choices.avatar.faction));
+                            }
+                        }
+                    }
+                },
+                unit : {
+                    next : 'resolve',
+                    options : f => G.choices.avatar.faction.units.filter( u => u.place == G.choices.avatar.place ),
+                    moves : {
+                        choose : (np, c) => {
+                            if  ( np == 'unit' && G.choices.avatar.faction.units.filter( u => u.place == G.choices.avatar.place ).includes(c) ){
+                                G.choices.avatar.unit = c;
+                                phs.endStage();
+                            }
+                        }
+                    }
+                },
+                resolve : {
+                    init : f => {
+                        G.choices.avatar.unit.place = G.choices.avatar.place;
+                        G.turn.pi = G.players.indexOf(G.players.find(p => p.faction.name == 'bg'));
+                        G.players[G.turn.pi].power--;
+                        G.players[G.turn.pi].units.find( u => u.name == "Shub Nigur'rath").place = G.choices.avatar.place;
+                        phs.endStage();
+                    },
+                    moves : {},
+                    options : f => [],
+                }
+
+            }
+        });
+    };
+
+    let necrophagy = () => {
+        G.choices.necro = { once : null };
+        phs.addStage('necrounits',{
+            options : f => G.player.units.filter( u => u.type == 'Ghoul' && u.place != '' && !u.moved),
+            init : f => {
+                if ( G.choices.necro.once) {G.choices.necro.once = null; phs.endStage();}
+                else {
+                    G.stage = 'assignpretreats';
+                    phs.interuptStage('fight','necrounits',G.players.indexOf(G.players.find( p => p.faction.name == 'bg' )));
+                }
+            },
+            moves : {
+                choose : (np,c) => {
+                    if ( c.type == 'Ghoul' && c.place != '' && !c.moved) {
+                        G.choices.fight.enemy.pains++;
+                        G.choices.fight.player.pains++;
+                        c.moved = 1;
+                        c.place = G.choices.fight.place;
+                        G.forceRerender();
+                    }
+                },
+                done : f => {        
+                    G.choices.necro.once = 1;
+                    G.player.units.map( u => u.moved = 0);
+                    phs.returnStage();
+                },
+            }
+        },'fight','placeeretreats');
+    };
+
+    let ghroth = () => {
+        G.choices.ghroth = { roll : 0, offers : [], tries : 3, negotiated : 0 };
+        phs.addPhase('ghroth',{
+            lim,
+            init : f => {
+                G.choices.ghroth.roll = roll(G.places.filter( p => G.player.units.filter( u => u.type == 'Fungi' ).map( u => u.place).includes(p) ).length );
+                G.choices.ghroth.offers = Array(G.players.length).fill(0);
+                G.turn.pi++;
+            },
+            req : f => G.player.faction.name == 'bg' && G.player.power > 1,
+            start : 'negotiate',
+            stages: {               
+                negotiate : {
+                    next : 'unit',
+                    options : f => Array(G.choices.ghroth.roll+1).fill(0).map( (l,i) => i).filter( l => l < G.player.units.filter( u => u.type == 'cult' && Object.keys(G.places).includes(u.place) ).length ),
+                    moves : {
+                        choose : (np, c) => {
+                            if ( np == 'negotiate' && Array(G.choices.ghroth.roll+1).fill(0).map( (l,i) => i).filter( l => l <= G.player.units.filter( u => u.type == 'cult' && Object.keys(G.places).includes(u.place) ).length ).includes(c) ) {
+                                G.choices.ghroth.offers[G.turn.pi%G.players.length] = c;
+                                G.turn.pi++;
+                                if ( G.players[G.turn.pi].faction.name=='bg') {
+                                    tries--;
+                                    G.choices.ghroth.negotiated = (G.choices.ghroth.offers.reduce((acc,cur)=>acc+cur,0) >= G.choices.ghroth.roll );
+                                }
+                                if ( G.choices.ghroth.tries || G.choices.ghroth.negotiated) G.turn.pi++;
+                                if (!G.choices.ghroth.tries || G.choices.ghroth.negotiated) setStage( (G.choices.ghroth.negotiated) ? 'unit' : 'altunit');
+                                G.forceRerender();
+                            }
+                            
+                        },
+                    }
+                },             
+                unit : {
+                    next : '',
+                    options : f => G.player.units.filter( u => u.type == 'cult' && Object.keys(G.places).includes(u.place) ),
+                    moves : {
+                        choose : (np, c) => {
+                            if ( np == 'unit' && G.player.units.filter( u => u.type == 'cult' && Object.keys(G.places).includes(u.place) ).includes(c)) {
+                                c.place = '';
+                                G.choices.ghroth.offers[G.turn.pi%G.players.length]--;
+                                if(!G.choices.ghroth.offers[G.turn.pi%G.players.length]) G.turn.pi++;
+                                G.forceRerender();
+                                if(!G.choices.ghroth.offers.reduce((acc,cur)=>acc+cur,0)) phs.endStage();
+                            }
+                        },
+                    }
+                },             
+                altunit : {
+                    init : f => G.choices.ghroth.offers = G.choices.ghroth.offers.reduce((acc,cur)=>acc+cur,0),
+                    next : '',
+                    options : f => G.units.filter( u=> u.type == 'cult' && Object.keys(G.places).includes(u.place) ),
+                    moves : {
+                        choose : (np, c) => {
+                            if ( np == 'unit' && G.player.units.filter( u => u.type == 'cult' && Object.keys(G.places).includes(u.place) ).includes(c)) {
+                                c.place = '';
+                                G.choices.ghroth.offers--;
+                                G.forceRerender();
+                                if(!G.choices.ghroth.offers) phs.endStage();
+                            }
+                        },
+                    }
+                }
+            }
+        });
+    };
+
+    let blood = () => {
+        phs.addStage('bloodinit',{
+            init : f => phs.interuptStage( 'doom','blood',G.players.indexOf( G.players.find( p => p.faction.name=='bg') ) ),
+            options : f => [],
+            moves : { choose : (np,c) => {} }
+        },'doom','doom');
+        
+        phs.addStage('blood',{
+            next : 'bloodunit',
+            options : f => ['blood sacrifice'],
+            moves : { 
+                choose : (np,c) => {
+                    if ( c == 'blood sacrifice') phs.endStage();
+                },
+                done : f => phs.returnStage()
+            }
+        },'doom');
+        
+        phs.addStage('bloodunit',{
+            options : f => G.player.units.filter( u => u.type == 'cult' && Object.keys(G.places).includes(u.place) ),
+            moves : { 
+                choose : (np,c) => {
+                    if ( (np == 'unit' || np == 'bloodunit') && G.player.units.filter( u => u.type == 'cult' && Object.keys(G.places).includes(u.place) ) ) {
+                        c.place = '';
+                        G.player.signs++;
+                        phs.returnStage();
+                    }
+                }
+            }
+        },'doom');
+    };
+
+    let fertility = () => phs.addStage('fertility',{
+        init : f => {G.turn.lim+=G.player.faction.name=='bg';phs.endStage();},
+        options : f => [],
+        moves : { choose : (np,c) => {}}
+    },'summon','place');
+
+    let frenzy = () => G.player.units.filter( u => u.type == 'cult' ).map( u => u.combat = 1 );
+
+    let thousand = () => G.player.units.filter( u => u.tier == 1 ).map( u => {let cost = 0+u.cost; u.cost = f => cost - G.units.find( un => un.type == "Shub Nigur'rath").place != ''; });
+
+    let redsign = () => G.player.units.filter( u => u.type == 'Dark Young' ).map( u => u.gatherer = 1 );
+
+    let G$1;
+    let phs$1;
+    let faction$1 = (g,p) => {
+        G$1 = g;
+        phs$1 = p;
+        let books = ["Abduct","Emissary of the Outer Gods","Invisibility","Madness","Seek and Destroy","The Thousand Forms"];
+        let bookinit = {
+            "Abduct":abduct,
+            "Emissary of the Outer Gods":emissary,
+            "Invisibility":invisibility,
+            "Madness":madness,
+            "Seek and Destroy":seekanddestroy,
+            "The Thousand Forms":thousandforms
+        };
+        let bookreqs = [
+            {'pay 4 pwoer':f=>false },
+            {'pay 6 pwoer':f=>false },
+            {'3 gates / 12 power':f=> G$1.player.units.filter( u => u.gate ).length > 2 || G$1.player.power > 11 },
+            {'4 gates / 16 power':f=> G$1.player.units.filter( u => u.gate ).length > 3 || G$1.player.power > 15 },
+            {'capture':f=> units.filter( u => u.place == G$1.player.faction).length },
+            {"Awaken Nyarlathotap":f=> G$1.choices.awaken.unit?.name=='Nyarlathotap'},
+        ];
+        let goo = 'Nyarlathotap';
+        let mons = {Nightgaunt:3,"Hunting Horror":2,"Flying Polyp":3};
+        let color = 'blue';
+        let start = 'southasia';
+        let name = 'cc';
+        let units = [];
+        let addUnit = (u,p) => {
+            u.owner = p;
+            p.units = [...p.units,u];
+        };
+        
+        let awakennarl = {
+            awakenplaces: () => G$1.player.units.filter( u => u.gate ).map( u => u.place ),
+            awakenreq: () => G$1.player.power > 9 && G$1.player.units.filter( u => u.gate ).length,
+            cost: () => { G$1.player.power-=10; phs$1.endStage(); },
+        };
+        
+        let initUnits = p => {
+            p.units = [
+                ...p.units,
+                {...G$1.unit("Nyarlathotap",p,'',10,()=>p.books.length + G$1.choices.fight.enemy.books.length,2),...awakennarl},
+                ...[0,1,3].map( f=> G$1.unit('Nightgaunt',p,'',1,0,1)),
+                ...[0,1,2].map( f=> G$1.unit('Flying Polyp',p,'',2,1,1)),
+                ...[0,1].map( f=> G$1.unit('Hunting Horror',p,'',3,2,1)),
+            ];
+            flight();
+        };
+        let faction = {bookinit,books,bookreqs,goo,mons,color,start,name,units,addUnit,initUnits};
+        pay4();
+        pay6();
+        pay10();
+        harbinger();
+        return faction
+    };
+    let hasBookReq = ( b ) => G$1.player.faction.bookreqs.find( o => Object.keys(o).includes(b) );
+    let pay4 = () => phs$1.addPhase('pay 4 power',{
+        req : f => G$1.player.faction.name == 'cc' && G$1.player.power > 3 && hasBookReq('pay 4 power'),
+        init : f => {G$1.player.power -= 4; G$1.player.bookreqs[G$1.player.bookreqs.indexOf(hasBookReq('pay 4 power'))] = {'pay 4 power':F=>true}; endStage(); }
+    });
+    let pay6 = () => phs$1.addPhase('pay 6 power',{
+        req : f => G$1.player.faction.name == 'cc' && G$1.player.power > 5 && hasBookReq('pay 6 power'),
+        init : f => {G$1.player.power -= 6; G$1.player.bookreqs[G$1.player.bookreqs.indexOf(hasBookReq('pay 6 power'))] = {'pay 6 power':F=>true}; endStage(); }
+    });
+    let pay10 = () => phs$1.addPhase('pay 10 power',{
+        req : f => G$1.player.faction.name == 'cc' && G$1.player.power > 9 && hasBookReq('pay 4 power') && hasBookReq('pay 6 power'),
+        init : f => {G$1.player.power -= 10; G$1.player.bookreqs[0] = {'pay 4 power':F=>true}; G$1.player.bookreqs[1] = {'pay 6 power':F=>true}; endStage(); }
+    });
+    let harbinged = [];
+    let involved = false;
+    let harbinger = () => {
+        phs$1.addStage('harb0',{
+            init : f => {
+                involved = [G$1.choices.fight.player,G$1.choices.fight.enemy].find( p => p.faction.name == 'cc')?.units.find( u => u.type == 'Nyarlathotap').place == G$1.choices.fight.place;
+                if(involved && G$1.choices.fight.unit.tier >= 2) harbinged.push(G$1.choices.fight.unit);phs$1.endStage();},
+        },'fight','assignpkills');
+        phs$1.addStage('harb1',{
+            init : f => {if(involved && G$1.choices.fight.unit.tier >= 2) harbinged.push(G$1.choices.fight.unit);phs$1.endStage();},
+        },'fight','assignpretreats');
+        phs$1.addStage('harb2',{
+            init : f => {if(involved && G$1.choices.fight.unit.tier >= 2) harbinged.push(G$1.choices.fight.unit);phs$1.endStage();},
+        },'fight','assigneretreats');
+        phs$1.addStage('harb3',{
+            init : f => {if(involved && G$1.choices.fight.unit.tier >= 2) harbinged.push(G$1.choices.fight.unit);phs$1.endStage();},
+        },'fight','assignekills');
+        phs$1.addStage('harbresolve',{
+            init : f => {if(involved && harbinged.length) phs$1.interuptStage('fight','harbresolve',G$1.players.indexOf(G$1.players.find( p => p.faction.name == 'cc'))); },
+            options : f => harbinged.map( h => ['+2 signs '+h.type,h.cost/2+' power  '+h.type]),
+            moves : {
+                choose : (np,c) => {
+                    if ( !harbinged.map( h => ['+2 signs',h.cost/2+' power']).includes(c)) return
+                    if ( c.includes('+2 signs')) G$1.player.signs++;
+                    if ( c.includes( ' power ')) G$1.player.power += Number(c.split('')[0]);
+                    harbinged = harbinged.filter( u => u.type != c.split('').slice(8).join('') );
+                    if (!harbinged.length) { phs$1.returnStage(); if (G$1.stage == 'harbresolve') phs$1.endStage(); }
+                }
+            }
+        },'fight','placeeretreats');
+    };
+    let seekanddestroy = () => phs$1.addStage('seek and destroy',{
+        init : f => {
+            involved = [G$1.choices.fight.player,G$1.choices.fight.enemy].find( p => p.faction.name == 'cc')?.units.find( u => u.type == 'Nyarlathotap').place == G$1.choices.fight.place;
+            if (!G$1.player.units.filter( u => u.type == 'Hunting Horror' && G$1.places[u.place] ).length ) {phs$1.endStage();return;}
+            phs$1.interuptStage('fight','seek and destroy',G$1.players.indexOf(G$1.players.find( p => p.faction.name == 'cc' ) ) );
+        },
+        options : f => G$1.player.units.filter( u => u.type == 'Hunting Horror' && G$1.places[u.place] ),
+        moves : {
+            choose : (np,c) => {
+                if ( np != 'unit' || np != 'seek and destroy' || !G$1.player.units.filter( u => u.type == 'Hunting Horror' && G$1.places[u.place] ).includes(c)) return
+                c.place = G$1.choices.fight.place;
+                if (!G$1.player.units.filter( u => u.type == 'Hunting Horror' && G$1.places[u.place] ).length) {
+                    phs$1.returnStage();
+                    phs$1.endStage();
+                }
+            },
+            done : f => {phs$1.returnStage();phs$1.endStage();}
+        }
+
+    },'fight','enemy');
+
+    let madness = () => {
+        madphase = {
+            init : f => {
+                phs$1.interuptStage('fight','placeeretreats',G$1.players.indexOf(G$1.players.find( p => p.faction.name == 'cc' ) ));
+            },
+            options : f => G$1.places[G$1.choices.fight.unit.place].adjacent.filter( p => !G$1.choices.fight.enemy.units.map( u => u.place ).includes(p)),
+            moves : {
+                choose : (np, c) => {
+                    if ( G$1.places[G$1.choices.fight.unit.place].adjacent.filter( p => !G$1.choices.fight.enemy.units.map( u => u.place ).includes(p)).includes( c ) ) {
+                        G$1.choices.fight.unit.place = c;
+                        G$1.choices.fight.temp.phase.pains--;
+                        G$1.forceRerender();
+                    }
+                    if ( !G$1.choices.fight.player.temp.phase.pains || !G$1.choices.fight.player.units.filter( u => u.place == G$1.choices.fight.place ).length )  {
+                        phs$1.returnStage();
+                        phs$1.endStage();
+                    } else {
+                        phs$1.returnStage();
+                        phs$1.setStage('assignpretreats');
+                    }
+                }
+            }
+        };
+        G$1.phases.fight.stages.placepretreats = {...madphase,next:'assignekills'};
+        G$1.phases.fight.stages.placeeretreats = {
+            init : f => {
+                phs$1.interuptStage('fight','placeeretreats',G$1.players.indexOf(G$1.players.find( p => p.faction.name == 'cc' ) ));
+            },
+            options : f => G$1.places[choices.fight.unit.place].adjacent.filter( p => !G$1.choices.fight.player.units.map( u => u.place ).includes(p)),
+            moves : {
+                choose : (np, c) => {
+                    if ( G$1.places[choices.fight.unit.place].adjacent.filter( p => !G$1.choices.fight.player.units.map( u => u.place ).includes(p)).includes( c ) ) {
+                        G$1.choices.fight.unit.place = c;
+                        G$1.choices.fight.enemy.temp.phase.pains--;
+                        G$1.forceRerender();
+                    }
+                    if ( !G$1.choices.fight.enemy.pains || !G$1.choices.fight.enemy.units.filter( u => u.place == G$1.choices.fight.place ).length ) {
+                        phs$1.returnStage(); phs$1.endStage();
+                        G$1.choices.fight.place = null;
+                        G$1.choices.fight.enemy = null;
+                        G$1.choices.fight.unit = null;
+                    } else {
+                        phs$1.returnStage();
+                        phs$1.setStage('assignpretreats');
+                    }
+                }
+            }
+        };
+    };
+    let emissary = () => phs$1.addStage('emissary',{
+        init : f => {
+            G$1.players.find( p => p.faction.name == 'cc' ).units.find( u => u.type == 'Nyarlathtap' ).invulnerable = (
+                !G$1.choices.fight.enemy.units.find( u => u.owner.faction.name != 'cc' && u.tier == 2 && u.place == G$1.choices.fight.place) ||
+                !G$1.choices.fight.player.units.find( u => u.owner.faction.name != 'cc' && u.tier == 2 && u.place == G$1.choices.fight.place)
+            );
+            phs$1.endStage();
+        },
+    },'fight','roll');
+    let invis = 0;
+    let invisibility = () => {
+        phs$1.addStage('invisunit',{
+            init : f => {
+                if ( G$1.choices.fight.player.faction.name != 'cc' && G$1.choices.fight.enemy.faction.name != 'cc' ) {phs$1.endStage(); return}
+                phs$1.interuptStage('fight','invisunit',G$1.players.indexOf(G$1.players.find( p => p.faction.name == 'cc' ) ));
+                invis = G$1.units.filter( u => u.type == 'Flying Polyp' && u.place == G$1.choices.fight.place );
+            },
+            options : f => [...G$1.choices.fight.player.units,...G$1.choices.fight.enemy.units,].filter( u => u.place == G$1.choices.fight.place ),
+            moves : {
+                choose : (np,c) => {
+                    if (np != 'unit' || np != 'invisunit' || ![...G$1.choices.fight.player.units,...G$1.choices.fight.enemy.units,].filter( u => u.place == G$1.choices.fight.place ).includes(c) ) return
+                    c.place = 'invisible';
+                    invis--;
+                    G$1.forceRerender();
+                    if (!invis) {phs$1.returnStage();phs$1.endStage();}
+                },
+                done : f => {phs$1.returnStage();phs$1.endStage();},
+            }
+        },'fight','roll');
+        phs$1.addStage('invisreturn',{
+            init : f => {
+                G$1.units.filter( u.place == 'invisible' ).map( u => u.place = G$1.choices.fight.place );
+                endStage();
+            }
+        },'fight','placeeretreats');
+    };
+    let abductions = 0;
+    let abduct = () => {
+        phs$1.addStage('abductunit',{
+            init : f => {
+                if ( G$1.choices.fight.player.faction.name != 'cc' && G$1.choices.fight.enemy.faction.name != 'cc' ) {phs$1.endStage(); return}
+                phs$1.interuptStage('fight','abductunit',G$1.players.indexOf(G$1.players.find( p => p.faction.name == 'cc' ) ));
+                abductions = 0;
+            },
+            options : f => [...G$1.choices.fight.player.units,...G$1.choices.fight.enemy.units,].filter( u => u.type == 'Nightgaunt' && u.place == G$1.choices.fight.place ),
+            moves : {
+                choose : (np,c) => {
+                    if (np != 'unit' || np != 'abductunit' || ![...G$1.choices.fight.player.units,...G$1.choices.fight.enemy.units,].filter( u => u.place == G$1.choices.fight.place ).includes(c) ) return
+                    c.place = '';
+                    abductions++;
+                    if (![...G$1.choices.fight.player.units,...G$1.choices.fight.enemy.units,].filter( u => u.type == 'Nightgaunt' && u.place == G$1.choices.fight.place ).length) {phs$1.returnStage();phs$1.endStage();}
+                    else G$1.forceRerender();
+                },
+                done : f => {phs$1.returnStage();phs$1.endStage();},
+            }
+        },'fight','enemy');
+        phs$1.addStage('abductenemyunit',{
+            init : f => {
+                if ( G$1.choices.fight.player.faction.name != 'cc' && G$1.choices.fight.enemy.faction.name != 'cc' ) {phs$1.endStage(); return}
+                let p = [G$1.choices.fight.player.units,G$1.choices.fight.enemy].find( p => p.faction.name != 'cc');
+                phs$1.interuptStage('fight','abductenemyunit',G$1.players.indexOf(p));
+                abductions = 0;
+            },
+            options : f => [G$1.choices.fight.player.units,G$1.choices.fight.enemy].find( p => p.faction.name != 'cc').units.filter( u => u.place == G$1.choices.fight.place && u.tier < 2 ),
+            moves : {
+                choose : (np,c) => {
+                    if (np != 'unit' || np != 'abductenemyunit' || ![G$1.choices.fight.player.units,G$1.choices.fight.enemy].find( p => p.faction.name != 'cc').units.filter( u => u.place == G$1.choices.fight.place && u.tier < 2 ).includes(c) ) return
+                    c.place = '';
+                    abductions--;
+                    if (!abductions || ![G$1.choices.fight.player.units,G$1.choices.fight.enemy].find( p => p.faction.name != 'cc').units.filter( u => u.place == G$1.choices.fight.place && u.tier < 2 ).length) {phs$1.returnStage();phs$1.endStage();}
+                    else G$1.forceRerender();
+                },
+            }
+        },'fight','abductunit');
+    };
+    let flight = () => {
+        G$1.players.find( p => p.faction.name == 'cc' ).units.map( u => u.speed = 2 );
+    }; 
+    let thousandforms = f => {
+        G$1.choices.thousandforms = { once : 1, roll : 0, offers : [], tries : 3, negotiated : 0 };
+        phs$1.addPhase('thousand forms',{
+            req : f => G$1.choices.thousandforms.once && G$1.player.faction.name == 'cc' &&  hasBookReq('The Thousand Forms'),
+            init : f => { 
+                G$1.choices.thousandforms.roll = roll(G$1.places.filter( p => G$1.player.units.filter( u => u.type == 'Fungi' ).map( u => u.place).includes(p) ).length );
+                G$1.choices.thousandforms.offers = Array(G$1.players.length).fill(0);
+                G$1.turn.pi++;
+                G$1.choices.thousandforms.once = 0;
+            },
+            start : 'negotiate',
+            stages: {               
+                negotiate : {
+                    next : 'power',
+                    options : f => Array(G$1.choices.thousandforms.roll+1).fill(0).map( (l,i) => i).filter( l => l < G$1.player.units.filter( u => u.type == 'cult' && Object.keys(G$1.places).includes(u.place) ).length ),
+                    moves : {
+                        choose : (np, c) => {
+                            if ( np == 'negotiate' && Array(G$1.choices.thousandforms.roll+1).fill(0).map( (l,i) => i).filter( l => l <= G$1.player.power ).includes(c) ) {
+                                G$1.choices.thousandforms.offers[G$1.turn.pi%G$1.players.length] = c;
+                                G$1.turn.pi++;
+                                if ( G$1.players[G$1.turn.pi].faction.name=='cc') {
+                                    tries--;
+                                    G$1.choices.thousandforms.negotiated = (G$1.choices.thousandforms.offers.reduce((acc,cur)=>acc+cur,0) >= G$1.choices.thousandforms.roll );
+                                }
+                                if (!G$1.choices.thousandforms.tries || G$1.choices.thousandforms.negotiated) setStage( (G$1.choices.thousandforms.negotiated) ? 'losepower' : 'gainpower');
+                                G$1.forceRerender();
+                            }
+                            
+                        },
+                    }
+                },             
+                losepower : {
+                    init : f => {
+                        G$1.pllayers.map( (p,i) => p.power -= G$1.choices.thousandforms.offers[i] );
+                        phs$1.endStage();
+                    },
+                },             
+                gainpower : {
+                    init : f => {
+                        G$1.player.power += G$1.choices.thousandforms.roll;
+                        phs$1.endStage();
+                    },
+                }
+            }
+        } ); 
+    };
+
+    let G$2;
+    let phs$2;
+    let faction$2 = (g,p) => {
+        G$2 = g;
+        phs$2 = p;
+        let oceans = Object.keys(G$2.places).filter( p => G$2.places[p].oceans);
+        let books = ["Absorb", "Devolve", "Dreams", "Regenerate", "Submerge", "Y'hn Nthlei"];
+        let bookinit = {
+            "Absorb":absorb,
+            "Devolve":devolve,
+            "Dreams":dream,
+            "Regenerate":regenerate,
+            "Submerge":()=>{submerge();emerge();},
+            "Y'hn Nthlei":yhanthlei
+        };
+                
+        let bookreqs = [
+            {'1st doom + sign':f=>G$2.phase=='doom' },
+            {'kill/devour enemy':f=> G$2.choices.fight.enemy?.temp.phase.kills+G$2.choices.fight.enemy?.temp.phase.devour == 1 || G$2.choices.fight.enemy?.temp.phase.kills+G$2.choices.fight.enemy?.temp.phase.devour == 3  },
+            {'kill/devour 2 enemies':f=> G$2.choices.fight.enemy?.temp.phase.kills+G$2.choices.fight.enemy?.temp.phase.devour == 2 || G$2.choices.fight.enemy?.temp.phase.kills+G$2.choices.fight.enemy?.temp.phase.devour == 3 },
+            {'3/4 Ocean Gates':f=> G$2.player.units.filter( u => u.gate && oceans.includes( u.place )).length > 2 || Object.values(G$2.places).filter( p => p.ocean && p.gate ).length > 3 },
+            {'Awaken Cthulhu':f=> G$2.choices.awaken.unit?.type=='Great Cthulhu'},
+            {'doom + 5 books + sign':f=> G$2.phase == 'doom' && G$2.player.books.length == 5}
+        ];
+        let goo = 'Cthulhu';
+        let mons = {'Deep One':4,Shoggoth:2,Starspawn:2};
+        let color = 'green';
+        let start = 'southpacific';
+        let name = 'gc';
+        let units = [];
+        let addUnit = (u,p) => {
+            u.owner = p;
+            p.units = [...p.units,u];
+        };
+        let cost = 10;
+        let awakencthu = {
+            awakenplaces: () => [G$2.player.faction.start],
+            awakenreq: () => G$2.player.power > 9 && G$2.places[G$2.player.faction.start].gate,
+            cost: () => { G$2.player.power-=cost; cost = 4; G$2.player.signs++; phs$2.endStage(); },
+        };
+        let initUnits = p => {
+            p.units = [
+                ...p.units,
+                {...G$2.unit("Great Cthulhu",p,'',10,6,2),...awakencthu},
+                ...[0,1,2,3].map( f=> G$2.unit('Deep One',p,'',1,1,1)),
+                ...[0,1].map( f=> G$2.unit('Shoggoth',p,'',2,2,1)),
+                ...[0,1].map( f=> G$2.unit('Starspawn',p,'',3,3,1,1)),
+            ];
+        };
+        devour();
+        immortal();
+        let faction = {bookinit,books,bookreqs,goo,mons,color,start,name,units,addUnit,initUnits};   
+        return faction
+    };
+
+    let lim$1 = 1, unlim = 1;
+
+    let emerge = () => addPhase( 'emerge',{
+        lim: lim$1,
+        start : 'place',
+        req: f => G$2.player.units.find( u => u.type == 'Great Cthulhu').place == 'submerged',
+        stages: {               
+            place : {
+                options : f => Object.keys(G$2.places),
+                moves : {
+                    choose : (np, c) => {
+                        if ((np == 'place' || np == 'emerge') && Object.keys(G$2.places).includes(c)) {
+                            G$2.player.units.filter( u => u.place == 'submerged').map( u => u.place = c);
+                            phs$2.endStage();
+                        }
+                    }
+                }
+            }
+        }
+    });
+    let submerge = () => phs$2.addPhase('submerge', {
+        lim: lim$1,
+        start : 'unit',
+        req: f => G$2.player.units.find( u => u.type == 'Great Cthulhu' && G$2.places[u.place] ),
+        stages: {               
+            unit : {
+                options : f => G$2.player.units.filter( u => u.place = G$2.player.units.find( u => u.type == 'Greath Cthulhu').place ),
+                moves : {
+                    choose : (np, c) => {
+                        if ((np == 'unit' || np == 'submerge') && G$2.player.units.filter( u => u.place = G$2.player.units.find( u => u.type == 'Greath Cthulhu').place ).includes(c)) {
+                            c.place = 'submerged';
+                            G$2.forceRerender();
+                        }
+                    },
+                    done : f => {
+                        G$2.player.units.find( u => u.type == 'Greath Cthulhu').place = 'submerged';
+                        G$2.player.power--;
+                        phs$2.endStage();
+                    }
+                },
+            }
+        }
+    });
+    let dream = () => phs$2.addPhase('dream', {
+        lim: lim$1,
+        start : 'place',
+        req: f => G$2.player.power > 1 && G$2.player.units.filter( u => u.type == 'cult' && u.place == '' ).length && G$2.units.filter( u => u.type == 'cult' && G$2.places[u.place] && u.owner.faction.name != 'gc' ).length,
+        stages: {               
+            place : {
+                next : 'player',
+                options : f => Object.keys(G$2.places).filter( p => G$2.units.find( u => u.type == cult && u.owner.faction.name != 'gc' ) ),
+                moves : {
+                    choose : (np, c) => {
+                        if ((np == 'place' || np == 'dream') && Object.keys(G$2.places).filter( p => G$2.units.find( u => u.type == cult && u.owner.faction != 'gc' ) ).includes(c)) {
+                            G$2.choices.dream.places = c;
+                            phs$2.endStage();
+                        }
+                    }
+                },
+            },         
+            player : {
+                next:'util',
+                options : f => G$2.players.filter( p => p.units.find( u => u.place == G$2.choices.dream.place ) && p.faction.name != 'gc'),//.map( p => p.faction.name ),
+                moves : {
+                    choose : (np, c) => {
+                        if (np == 'player' && G$2.players.filter( p => p.units.find( u => u.place == G$2.choices.dream.place ) && p.faction.name != 'gc').includes(c)) {
+                            G$2.choices.dream.player = c;
+                            phs$2.endStage();
+                        }
+                    }
+                },
+            },
+            util : {
+                options : f => [],
+                init : f => {phs$2.interuptStage('dream','unit',G$2.players.indexOf(G$2.choices.dream.player));},
+                moves : {
+                    choose : (np,c) => {},
+                    done : (np, c) => phs$2.endStage()
+                },
+            },
+            unit : {
+                options : f => G$2.player.units.filter( u => u.type == 'cult' && u.place == G$2.choices.dream.place ),
+                moves : {
+                    choose : (np, c) => {
+                        if ((np == 'unit' || np == 'dream') && G$2.player.units.filter( u => u.type == 'cult' && u.place == G$2.choices.dream.place ).includes(c)) {
+                            G$2.choices.dream.unit = c;
+                            c.place = '';
+                            G$2.players.find( p => p.faction.name='gc').units.find( u => u.type == 'cult' && u.place == '' ).place = G$2.choices.dreams.place;
+                            phs$2.returnStage();
+                        }
+                    }
+                },
+            },
+        }
+    });
+    let devolve = () => {
+        G$2.choices.devolve = {unit:null};
+        let dvstage = {
+            unit : {
+                options: f => G$2.player.units.filter( u => u.type=='cult' && G$2.places[u.place]),
+                moves : {
+                    choose : (np,c) => {
+                        if ((np != 'unit' && np != 'devolveunit' ) || !G$2.player.units.filter( u => u.type=='cult' && G$2.places[u.place]).includes(c)) return
+                        G$2.choices.devolve.unit = c;
+                        G$2.player.units.find( u => u.type=='Deep One' && u.place=='' ).place = c.place;
+                        c.place = '';
+                        c.gate = 0;
+                        if (!G$2.player.units.find( u => u.type=='Deep One' && u.place=='' )) phs$2.endStage();
+                        G$2.forceRerender();
+                    },
+                    done : (np,c) => phs$2.endStage(),
+                }
+            }
+        };
+        phs$2.addPhase('devolve',{
+            start : 'unit',
+            unlim,
+            req: f => G$2.player.faction.name=='gc' && G$2.player.units.find( u => u.type=='cult' && G$2.places[u.place]) && G$2.player.units.find( u => u.type=='Deep One' && u.place=='' ),
+            stages: {
+                unit : {...dvstage.unit}
+            }
+        });
+        dvstage.unit.init = f => { 
+            if (G$2.player.faction.name != 'gc' 
+                && G$2.units.find( u => 
+                u.owner.faction.name != 'gc' 
+                && (u.combat || u.tier)
+                && G$2.players.find( p => p.faction.name=='gc' ).units.filter( u => !u.tier).map(u => u.place).includes(u.place)) )
+                    phs$2.interuptStage('action','devolveunit',G$2.players.indexOf(G$2.players.find( p => p.faction.name=='gc')));
+            else phs$2.endStage();
+        };
+        dvstage.unit.moves.done = f => {phs$2.returnStage();phs$2.endStage();};
+        dvstage.unit.next = ''+G$2.phases.action.start||'';
+        G$2.phases.action.start = 'devolveunit';
+        G$2.phases.action.stages['devolveunit'] = dvstage.unit;
+
+    };
+    let devoured;
+    let devour = () => {
+        let dvstage = {
+            init : f => { 
+                devoured = ([G$2.choices.fight.player, G$2.choices.fight.enemy].find( p => p.faction.name == 'gc')) ? [G$2.choices.fight.player, G$2.choices.fight.enemy].find( p => p.faction.name == 'gc') : null;
+                if (!devoued || G$2.units.find( u => u.type = 'Great Cthulhu').place != G$2.choices.fight.place || !devoured.units.find( u => u.tier < 2 && u.place == G$2.choices.fight.place )) {
+                    phs$2.endStage();
+                    return 
+                }
+                G$2.turn.pi = G$2.players.indexOf(devoured);
+                G$2.forceRerender();
+            },
+            options : f => (devoured) ? devoured.units.filter( u => u.tier < 2 && u.place == G$2.choices.fight.place ) : [],
+            moves : {
+                choose : (np,c) => {
+                    if ( np != 'unit' || np != 'devourunit' || !devoured?.units.filter( u => u.tier < 2 && u.place == G$2.choices.fight.place ).includes(c)) return
+                    c.place = '';
+                    G$2.turn.pi = G$2.players.indexOf([G$2.choices.fight.player, G$2.choices.fight.enemy].find( p => p.faction.name != devoured.faction.name));
+                    phs$2.endStage();
+                }
+            }
+        };
+        phs$2.addStage('devourunit',dvstage,'fight','roll');
+    };
+    let yhanthlei = () => {
+        yhstage = {
+            init : f=>{
+                G$2.players.find( p => p.faction.name == 'gc' ).power += G$2.player.power += oceans.filter( o => G$2.places[o].gate && G$2.units.filter( u => u.place == o && u.gate && u.owner.faction.name != 'gc' ).length ).length;
+                phs$2.endStage();
+            },
+            options : f=>[],
+            moves : {
+                choose : (np,c) => {}
+            },
+        };
+        yhstage.next = G$2.phases.gather.start||'';
+        G$2.phases.gather.start = 'yhanthlei';
+        G$2.phases.gather.stages['yhanthlei'] = yhstage;
+    };
+    let regenerate = () => phs$2.addStage( 'regenerate',{
+        init : f=>{
+            G$2.players.find( p => p.faction.name=='gc').units.filter( u => u.type == 'Starspawn' && u.place == G$2.choices.fight.place).map( f => (G$2.players.find( p => p.faction.name=='gc').temp.phase.kills) ? G$2.players.find( p => p.faction.name=='gc').temp.phase.kills-- : G$2.players.find( p => p.faction.name=='gc').temp.phase.pains--);
+            phs$2.endStage();
+        },
+        options : f=>[],
+        moves : {
+            choose : (np,c) => {}
+        },
+    },'fight','roll');
+    let absorb = () => phs$2.addStage( 'absorbunit',{
+        init : f=>{
+            G$2.units.filter( u => u.type == 'Shoggoth').map( u => u.absorb = 0);
+            if ( ![G$2.choices.fight.player,G$2.choices.fight.enemy].find( p => p.faction.name == 'gc') || !G$2.units.find( u => u.type == 'Shoggoth' && u.place == G$2.choices.fight.place) ) {
+                phs$2.endStage();
+                return
+            }
+            phs$2.interuptStage('fight','absorbunit',G$2.players.indexOf(G$2.players.find( p => p.faction.name == 'gc')));
+        },
+        options : f=>G$2.player.units.filter( u => u.tier < 2 && u.type != 'Shoggoth' && u.place == G$2.choices.fight.place),
+        moves : {
+            choose : (np,c) => {
+                if ( ( np != 'unit' && np != 'absorbunit') || !G$2.player.units.filter( u => u.tier < 2 && u.type != 'Shoggoth' && u.place == G$2.choices.fight.place).includes(c) ) return
+                c.place = '';
+                G$2.units.find( u => u.type == 'Shoggoth' && u.place == G$2.choices.fight.place).absorb+=3;
+                G$2.forceRerender();
+            },
+            done : (np,c) => {phs$2.returnStage(); if(G$2.stage == 'absorbunit') phs$2.endStage();}
+        },
+    },'fight','enemy');
+    let immortal = () => phs$2.addStage( 'immortal', {
+        init : f => {
+            G$2.player.sign += (G$2.player.faction.name == 'gc' && G$2.choices.awaken.unit.tier >= 2);
+            phs$2.endStage();
+        }
+    }, 'awaken','place');
+
+    let G$3;
+    let phs$3;
+    let faction$3 = (g,p) => {
+        G$3 = g;
+        phs$3 = p;
+        let books = ["He Who Must Not Be Named","Passion","Shriek of the Byakhee","The Screaming Dead","The Third Eye","Zin Gaya",];
+        let bookinit = {
+            "He Who Must Not Be Named":named,
+            "Passion":passion,
+            "Shriek of the Byakhee":shriek,
+            "The Screaming Dead":scream,
+            "The Third Eye":thirdeye,
+            "Zin Gaya":zingaya
+        };
+                
+        let bookreqs = [
+            {'gift 3 doom':f=>false },
+            {'Desecrate \\|/':f=> Object.values(G$3.places).filter( p => p.desecrated && p.glyphs['\\|/']).length },
+            {'Desecrate \\o/':f=> Object.values(G$3.places).filter( p => p.desecrated && p.glyphs['\\o/']).length },
+            {'Desecrate \\-/':f=> Object.values(G$3.places).filter( p => p.desecrated && p.glyphs['\\-/']).length },
+            {"Awaken King in Yellow":f=> G$3.choices.awaken.unit?.name=='King in Yellow'},
+            {"Awaken Hastur":f=> G$3.choices.awaken.unit?.name=='Hastur'}
+        ];
+        let goo = ['King in Yellow','Hastur'];
+        let mons = {Undead:2,"Bya'khee":4};
+        let color = 'yellow';
+        let start = 'europe';
+        let name = 'ys';
+        let units = [];
+        let addUnit = (u,p) => {
+            u.owner = p;
+            p.units = [...p.units,u];
+        };
+        let awakenking = {
+            awakenplaces: () => Object.keys(G$3.places).filter( p => !G$3.places[p].gate && G$3.player.units.filter( u => u.place == p).length ),
+            awakenreq: () => G$3.player.power > 3 && Object.keys(G$3.places).filter( p => !G$3.places[p].gate && G$3.player.units.filter( u => u.place == p).length ).length,
+            cost: () => { G$3.player.power-=4; phs$3.endStage(); },
+        };
+        let awakenhast = {
+            awakenplaces: () => G$3.player.units.filter( u => u.gate && u.place == G$3.player.units.find( u => u.type == 'King in Yellow' ).place ).map( u => u.place ),
+            awakenreq: () => G$3.player.power > 9 && G$3.player.units.filter( u => u.gate && u.place == G$3.player.units.find( u => u.type == 'King in Yellow' ).place ).length,
+            cost: () => { G$3.player.power-=10; phs$3.endStage(); },
+        };
+        let initUnits = p => {
+            p.units = [
+                ...p.units,
+                {...G$3.unit("Hastur",p,'',10,f=>G$3.ritual.cost,2),...awakenhast},
+                {...G$3.unit("King in Yellow",p,'',4,0,2),...awakenking},
+                ...[0,1,2,3,4,5].map( f=> G$3.unit('Undead',p,'',1,f=>G$3.units.filter( u => u.place == G$3.choices.combat.place && u.type == "Undead").length-1,1)),
+                ...[0,1,2,3].map( f=> G$3.unit("Bya'khee",p,'',2,f=>G$3.units.filter( u => u.place == G$3.choices.combat.place && u.type == "Bya'khee").length+1,1)),
+            ];
+        };
+
+        desecrate();
+        gift3doom();
+        vengence();
+        feast();
+        let faction = {bookinit,books,bookreqs,goo,mons,color,start,name,units,addUnit,initUnits};
+        return faction
+    };
+
+    let lim$2 = 1, unlim$1 = 1;
+    let gift3doom = () => phs$3.addPhase('gift 3 doom',{
+        lim: lim$2,
+        req : f => G$3.player.faction.name=='ys' && G$3.player.faction.bookreqs.find( b => b['gift 3 doom'] ),
+        start : 'player',
+        stages: {               
+            player : {
+                options : f => G$3.players.filter( p => p.faction.name != 'ys' ),
+                moves : {
+                    choose : (np, c) => {
+                        if ( ( np == 'player' || np == 'gift 3 doom' ) && G$3.players.filter( p => p.faction.name != 'ys' ).includes(c)) {
+                            c.doom+=3;
+                            G$3.player.faction.bookreqs[0]['gift 3 doom'] = f => true;
+                            phs$3.endPhase();
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    let named = () => {
+        G$3.player.temp.turn.named = 1;
+        phs$3.addPhase('named',{
+            unlim: unlim$1,
+            req : f => G$3.player.faction.name == 'ys' && G$3.player.units.find( u => u.type == 'Hastur' && G$3.places[u.place] ) && !G$3.player.temp.turn.named && !G$3.player.temp.turn.scream && G$3.player.power > 0,
+            start : 'place',
+            stages: {               
+                place : {
+                    options : f=>Array.from( new Set(G$3.unit.filter( u => u.type == 'cult' && u.faction.name != 'ys' ).map( u => u.place ) ) ),
+                    moves : {
+                        choose : (np, c) => {
+                            if ( ( np == 'place' || np == 'named' ) && Array.from( new Set(G$3.unit.filter( u => u.type == 'cult' && u.faction.name != 'ys' ).map( u => u.place ) ) ).includes(c)) {
+                                G$3.player.temp.turn.named = 1;
+                                G$3.player.units.find( u => u.type == 'Hastur' ).place = c;
+                                G$3.player.power--;
+                                phs$3.endPhase();
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    };
+
+    let shriek = () => {
+        G$3.choices.shriek = {place:null};
+        phs$3.addPhase('shriek',{
+            lim: lim$2,
+            req : f => G$3.player.faction.name == 'ys' && G$3.player.units.find( u => u.type == 'Byakhee' && G$3.places[u.place]) && G$3.player.power > 0,
+            start : 'place',
+            stages: {               
+                place : {
+                    next : 'unit',
+                    options : f=>G$3.places,
+                    moves : {
+                        choose : (np, c) => {
+                            if ( ( np == 'place' || np == 'shriek' ) && G$3.places.includes(c) ) {
+                                G$3.choices.shriek.place = c;
+                                G$3.player.power--;
+                                phs$3.endPhase();
+                            }
+                        }
+                    }
+                },              
+                unit : {
+                    options : f=> G$3.player.units.filter( u => u.type == 'Byakhee' && G$3.places[u.place] && u.place != G$3.choices.shriek.place ),
+                    moves : {
+                        choose : (np, c) => {
+                            if ( ( np == 'unit' || np == 'shriek' ) && G$3.player.units.filter( u => u.type == 'Byakhee' && G$3.places[u.place] && u.place != G$3.choices.shriek.place ).includes(c) ) {
+                                c.place = G$3.choices.shriek.place;
+                                G$3.forceRerender();
+                            }
+                        },
+                        done : f => phs$3.endStage()
+                    }
+                }
+            }
+        });
+    };
+
+    let zingaya = () => {
+        G$3.choices.zingaya = {place:null};
+        phs$3.addPhase('shriek',{
+            lim: lim$2,
+            req : f => G$3.player.faction.name == 'ys' && G$3.player.units.find( u => u.type == 'Undead' && u.place == '' ) && G$3.player.units.find( u => u.type == 'Undead' && G$3.places[u.place] && G$3.units.find( uu => uu.owner.faction.name != 'ys' && uu.type == 'cult' && uu.place == u.place) ) && G$3.player.power > 0,
+            start : 'place',
+            stages: {               
+                place : {
+                    next : 'unit',
+                    options : f=> Array.from( new Set( G$3.player.units.find( u => u.type == 'Undead' && G$3.places[u.place] && G$3.units.find( uu => uu.owner.faction.name != 'ys' && uu.type == 'cult' && uu.place == u.place) ).map( u => u.place ) ) ),
+                    moves : {
+                        choose : (np, c) => {
+                            if ( ( np == 'place' || np == 'zingaya' ) && Array.from( new Set( G$3.player.units.find( u => u.type == 'Undead' && G$3.places[u.place] && G$3.units.find( uu => uu.owner.faction.name != 'ys' && uu.type == 'cult' && uu.place == u.place) ).map( u => u.place ) ) ).includes(c) ) {
+                                G$3.choices.zingaya.place = c;
+                                phs$3.endPhase();
+                            }
+                        }
+                    }
+                },              
+                unit : {
+                    options : f=> G$3.units.filter( u => u.owner.faction.name != 'ys' && u.type == 'cult' && u.place == G$3.choices.zingaya.place ),
+                    moves : {
+                        choose : (np, c) => {
+                            if ( ( np == 'unit' || np == 'zingaya' ) && G$3.units.filter( u => u.owner.faction.name != 'ys' && u.type == 'cult' && u.place == G$3.choices.zingaya.place ).includes(c) ) {
+                                G$3.player.units.find( u => u.type == 'Undead' && u.place == '' ).place = c.place;
+                                G$3.player.power--;
+                                c.place = '';
+                                phs$3.endStage();
+                            }
+                        },
+                    }
+                }
+            }
+        });
+    };
+
+    let desecrate = () => {
+        let roll;
+        phs$3.addPhase('desecrate',{
+            lim: lim$2,
+            req : f => G$3.player.faction.name == 'ys' && G$3.player.units.find( u => u.type == 'King in Yellow' && G$3.places[u.place] ) && !G$3.places[G$3.player.units.find( u => u.type == 'King in Yellow' && G$3.places[u.place] ).place].glyphs.includes('desecration') && G$3.player.power > 1,
+            start : 'roll',
+            stages: {               
+                roll : {
+                    init : f=> {
+                        G$3.player.power-= (2 - ( G$3.player.books.includes("The Third Eye") && G$3.places[ G$3.player.units.find( u => u.type == 'Hastur' ).place ] ) );
+                        roll = phs$3.roll(1);
+                        if (phs$3.roll(1) >= G$3.player.units.filter( u => u.place == G$3.player.units.find( u => u.type == 'King in Yellow' ).place ).length ) {
+                            G$3.places[G$3.player.units.find( u => u.type == 'King in Yellow' ).place].glyphs.push('desecration');
+                            phs$3.endStage();
+                        } else {
+                            phs$3.setStage('unit');
+                        }
+                    },
+                },              
+                unit : {
+                    options : f=> G$3.player.units.filter( u => u.owner.faction.name != 'ys' && u.cost <= 2 && u.place == '' ),
+                    moves : {
+                        choose : (np, c) => {
+                            if ( ( np == 'unit' || np == 'desecrate' ) && G$3.player.units.filter( u => u.owner.faction.name != 'ys' && u.cost <= 2 && u.place == '' ).includes(c) ) {
+                                c.place = G$3.player.units.find( u => u.type = 'King in Yellow' );
+                                phs$3.endStage();
+                            }
+                        },
+                        done : f=>phs$3.endStage()
+                    }
+                }
+            }
+        });
+    };
+
+    let scream = () => {
+        G$3.player.temp.turn.scream = 1;
+        G$3.choices.scream = {place:null};
+        phs$3.addPhase('scream',{
+            unlim: unlim$1,
+            req : f => G$3.player.faction.name == 'ys' && G$3.places[G$3.player.units.find( u => u.type = 'King in Yellow' ).place] && !G$3.player.temp.turn.named && !G$3.player.temp.turn.scream && G$3.player.power > 0,
+            start : 'place',
+            stages: {               
+                place : {
+                    next : 'unit',
+                    options : f=>G$3.places[ G$3.player.units.find( u => u.type == 'King in Yellow' ).place ].adjacent,
+                    moves : {
+                        choose : (np, c) => {
+                            if ( ( np == 'place' || np == 'scream' ) && G$3.places[ G$3.player.units.find( u => u.type == 'King in Yellow' ).place ].adjacent.includes(c) ) {
+                                G$3.choices.scream.place = c;
+                                G$3.player.temp.turn.scream = 1;
+                                G$3.player.power--;
+                                phs$3.endPhase();
+                            }
+                        }
+                    }
+                },
+                unit : {
+                    options : f=> G$3.player.units.filter( u => u.type == 'Undead' && u.place == G$3.player.units.find( u => u.type = 'King in Yellow' ).place ),
+                    moves : {
+                        choose : (np, c) => {
+                            if ( ( np == 'place' || np == 'scream' ) && G$3.player.units.filter( u => u.type == 'Undead' && u.place == G$3.player.units.find( u => u.type = 'King in Yellow' ).place ).includes(c) ) {
+                                c.place = G$3.choices.scream.place;
+                                if ( G$3.player.units.filter( u => u.type == 'Undead' && u.place == G$3.player.units.find( u => u.type = 'King in Yellow' ).place ).length )
+                                    G$3.forceRerender();
+                                else {
+                                    G$3.player.units.find( u => u.type = 'King in Yellow' ).place = G$3.choices.scream.place;
+                                    phs$3.endStage();
+                                }
+                            }
+                        },
+                        done : f => {
+                            G$3.player.units.find( u => u.type = 'King in Yellow' ).place = G$3.choices.scream.place;
+                            phs$3.endStage();
+                        }
+                    }
+                }
+            }
+        });
+    };
+
+    let feast = () => phs$3.addStage('feast',{
+        init : f => {
+            G$3.players.find( p => p.faction.name == 'ys' ).power += G$3.places.filter( p => G$3.places[p].glyphs.includes('desecration') && G$3.units.find( u => u.place == p) ).length;
+            phs$3.endStage();
+        }
+    },'gather','start');
+
+    let passion = () => {
+        let cultists = G$3.player.units.filter( u => u.type == 'cult' && G$3.places[u.place] ).length;
+        let pastage = {
+            init : f=>{
+                if ( G$3.players.find( p => p.faction.name == 'ys' ).units.filter( u => u.type == 'cult' && G$3.places[u.place] ).length < cultists )
+                    G$3.players.find( p => p.faction.name == 'ys' ).power += cultists - G$3.players.find( p => p.faction.name == 'ys' ).units.filter( u => u.type == 'cult' && G$3.places[u.place] ).length;
+                cultists = G$3.players.find( p => p.faction.name == 'ys' ).units.filter( u => u.type == 'cult' && G$3.places[u.place] ).length;
+                phs$3.endStage();
+            },
+        };
+        pastage.next = G$3.phases.action.start||'';
+        G$3.phases.action.start = 'passion';
+        G$3.phases.action.stages['passion'] = pastage;
+    };
+
+    let thirdeye = () => {
+        phs$3.addStage('thirdeye',{
+            init : f => {
+                G$3.player.signs += G$3.places.includes( G$3.player.units.find( u => u.type == 'Hastur' ).place );
+                phs$3.endStage();
+            }
+        },'desecrate','roll');
+    };
+
+    let vengence = () => {
+        let interupted;
+        phs$3.phases.fight.stages.assignekills.init = {
+            init : f => {
+                interupted = [G$3.choices.fight.enemy,G$3.choices.fight.player].find( p => p.faction.name == 'ys' ) && G$3.units.find( u => u.type == 'Hastur').place == G$3.choices.fight.place;
+                if ( interupted )
+                    phs$3.interuptStage('fight','assignekills',G$3.players.indexOf(G$3.players.find( p => p.faction.name == 'ys' ) ));
+            },
+        };
+        phs$3.addStage('veng-e',{
+            init : f => {
+                if ( interupted ) {
+                    interupted = false;
+                    phs$3.returnStage();
+                    phs$3.endStage();
+                }
+                else
+                    phs$3.endStage();
+            }
+        },'fight','assignekills');
+        phs$3.phases.fight.stages.assignpkills.init = {
+            init : f => {
+                interupted = [G$3.choices.fight.enemy,G$3.choices.fight.player].find( p => p.faction.name == 'ys' ) && G$3.units.find( u => u.type == 'Hastur').place == G$3.choices.fight.place;
+                if ( interupted )
+                    phs$3.interuptStage('fight','assignpkills',G$3.players.indexOf(G$3.players.find( p => p.faction.name == 'ys' ) ));
+            },
+        };
+        phs$3.addStage('veng-p',{
+            init : f => {
+                if ( interupted ) {
+                    interupted = false;
+                    phs$3.returnStage();
+                    phs$3.endStage();
+                }
+                else
+                    phs$3.endStage();
+            }
+        },'fight','assignpkills');
+    };
+
+    let factions = (G,phases) => G.factions = {bg:faction(G,phases),cc:faction$1(G,phases),gc:faction$2(G,phases),ys:faction$3(G,phases)};
+
+    let G$4, lim$3 = 1;
+
+    let stealableUnitsIn = (p) => {
+        let tmpunits = [];
+            tmpunits = G$4.units.filter( u => u.place == p );
+            let dom = {};
+            G$4.players.map( p => dom[p.faction.name] = 0);
+            tmpunits.map( u => 
+                dom[u.owner.faction.name] = (dom[u.owner.faction.name] < u.tier) 
+                ? u.tier : dom[u.owner.faction.name]
+            );
+            tmpunits = tmpunits.filter( u => 
+                u.tier == 0 && dom[u.owner.faction.name] < dom[G$4.player.faction.name] 
+            );
+            return tmpunits
+    };
+    let calcDamage = (p) => {
+        let r = roll$1( p.units.filter( u => u.place == choices.fight.place ).map( u => typeof u.combat == 'function' ? u.combat() : u.combat ) );
+        p.temp.phase.kills = r.filter( e => e > 4 ).length;
+        p.temp.phase.pains = r.filter( e => e < 5 && e > 2).length;
+    };
+    let roll$1 = ( dice ) => Math.floor((Math.random() * 6) + 1);
+    let endTurn = t => { 
+        G$4.players.map( p => p.temp.turn = {} );
+        if (!G$4.players.filter( p => p.power ).length) 
+            phases.setPhase('gather');
+        G$4.turn.lim=1; 
+        G$4.turn.pi++;
+        while(G$4.phase == 'action' && !G$4.players[G$4.turn.pi%G$4.players.length].power) 
+            G$4.turn.pi++;
+        G$4.forceRerender();
+    };
+    let returnStage = f => {};
+    let interuptStage = (inphase,instage,inpi) => {
+        let rphase = ''+G$4.phase;
+        let rstage = ''+G$4.stage;
+        let rpi = 0+G$4.turn.pi;
+        returnStage = phases.returnStage = f => {
+            G$4.phase = rphase;
+            G$4.stage = rstage;
+            G$4.turn.pi = rpi;
+            G$4.forceRerender();
+            if (G$4.phase == 'action' && !G$4.phases.action.stages.start.options().length) endTurn();
+            else if (G$4.stage && !G$4.phases[G$4.phase].stages[G$4.stage].options().length) endStage$1();
+            else if (G$4.phases[G$4.phase].options && !G$4.phases[G$4.phase].options().length) endStage$1();
+        };
+        G$4.phase = inphase;
+        G$4.stage = instage;
+        G$4.turn.pi = inpi;
+        G$4.forceRerender();
+    };
+    let checkbooks = () => 
+        G$4.players.map( p => p.faction.bookreqs.map( (l,i) => {
+            if (Object.values(l)[0]()){
+                p.faction.bookreqs[i] = {'waiting...':f=>false};
+                interuptStage('book','book',G$4.players.indexOf(p));
+            }
+        }));
+    let lostGates = g => Object.keys(G$4.places).filter( p => G$4.places[p].gate && !G$4.units.filter( u => u.place == p && u.gate).length );
+    let autoMountGates = g => {
+        lostGates().map( pl => {
+            let stop = 0;
+            G$4.players.map( p => {
+                let cults = p.units.filter( u => u.type == 'cult' && u.place == pl );
+                if (cults.length && !stop) {
+                    cults[0].gate = pl;
+                    stop = 1;
+                }
+            });
+            G$4.places[pl].nocults = !stop;
+        });
+    };
+    let phaseInit = () => {
+        if (G$4.stage && G$4.phases[G$4.phase].stages[G$4.stage].init)
+            G$4.phases[G$4.phase].stages[G$4.stage].init(); 
+        else if (G$4.stage == '' && G$4.phases[G$4.phase].init)
+            G$4.phases[G$4.phase].init(); 
+    };
+    let setStage$1 = s => {G$4.stage = s; phaseInit(); G$4.forceRerender();};
+    let endStage$1 = s => {autoMountGates(); if (G$4.phases[G$4.phase].stages[G$4.stage].next) {setStage$1(G$4.phases[G$4.phase].stages[G$4.stage].next);} else {endPhase$1();}};
+    let setPhase = p => {
+        G$4.phase = p;
+        G$4.stage = G$4.phases[G$4.phase].start||'';
+        autoMountGates();
+        checkbooks();
+        phaseInit();
+        G$4.forceRerender();
+    };
+    let endPhase$1 = p => {
+        G$4.players.map( p => p.temp.phase = {} );
+        if (G$4.phases[G$4.phase].lim) 
+            G$4.turn.lim--;
+        G$4.phase = (G$4.phases[G$4.phase].next) ? G$4.phases[G$4.phase].next : 'action';
+        G$4.stage = G$4.phases[G$4.phase].start||'';
+        autoMountGates();
+        checkbooks();
+        phaseInit();
+        G$4.forceRerender();
+        if (G$4.phase == 'action' && !G$4.phases.action.stages.start.options().length) endTurn();
+    };
+    let addStage=(s,stage,phase,prev)=>{
+        G$4.phases[phase].stages[s] = stage;
+        if (prev) {
+            stage.next = ''+(G$4.phases[phase].stages[prev].next||'');
+            G$4.phases[phase].stages[prev].next = s;
+        } //else G.phases[phase].start = s
+    };
+    let addPhase$1=(p,phase)=>{G$4.phases[p]=phase;};
+    let phases = {
+        addPhase: addPhase$1,
+        roll: roll$1,
+        addStage,
+        interuptStage,
+        endPhase: endPhase$1,
+        endStage: endStage$1,
+        setPhase,
+        setStage: setStage$1,
+        returnStage,
+        init : g => {G$4 = g; G$4.phases = phases.phases;},
+
+        phases : {
+            gather : {
+                start : 'start',
+                stages : {
+                    start : {
+                        init : f => {
+                            Object.keys(G$4.choices).map( k => {
+                                if (G$4.choices[k].once !== undefined)
+                                    G$4.choices[k].once = 1;
+                            });
+                            G$4.players.map( 
+                                p => p.power += lostGates().length 
+                                + p.units.filter(
+                                    u => (u.type == 'cult' || u.gatherer) 
+                                    && Object.keys(G$4.places).includes(u.place)
+                                ).length 
+                                + 2 
+                                * p.units.filter( 
+                                    u => u.gate
+                                ).length 
+                                + G$4.units.filter( 
+                                    u => u.place == p.faction.name 
+                                ).map( 
+                                    u => u.place = ''
+                                ).length
+                            );
+                            let highest = G$4.player;
+                            G$4.players.map( p => highest = (p.power > highest.power) ? p : highest);
+                            G$4.turn.pi = G$4.players.indexOf(highest);
+                            G$4.players.map( p => p.power = (p.power < highest.power/2) ? highest.power/2 : p.power);
+                        },
+                        options : f => ['keep turn order','reverse turn order'],
+                        moves : {
+                            choose : (np,c) => {
+                                let p = G$4.players[G$4.turn.pi];
+                                if( ['keep turn order','reverse turn order'].includes(c) ) {
+                                    if (c == 'reverse turn order') {
+                                        G$4.players = G$4.players.reverse();
+                                        G$4.turn.pi = G$4.players.indexOf(p);
+                                    }
+                                    G$4.players.map( p => p.ritual = 1);
+                                    setPhase('doom');
+                                }
+                            }
+                        }
+                    },
+                }
+            },
+            doom : {
+                start : 'doom',
+                stages : {
+                    doom : {
+                        options : f => ['ritual',"don't ritual"],
+                        moves : {
+                            choose : (np,c) => {
+                                if (np != 'doom') 
+                                    return
+                                G$4.player.units.filter( u => u.gate ).map( f => G$4.player.doom++);
+                                G$4.player.ritual = 0;
+                                if (c == 'ritual' && G$4.player.power >= G$4.ritualcost) {
+                                    G$4.player.units.filter( u => u.gate ).map( f => G$4.player.doom++);
+                                    G$4.player.units.filter( u => u.tier==2 ).map( f => G$4.player.signs++);
+                                    G$4.player.power -= G$4.ritualcost;
+                                    G$4.rituals++;
+                                }
+                                G$4.turn.pi++;        
+                                if (!G$4.players.filter( p => p.ritual).length) endStage$1();
+                                G$4.forceRerender();
+                            },
+                            // done : (np,c) => { G.player.power = 0; endTurn(); }
+                        }
+                    }
+                }
+            },
+            action : {
+                start : 'start',
+                stages : {
+                    start : {
+                        options : f => Object.keys(G$4.phases).filter( p => (G$4.phases[p].unlim || (G$4.phases[p].lim && G$4.turn.lim)) && (!G$4.phases[p].req || G$4.phases[p].req())),
+                        moves : {
+                            choose : (np,c) => {if (np == 'start') setPhase(c);},
+                            done : (np,c) => { G$4.player.power = 0; endTurn(); }
+                        }
+                    }
+                }
+            },
+            move : {
+                lim: lim$3,
+                start : 'unit',
+                stages: {               
+                        unit : {
+                            next : 'place',
+                            options : f => G$4.player.units.filter( u => G$4.places[u.place] && !u.moved),
+                            moves : {
+                                choose : (np, c) => {
+                                    if (np == 'unit' && G$4.player.units.filter( u => G$4.places[u.place] ).map( u => u.id ).includes(c.id) /*&& !(places[c.place].tokens.includes('iceage') && player.power < 2)*/) {
+                                        G$4.choices.move.unit = c;
+                                        endStage$1();
+                                    }
+                                },
+                                done : f => {
+                                    endPhase$1();
+                                    G$4.player.units.map( u => u.moved = 0);
+                                }
+                            },
+                        },
+                        place : {
+                            next : 'unit',
+                            options : f => (G$4.choices.move.unit.speed == 2 ) ? Array.from( new Set(G$4.places[G$4.choices.move.unit.place].adjacent.reduce( (acc,p) => acc.concat(G$4.places[p].adjacent), []) ) ) : G$4.places[G$4.choices.move.unit.place].adjacent,
+                            moves : {
+                                choose : (np, c) => {
+                                    if (np == 'place' && ((G$4.choices.move.unit.speed == 2 ) ? Array.from( new Set(G$4.places[G$4.choices.move.unit.place].adjacent.reduce( (acc,p) => acc.concat(G$4.places[p].adjacent), []) ) ) : G$4.places[G$4.choices.move.unit.place].adjacent).includes(c)) {
+                                        G$4.choices.move.place = c;
+                                        G$4.choices.move.unit.gate = 0;
+                                        G$4.choices.move.unit.place = c;
+                                        G$4.choices.move.unit.moved = 1;
+                                        G$4.player.power--;
+                                        G$4.choices.move.unit = null;
+                                        G$4.choices.move.place = null;
+                                        G$4.forceRerender();
+                                        if (G$4.player.power == 0) {
+                                            endPhase$1();
+                                            G$4.player.units.map( u => u.moved = 0);
+                                        }
+                                        else endStage$1();
+                                    }
+                                }
+                            },
+                        },
+                    }
+            },
+            fight : {
+                lim: lim$3,
+                start : 'place',
+                req : f=>Object.keys(G$4.places).find( p => G$4.player.units.find( u => u.fight != 0 && u.place == p) && G$4.units.find( u => u.place == p && u.owner.faction.name != G$4.player.faction.name ) ),
+                init : f => G$4.choices.fight.player = G$4.players[G$4.turn.pi],
+                stages : {
+                    place : {
+                        next : 'enemy',
+                        options : f => Object.keys(G$4.places).filter( p => G$4.player.units.filter( u => u.place == p && u.fight != 0 ).length ),
+                        moves : {
+                            choose : (np, c) => {
+                                if (np == 'place' && Object.keys(G$4.places).filter( p => G$4.player.units.find( u => u.fight != 0 && u.place == p) && G$4.units.find( u => u.place == p && u.owner.faction.name != G$4.player.faction.name ) ).includes(c) ) {
+                                    G$4.choices.fight.place = c;
+                                    endStage$1();
+                                }
+                            }
+                        },
+                    },
+                    enemy : {
+                        next : 'roll',
+                        options : f => G$4.players.filter( p => p.faction.name != G$4.player.faction.name && p.units.filter( u => u.place == G$4.choices.fight.place).length ),
+                        moves : {
+                            choose : (np, c) => {
+                                if (np == 'enemy' && G$4.players.filter( p => p.faction.name != G$4.player.faction.name && p.units.filter( u => u.place == G$4.choices.fight.place).length ) /*&& !(places[c.place].tokens.includes('iceage') && player.power < 2)*/) {
+                                    G$4.choices.fight.enemy = c;
+                                    G$4.player.power--;
+                                    endPhase$1();
+                                }
+                            }
+                        },
+                    }, 
+                    roll : {
+                        next : 'assignpkills',
+                        init : f => { 
+                            calcDamage(G$4.player);
+                            calcDamage(G$4.choices.fight.enemy);
+                            endPhase$1();
+                        },
+                        options : f => [],
+                        moves : {
+                            choose : (np,c) => {}
+                        }
+                    },
+                    assignpkills : {
+                        next : 'assignpretreats',
+                        options : f => G$4.player.units.filter( u => u.place == G$4.choices.fight.place && (!u?.invulnerable ) ),
+                        moves : {
+                            choose : (np, c) => {
+                                if ( G$4.player.units.filter( u => u.place == G$4.choices.fight.place ).map( u => u.id ).includes( c.id ) ) {
+                                    c.place = '';
+                                    c.gate = 0;
+                                    G$4.player.temp.phase.kills--;
+                                    G$4.forceRerender();
+                                }
+                                if ( !G$4.player.temp.phase.kills || !G$4.player.units.filter( u => u.place == G$4.choices.fight.place ).length ) 
+                                    endStage$1();
+                            }
+                        }
+                    },
+                    assignpretreats : {
+                        next : 'placepretreats',
+                        options : f => G$4.player.units.filter( u => u.place == G$4.choices.fight.place ),
+                        moves : {
+                            choose : (np, c) => {
+                                if ( G$4.player.units.filter( u => u.place == G$4.choices.fight.place ).map( u => u.id ).includes( c.id ) ) {
+                                    G$4.choice.fight.unit = c;
+                                    endStage$1();
+                                }
+                            }
+                        }
+                    },
+                    placepretreats : {
+                        next : 'assignekills',
+                        options : f => G$4.places[G$4.choices.fight.unit.place].adjacent.filter( p => !G$4.choices.fight.enemy.units.map( u => u.place ).includes(p)),
+                        moves : {
+                            choose : (np, c) => {
+                                if ( G$4.places[G$4.choices.fight.unit.place].adjacent.filter( p => !G$4.choices.fight.enemy.units.map( u => u.place ).includes(p)).includes( c ) ) {
+                                    G$4.choices.fight.unit.place = c;
+                                    G$4.player.temp.phase.pains--;
+                                    G$4.forceRerender();
+                                }
+                                if ( !G$4.player.temp.phase.pains || !G$4.player.units.filter( u => u.place == G$4.choices.fight.place ).length ) 
+                                    endStage$1();
+                                else
+                                    setStage$1('assignpretreats');
+                            }
+                        }
+                    },
+                    assignekills : {
+                        next : 'assigneretreats',
+                        options : f => G$4.choices.fight.enemy.units.filter( u => u.place == G$4.choices.fight.place ),
+                        moves : {
+                            choose : (np, c) => {
+                                if ( G$4.choices.fight.enemy.units.filter( u => u.place == G$4.choices.fight.place ).map( u => u.id ).includes( c.id ) ) {
+                                    c.place = '';
+                                    c.gate = 0;
+                                    G$4.choices.fight.enemy.temp.phase.kills--;
+                                    G$4.forceRerender();
+                                }
+                                if ( !G$4.choices.fight.enemy.kills || !G$4.choices.fight.enemy.units.filter( u => u.place == G$4.choices.fight.place ).length ) 
+                                    endStage$1();
+                            }
+                        }
+                    },
+                    assigneretreats : {
+                        next : 'placeeretreats',
+                        options : f => G$4.choices.fight.enemy.units.filter( u => u.place == G$4.choices.fight.place ),
+                        moves : {
+                            choose : (np, c) => {
+                                if ( G$4.choices.fight.enemy.units.filter( u => u.place == G$4.choices.fight.place ).map( u => u.id ).includes( c.id ) ) {
+                                    G$4.choice.fight.unit = c;
+                                    endStage$1();
+                                }
+                            }
+                        }
+                    },
+                    placeeretreats : {
+                        options : f => G$4.places[choices.fight.unit.place].adjacent.filter( p => !G$4.player.units.map( u => u.place ).includes(p)),
+                        moves : {
+                            choose : (np, c) => {
+                                if ( G$4.places[choices.fight.unit.place].adjacent.filter( p => !player.units.map( u => u.place ).includes(p)).includes( c ) ) {
+                                    G$4.choices.fight.unit.place = c;
+                                    G$4.choices.fight.enemy.temp.phase.pains--;
+                                    G$4.forceRerender();
+                                }
+                                if ( !G$4.choices.fight.enemy.pains || !G$4.choices.fight.enemy.units.filter( u => u.place == G$4.choices.fight.place ).length ) {
+                                    endStage$1();
+                                    G$4.choices.fight.place = null;
+                                    G$4.choices.fight.enemy = null;
+                                    G$4.choices.fight.unit = null;
+                                } else
+                                    setStage$1('assignpretreats');
+                            }
+                        }
+                    }
+                }
+            },
+            hire : {
+                lim: lim$3,
+                start : 'place',
+                req : f => G$4.player.units.find( u => u.type == 'cult' && u.place == '' ),
+                stages : {
+                    place : {
+                        options : f => Array.from( new Set( G$4.player.units.map( u => u.place ) ) ),
+                        moves : {
+                            choose : (np, c) => {
+                                if (np == 'place' && G$4.player.units.map( u => u.place ).includes(c) ) {
+                                    G$4.choices.hire.place = c;
+                                    let u = G$4.player.units.find( u => u.place == '' && u.type == 'cult');
+                                    if (!u) setPhase('action');
+                                    u.place = c;
+                                    G$4.player.power--;
+                                    G$4.choices.hire.place = null;
+                                    endPhase$1();
+                                }
+                            }
+                        }
+                    },
+                }
+            },
+            open : {
+                lim: lim$3,
+                start : 'place',
+                req : f => G$4.player.power > 2 && Object.keys(G$4.places).find( p => !G$4.units.find( u => u.gate == p) && G$4.player.units.find( u => u.place == p && u.type == 'cult' ) ),
+                stages : {
+                    place : {
+                        options : f => Object.keys(G$4.places).filter( p => !G$4.places[p].gate && G$4.player.units.filter( u => u.type == 'cult' ).map( u => u.place ).includes(p) ),
+                        moves : {
+                            choose : (np, c) => {
+                                if (np == 'place' && G$4.player.units.filter( u => u.type == 'cult' ).map( u => u.place ).includes(c) ) {
+                                    G$4.choices.open.place = c;
+                                    G$4.places[G$4.choices.open.place].gate = 1;
+                                    G$4.player.power-=3;
+                                    endPhase$1();
+                                }
+                            }
+                        }
+                    },
+                }
+            },
+            summon : {
+                lim: lim$3,
+                start : 'unit',
+                stages : {
+                    unit : {
+                        next : 'place',
+                        options : f => G$4.player.units.filter( u => !G$4.places[u.place] && u.tier==1 && ((typeof u.cost == 'function') ? u.cost() : u.cost) <= G$4.player.power),
+                        moves : {
+                            choose : (np, c) => {
+                                if (np == 'unit' && !G$4.places[c.place] && c.cost <= G$4.player.power /*&& !(places[c.place].tokens.includes('iceage') && player.power < 2)*/) {
+                                    G$4.choices.summon.unit = c;
+                                    endStage$1();
+                                }
+                            },
+                            done : f => {
+                                endPhase$1();
+                            }
+                        },
+                    },
+                    place : {
+                        options : f => G$4.player.units.filter( u => u.gate ).map( u => u.place ),
+                        moves : {
+                            choose : (np, c) => {
+                                if (np == 'place' && G$4.player.units.filter( u => u.gate ).map( u => u.place ).includes(c)) {
+                                    G$4.choices.summon.place = c;
+                                    G$4.choices.summon.unit.place = c;
+                                    G$4.player.power -= G$4.choices.summon.unit.cost;
+                                    G$4.choices.summon.unit = null;
+                                    G$4.choices.summon.place = null;
+                                    G$4.forceRerender();
+                                    endStage$1();
+                                }
+                            }
+                        },
+                    },
+                }
+            },
+            awaken : {
+                lim: lim$3,
+                start : 'unit',
+                req : f => G$4.player.units.filter( u => u.tier == 2 && u.place == '' && u.awakenreq()).length,
+                stages : {
+                    unit : {
+                        next : 'place',
+                        options : f => G$4.player.units.filter( u => u.tier==2 && u.awakenreq()),
+                        moves : {
+                            choose : (np, c) => {
+                                if (np == 'unit' && G$4.player.units.filter( u => u.tier==2 && u.awakenreq()).includes(c)) {
+                                    G$4.choices.awaken.unit = c;
+                                    endStage$1();
+                                }
+                            },
+                            done : f => {
+                                endPhase$1();
+                            }
+                        },
+                    },
+                    place : {
+                        options : f => G$4.choices.awaken.unit.awakenplaces(),
+                        moves : {
+                            choose : (np, c) => {
+                                if (np == 'place' && G$4.choices.awaken.unit.awakenplaces().includes(c)) {
+                                    G$4.choices.awaken.place = c;
+                                    G$4.choices.awaken.unit.place = c;
+                                    // G.player.power -= G.choices.awaken.unit.cost
+                                    // G.choices.awaken.unit = null
+                                    // G.choices.awaken.place = null
+                                    G$4.choices.awaken.unit.cost();
+                                    G$4.forceRerender();
+                                    // endStage()
+                                }
+                            }
+                        },
+                    },
+                }
+            },
+            steal : {
+                lim: lim$3,
+                start : 'place',
+                req : f => Object.keys(G$4.places).filter( p =>stealableUnitsIn(p).length ).length,
+                stages : {
+                    place : {
+                        next : 'unit',
+                        options : f => Object.keys(G$4.places).filter( p =>stealableUnitsIn(p).length ),
+                        moves : {
+                            choose : (np, c) => {
+                                if (np == 'place' && stealableUnitsIn(c).length ) {
+                                    G$4.choices.steal.place = c;
+                                    G$4.choices.steal.gate = 0;
+                                    endStage$1();
+                                }
+                            }
+                        },
+                    },
+                    unit : {
+                        options : f => stealableUnitsIn(G$4.choices.steal.place),
+                        moves : {
+                            choose : (np, c) => {
+                                if (np == 'unit' && stealableUnitsIn(G$4.choices.steal.place).map( u => u.id).includes(c.id) /*&& !(places[c.place].tokens.includes('iceage') && player.power < 2)*/) {
+                                    G$4.choices.steal.unit = c;
+                                    c.place = G$4.player.faction.name;
+                                    G$4.choices.steal.unit = null;
+                                    G$4.choices.steal.place = null;
+                                    endPhase$1();
+                                }
+                            }
+                        },
+                    },
+                }
+            },
+            book : {
+                start : 'book',
+                stages : {
+                    book : {
+                        options : f => G$4.player.faction.books,
+                        moves : {
+                            choose : (np, c) => {
+                                if (np == 'book' && G$4.player.faction.books.includes(c) ) {
+                                    G$4.choices.book.book = c;
+                                    G$4.player.books = [...G$4.player.books, c ];
+                                    G$4.player.faction.bookreqs = G$4.player.faction.bookreqs.filter( b => !b['waiting...']);
+                                    G$4.player.faction.books = G$4.player.faction.books.filter( b => b != G$4.choices.book.book);
+                                    G$4.player.faction.bookinit[c]();
+                                    returnStage();
+                                }
+                            }
+                        },
+                    },
+                }
+            },
+        }
+    };
+
+    /* src\components\cw\Game.svelte generated by Svelte v3.29.0 */
+
+    const { Object: Object_1$1 } = globals;
+    const file$5 = "src\\components\\cw\\Game.svelte";
+
+    function get_each_context$3(ctx, list, i) {
+    	const child_ctx = ctx.slice();
+    	child_ctx[3] = list[i];
+    	return child_ctx;
+    }
+
+    function get_each_context_1$2(ctx, list, i) {
+    	const child_ctx = ctx.slice();
+    	child_ctx[21] = list[i];
+    	return child_ctx;
+    }
+
+    // (127:409) {:else}
+    function create_else_block(ctx) {
+    	let li;
+    	let t_value = /*action*/ ctx[21] + "";
+    	let t;
+    	let mounted;
+    	let dispose;
+
+    	const block = {
+    		c: function create() {
+    			li = element("li");
+    			t = text(t_value);
+    			attr_dev(li, "class", "svelte-1aur6c4");
+    			add_location(li, file$5, 126, 416, 4039);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, li, anchor);
+    			append_dev(li, t);
+
+    			if (!mounted) {
+    				dispose = listen_dev(
+    					li,
+    					"click",
+    					function () {
+    						if (is_function(/*click*/ ctx[2](/*action*/ ctx[21]))) /*click*/ ctx[2](/*action*/ ctx[21]).apply(this, arguments);
+    					},
+    					false,
+    					false,
+    					false
+    				);
+
+    				mounted = true;
+    			}
+    		},
+    		p: function update(new_ctx, dirty) {
+    			ctx = new_ctx;
+    			if (dirty & /*actions*/ 2 && t_value !== (t_value = /*action*/ ctx[21] + "")) set_data_dev(t, t_value);
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(li);
+    			mounted = false;
+    			dispose();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_else_block.name,
+    		type: "else",
+    		source: "(127:409) {:else}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (127:352) 
+    function create_if_block_3(ctx) {
+    	let li;
+    	let t_value = /*action*/ ctx[21].faction.name + "";
+    	let t;
+    	let mounted;
+    	let dispose;
+
+    	const block = {
+    		c: function create() {
+    			li = element("li");
+    			t = text(t_value);
+    			attr_dev(li, "class", "svelte-1aur6c4");
+    			add_location(li, file$5, 126, 352, 3975);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, li, anchor);
+    			append_dev(li, t);
+
+    			if (!mounted) {
+    				dispose = listen_dev(
+    					li,
+    					"click",
+    					function () {
+    						if (is_function(/*click*/ ctx[2](/*action*/ ctx[21]))) /*click*/ ctx[2](/*action*/ ctx[21]).apply(this, arguments);
+    					},
+    					false,
+    					false,
+    					false
+    				);
+
+    				mounted = true;
+    			}
+    		},
+    		p: function update(new_ctx, dirty) {
+    			ctx = new_ctx;
+    			if (dirty & /*actions*/ 2 && t_value !== (t_value = /*action*/ ctx[21].faction.name + "")) set_data_dev(t, t_value);
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(li);
+    			mounted = false;
+    			dispose();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_3.name,
+    		type: "if",
+    		source: "(127:352) ",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (127:150) {#if G.stage.includes("unit")}
+    function create_if_block_2(ctx) {
+    	let li;
+    	let t0_value = /*action*/ ctx[21].type + "";
+    	let t0;
+    	let t1;
+    	let t2_value = (/*action*/ ctx[21].place || "pool") + "";
+    	let t2;
+    	let mounted;
+    	let dispose;
+
+    	const block = {
+    		c: function create() {
+    			li = element("li");
+    			t0 = text(t0_value);
+    			t1 = text(" in ");
+    			t2 = text(t2_value);
+    			attr_dev(li, "class", "svelte-1aur6c4");
+    			add_location(li, file$5, 126, 180, 3803);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, li, anchor);
+    			append_dev(li, t0);
+    			append_dev(li, t1);
+    			append_dev(li, t2);
+
+    			if (!mounted) {
+    				dispose = listen_dev(
+    					li,
+    					"click",
+    					function () {
+    						if (is_function(/*click*/ ctx[2](/*action*/ ctx[21]))) /*click*/ ctx[2](/*action*/ ctx[21]).apply(this, arguments);
+    					},
+    					false,
+    					false,
+    					false
+    				);
+
+    				mounted = true;
+    			}
+    		},
+    		p: function update(new_ctx, dirty) {
+    			ctx = new_ctx;
+    			if (dirty & /*actions*/ 2 && t0_value !== (t0_value = /*action*/ ctx[21].type + "")) set_data_dev(t0, t0_value);
+    			if (dirty & /*actions*/ 2 && t2_value !== (t2_value = (/*action*/ ctx[21].place || "pool") + "")) set_data_dev(t2, t2_value);
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(li);
+    			mounted = false;
+    			dispose();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_2.name,
+    		type: "if",
+    		source: "(127:150) {#if G.stage.includes(\\\"unit\\\")}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (127:125) {#each actions as action}
+    function create_each_block_1$2(ctx) {
+    	let show_if;
+    	let show_if_1;
+    	let if_block_anchor;
+
+    	function select_block_type(ctx, dirty) {
+    		if (show_if == null || dirty & /*G*/ 1) show_if = !!/*G*/ ctx[0].stage.includes("unit");
+    		if (show_if) return create_if_block_2;
+    		if (show_if_1 == null || dirty & /*G*/ 1) show_if_1 = !!(/*G*/ ctx[0].stage.includes("player") || /*G*/ ctx[0].stage.includes("enemy") || /*G*/ ctx[0].stage.includes("faction"));
+    		if (show_if_1) return create_if_block_3;
+    		return create_else_block;
+    	}
+
+    	let current_block_type = select_block_type(ctx, -1);
+    	let if_block = current_block_type(ctx);
+
+    	const block = {
+    		c: function create() {
+    			if_block.c();
+    			if_block_anchor = empty();
+    		},
+    		m: function mount(target, anchor) {
+    			if_block.m(target, anchor);
+    			insert_dev(target, if_block_anchor, anchor);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (current_block_type === (current_block_type = select_block_type(ctx, dirty)) && if_block) {
+    				if_block.p(ctx, dirty);
+    			} else {
+    				if_block.d(1);
+    				if_block = current_block_type(ctx);
+
+    				if (if_block) {
+    					if_block.c();
+    					if_block.m(if_block_anchor.parentNode, if_block_anchor);
+    				}
+    			}
+    		},
+    		d: function destroy(detaching) {
+    			if_block.d(detaching);
+    			if (detaching) detach_dev(if_block_anchor);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_each_block_1$2.name,
+    		type: "each",
+    		source: "(127:125) {#each actions as action}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (127:687) 
+    function create_if_block_1(ctx) {
+    	let li;
+    	let mounted;
+    	let dispose;
+
+    	const block = {
+    		c: function create() {
+    			li = element("li");
+    			li.textContent = "done";
+    			attr_dev(li, "class", "svelte-1aur6c4");
+    			add_location(li, file$5, 126, 687, 4310);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, li, anchor);
+
+    			if (!mounted) {
+    				dispose = listen_dev(
+    					li,
+    					"click",
+    					function () {
+    						if (is_function(/*G*/ ctx[0].phases[/*G*/ ctx[0].phase].moves.done)) /*G*/ ctx[0].phases[/*G*/ ctx[0].phase].moves.done.apply(this, arguments);
+    					},
+    					false,
+    					false,
+    					false
+    				);
+
+    				mounted = true;
+    			}
+    		},
+    		p: function update(new_ctx, dirty) {
+    			ctx = new_ctx;
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(li);
+    			mounted = false;
+    			dispose();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_1.name,
+    		type: "if",
+    		source: "(127:687) ",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (127:472) {#if G.phases[G.phase].stages && G.phases[G.phase].stages[G.stage].moves.done}
+    function create_if_block$1(ctx) {
+    	let li;
+    	let mounted;
+    	let dispose;
+
+    	const block = {
+    		c: function create() {
+    			li = element("li");
+    			li.textContent = "done";
+    			attr_dev(li, "class", "svelte-1aur6c4");
+    			add_location(li, file$5, 126, 550, 4173);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, li, anchor);
+
+    			if (!mounted) {
+    				dispose = listen_dev(
+    					li,
+    					"click",
+    					function () {
+    						if (is_function(/*G*/ ctx[0].phases[/*G*/ ctx[0].phase].stages[/*G*/ ctx[0].stage].moves.done)) /*G*/ ctx[0].phases[/*G*/ ctx[0].phase].stages[/*G*/ ctx[0].stage].moves.done.apply(this, arguments);
+    					},
+    					false,
+    					false,
+    					false
+    				);
+
+    				mounted = true;
+    			}
+    		},
+    		p: function update(new_ctx, dirty) {
+    			ctx = new_ctx;
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(li);
+    			mounted = false;
+    			dispose();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block$1.name,
+    		type: "if",
+    		source: "(127:472) {#if G.phases[G.phase].stages && G.phases[G.phase].stages[G.stage].moves.done}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (127:758) {#each G.players as player}
+    function create_each_block$3(ctx) {
+    	let player_1;
+    	let current;
+
+    	player_1 = new Player({
+    			props: {
+    				choose: /*G*/ ctx[0].choose,
+    				player: /*player*/ ctx[3],
+    				G: /*G*/ ctx[0]
+    			},
+    			$$inline: true
+    		});
+
+    	const block = {
+    		c: function create() {
+    			create_component(player_1.$$.fragment);
+    		},
+    		m: function mount(target, anchor) {
+    			mount_component(player_1, target, anchor);
+    			current = true;
+    		},
+    		p: function update(ctx, dirty) {
+    			const player_1_changes = {};
+    			if (dirty & /*G*/ 1) player_1_changes.choose = /*G*/ ctx[0].choose;
+    			if (dirty & /*G*/ 1) player_1_changes.player = /*player*/ ctx[3];
+    			if (dirty & /*G*/ 1) player_1_changes.G = /*G*/ ctx[0];
+    			player_1.$set(player_1_changes);
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(player_1.$$.fragment, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(player_1.$$.fragment, local);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			destroy_component(player_1, detaching);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_each_block$3.name,
+    		type: "each",
+    		source: "(127:758) {#each G.players as player}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function create_fragment$5(ctx) {
+    	let map;
+    	let div1;
+    	let div0;
+    	let t;
+    	let ul;
+    	let each0_anchor;
+    	let current;
+    	const map_spread_levels = [/*G*/ ctx[0]];
+    	let map_props = {};
+
+    	for (let i = 0; i < map_spread_levels.length; i += 1) {
+    		map_props = assign(map_props, map_spread_levels[i]);
+    	}
+
+    	map = new Map$1({ props: map_props, $$inline: true });
+    	let each_value_1 = /*actions*/ ctx[1];
+    	validate_each_argument(each_value_1);
+    	let each_blocks_1 = [];
+
+    	for (let i = 0; i < each_value_1.length; i += 1) {
+    		each_blocks_1[i] = create_each_block_1$2(get_each_context_1$2(ctx, each_value_1, i));
+    	}
+
+    	function select_block_type_1(ctx, dirty) {
+    		if (/*G*/ ctx[0].phases[/*G*/ ctx[0].phase].stages && /*G*/ ctx[0].phases[/*G*/ ctx[0].phase].stages[/*G*/ ctx[0].stage].moves.done) return create_if_block$1;
+    		if (/*G*/ ctx[0].phases[/*G*/ ctx[0].phase].moves && /*G*/ ctx[0].phases[/*G*/ ctx[0].phase].moves.done) return create_if_block_1;
+    	}
+
+    	let current_block_type = select_block_type_1(ctx);
+    	let if_block = current_block_type && current_block_type(ctx);
+    	let each_value = /*G*/ ctx[0].players;
+    	validate_each_argument(each_value);
+    	let each_blocks = [];
+
+    	for (let i = 0; i < each_value.length; i += 1) {
+    		each_blocks[i] = create_each_block$3(get_each_context$3(ctx, each_value, i));
+    	}
+
+    	const out = i => transition_out(each_blocks[i], 1, 1, () => {
+    		each_blocks[i] = null;
+    	});
+
+    	const block = {
+    		c: function create() {
+    			create_component(map.$$.fragment);
+    			div1 = element("div");
+    			div0 = element("div");
+    			t = text("actions");
+    			ul = element("ul");
+
+    			for (let i = 0; i < each_blocks_1.length; i += 1) {
+    				each_blocks_1[i].c();
+    			}
+
+    			each0_anchor = empty();
+    			if (if_block) if_block.c();
+
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].c();
+    			}
+
+    			set_style(ul, "padding", "0");
+    			attr_dev(ul, "class", "svelte-1aur6c4");
+    			add_location(ul, file$5, 126, 103, 3726);
+    			attr_dev(div0, "class", "actions svelte-1aur6c4");
+    			set_style(div0, "color", /*G*/ ctx[0].player.faction.color);
+    			add_location(div0, file$5, 126, 35, 3658);
+    			attr_dev(div1, "class", "hud svelte-1aur6c4");
+    			add_location(div1, file$5, 126, 18, 3641);
+    		},
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+    		m: function mount(target, anchor) {
+    			mount_component(map, target, anchor);
+    			insert_dev(target, div1, anchor);
+    			append_dev(div1, div0);
+    			append_dev(div0, t);
+    			append_dev(div0, ul);
+
+    			for (let i = 0; i < each_blocks_1.length; i += 1) {
+    				each_blocks_1[i].m(ul, null);
+    			}
+
+    			append_dev(ul, each0_anchor);
+    			if (if_block) if_block.m(ul, null);
+
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].m(div1, null);
+    			}
+
+    			current = true;
+    		},
+    		p: function update(ctx, [dirty]) {
+    			const map_changes = (dirty & /*G*/ 1)
+    			? get_spread_update(map_spread_levels, [get_spread_object(/*G*/ ctx[0])])
+    			: {};
+
+    			map.$set(map_changes);
+
+    			if (dirty & /*click, actions, G*/ 7) {
+    				each_value_1 = /*actions*/ ctx[1];
+    				validate_each_argument(each_value_1);
+    				let i;
+
+    				for (i = 0; i < each_value_1.length; i += 1) {
+    					const child_ctx = get_each_context_1$2(ctx, each_value_1, i);
+
+    					if (each_blocks_1[i]) {
+    						each_blocks_1[i].p(child_ctx, dirty);
+    					} else {
+    						each_blocks_1[i] = create_each_block_1$2(child_ctx);
+    						each_blocks_1[i].c();
+    						each_blocks_1[i].m(ul, each0_anchor);
+    					}
+    				}
+
+    				for (; i < each_blocks_1.length; i += 1) {
+    					each_blocks_1[i].d(1);
+    				}
+
+    				each_blocks_1.length = each_value_1.length;
+    			}
+
+    			if (current_block_type === (current_block_type = select_block_type_1(ctx)) && if_block) {
+    				if_block.p(ctx, dirty);
+    			} else {
+    				if (if_block) if_block.d(1);
+    				if_block = current_block_type && current_block_type(ctx);
+
+    				if (if_block) {
+    					if_block.c();
+    					if_block.m(ul, null);
+    				}
+    			}
+
+    			if (!current || dirty & /*G*/ 1) {
+    				set_style(div0, "color", /*G*/ ctx[0].player.faction.color);
+    			}
+
+    			if (dirty & /*G*/ 1) {
+    				each_value = /*G*/ ctx[0].players;
+    				validate_each_argument(each_value);
+    				let i;
+
+    				for (i = 0; i < each_value.length; i += 1) {
+    					const child_ctx = get_each_context$3(ctx, each_value, i);
+
+    					if (each_blocks[i]) {
+    						each_blocks[i].p(child_ctx, dirty);
+    						transition_in(each_blocks[i], 1);
+    					} else {
+    						each_blocks[i] = create_each_block$3(child_ctx);
+    						each_blocks[i].c();
+    						transition_in(each_blocks[i], 1);
+    						each_blocks[i].m(div1, null);
+    					}
+    				}
+
+    				group_outros();
+
+    				for (i = each_value.length; i < each_blocks.length; i += 1) {
+    					out(i);
+    				}
+
+    				check_outros();
+    			}
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(map.$$.fragment, local);
+
+    			for (let i = 0; i < each_value.length; i += 1) {
+    				transition_in(each_blocks[i]);
+    			}
+
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(map.$$.fragment, local);
+    			each_blocks = each_blocks.filter(Boolean);
+
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				transition_out(each_blocks[i]);
+    			}
+
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			destroy_component(map, detaching);
+    			if (detaching) detach_dev(div1);
+    			destroy_each(each_blocks_1, detaching);
+
+    			if (if_block) {
+    				if_block.d();
+    			}
+
+    			destroy_each(each_blocks, detaching);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_fragment$5.name,
+    		type: "component",
+    		source: "",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function instance$5($$self, $$props, $$invalidate) {
+    	let { $$slots: slots = {}, $$scope } = $$props;
+    	validate_slots("Game", slots, []);
+
+    	let forceRerender = f => {
+    		($$invalidate(0, G), $$invalidate(18, noop));
+    	};
+
+    	let players, turn, phase, stage, choices, units, player;
+
+    	let unit = (type = "", owner = {}, place = "", cost = 0, fight = 0, tier = 0, gather = 0) => ({
+    		id: genid(),
+    		type,
+    		owner,
+    		place,
+    		cost,
+    		fight,
+    		gather,
+    		tier,
+    		gate: 0
+    	});
+
+    	let G = {
+    		unit,
+    		choices,
+    		players,
+    		player,
+    		places: places$1,
+    		phases,
+    		turn,
+    		phase,
+    		stage,
+    		units,
+    		forceRerender
+    	};
+
+    	G.choices = {
+    		book: { book: null },
+    		awaken: { unit: null, place: null },
+    		move: { unit: null, place: null },
+    		fight: { place: null, enemy: null },
+    		hire: { place: null },
+    		open: { place: null },
+    		summon: { unit: null, place: null },
+    		steal: { place: null, unit: null }
+    	};
+
+    	phases.init(G);
+    	factions(G, phases);
+
+    	let playerinit = (faction = "", units = [], doom = 0, power = 0) => ({
+    		units,
+    		faction,
+    		doom,
+    		power,
+    		books: [],
+    		temp: {}
+    	});
+
+    	let fmove = ({ unit, place }) => {
+    		unit.place = place;
+    		unit.gate = 0;
+    	};
+
+    	let genid = f => nonce++;
+    	let nonce = 0;
+    	G.players = Object.values(G.factions).map(f => playerinit(f));
+
+    	G.players.map(p => {
+    		p.units = Array(6).fill(null).map(u => unit("cult", p, p.faction.start));
+    		p.units[2].gate = p.faction.start;
+    		places$1[p.faction.start].gate = 1;
+    		p.power = 8;
+    		p.faction.initUnits(p);
+    	});
+
+    	G.turn = {
+    		lim: 1,
+    		pi: G.players.indexOf(G.players.find(p => p.faction.name == "gc")) || 0
+    	};
+
+    	G.phase = "action";
+    	let actions = [];
+    	G.stage = "start";
+
+    	G.ritualtracks = {
+    		3: [5, 6, 7, 8, 9, 10],
+    		4: [5, 6, 7, 7, 8, 8, 9, 10],
+    		5: [5, 6, 6, 7, 7, 8, 8, 9, 9, 10]
+    	};
+
+    	G.rituals = 0;
+
+    	let choose = x => {
+    		
+    	};
+
+    	let noop = (np, c) => {
+    		
+    	};
+
+    	let click = action => f => G.choose(G.stage, action);
+    	const writable_props = [];
+
+    	Object_1$1.keys($$props).forEach(key => {
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<Game> was created with unknown prop '${key}'`);
+    	});
+
+    	$$self.$capture_state = () => ({
+    		Map: Map$1,
+    		Actions,
+    		Player,
+    		places: places$1,
+    		factions,
+    		phases,
+    		Unit,
+    		forceRerender,
+    		players,
+    		turn,
+    		phase,
+    		stage,
+    		choices,
+    		units,
+    		player,
+    		unit,
+    		G,
+    		playerinit,
+    		fmove,
+    		genid,
+    		nonce,
+    		actions,
+    		choose,
+    		noop,
+    		click
+    	});
+
+    	$$self.$inject_state = $$props => {
+    		if ("forceRerender" in $$props) forceRerender = $$props.forceRerender;
+    		if ("players" in $$props) players = $$props.players;
+    		if ("turn" in $$props) turn = $$props.turn;
+    		if ("phase" in $$props) phase = $$props.phase;
+    		if ("stage" in $$props) stage = $$props.stage;
+    		if ("choices" in $$props) choices = $$props.choices;
+    		if ("units" in $$props) units = $$props.units;
+    		if ("player" in $$props) $$invalidate(3, player = $$props.player);
+    		if ("unit" in $$props) unit = $$props.unit;
+    		if ("G" in $$props) $$invalidate(0, G = $$props.G);
+    		if ("playerinit" in $$props) playerinit = $$props.playerinit;
+    		if ("fmove" in $$props) fmove = $$props.fmove;
+    		if ("genid" in $$props) genid = $$props.genid;
+    		if ("nonce" in $$props) nonce = $$props.nonce;
+    		if ("actions" in $$props) $$invalidate(1, actions = $$props.actions);
+    		if ("choose" in $$props) choose = $$props.choose;
+    		if ("noop" in $$props) $$invalidate(18, noop = $$props.noop);
+    		if ("click" in $$props) $$invalidate(2, click = $$props.click);
+    	};
+
+    	if ($$props && "$$inject" in $$props) {
+    		$$self.$inject_state($$props.$$inject);
+    	}
+
+    	$$self.$$.update = () => {
+    		if ($$self.$$.dirty & /*G*/ 1) {
+    			 $$invalidate(0, G.player = G.players[G.turn.pi % G.players.length], G);
+    		}
+
+    		if ($$self.$$.dirty & /*G*/ 1) {
+    			 $$invalidate(0, G.units = G.players.reduce((acc, cur) => [...acc, ...cur.units], []), G);
+    		}
+
+    		if ($$self.$$.dirty & /*G*/ 1) {
+    			 $$invalidate(0, G.ritualcost = G.ritualtracks[G.players.length][G.rituals], G);
+    		}
+
+    		if ($$self.$$.dirty & /*G*/ 1) {
+    			 $$invalidate(
+    				0,
+    				G.choose = (G.stage == ""
+    				? G.phases[G.phase].moves.choose
+    				: G.phases[G.phase].stages[G.stage].moves.choose) || noop,
+    				G
+    			);
+    		}
+
+    		if ($$self.$$.dirty & /*G*/ 1) {
+    			 $$invalidate(1, actions = G.stage == ""
+    			? G.phases[G.phase].options()
+    			: G.phases[G.phase].stages[G.stage].options());
+    		}
+    	};
+
+    	return [G, actions, click, player];
+    }
+
+    class Game extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance$5, create_fragment$5, safe_not_equal, {});
+
+    		dispatch_dev("SvelteRegisterComponent", {
+    			component: this,
+    			tagName: "Game",
+    			options,
+    			id: create_fragment$5.name
+    		});
+    	}
+    }
+
+    /* src\App.svelte generated by Svelte v3.29.0 */
+    const file$6 = "src\\App.svelte";
+
+    function create_fragment$6(ctx) {
+    	let div;
+    	let game;
+    	let current;
+    	game = new Game({ $$inline: true });
+
+    	const block = {
+    		c: function create() {
+    			div = element("div");
+    			create_component(game.$$.fragment);
+    			attr_dev(div, "class", "world svelte-1mhq47q");
+    			add_location(div, file$6, 9, 0, 225);
+    		},
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+    			mount_component(game, div, null);
+    			current = true;
+    		},
+    		p: noop,
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(game.$$.fragment, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(game.$$.fragment, local);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div);
+    			destroy_component(game);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_fragment$6.name,
+    		type: "component",
+    		source: "",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function instance$6($$self, $$props, $$invalidate) {
+    	let { $$slots: slots = {}, $$scope } = $$props;
+    	validate_slots("App", slots, []);
+    	const writable_props = [];
+
+    	Object.keys($$props).forEach(key => {
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<App> was created with unknown prop '${key}'`);
+    	});
+
+    	$$self.$capture_state = () => ({ Game });
+    	return [];
+    }
+
+    class App extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance$6, create_fragment$6, safe_not_equal, {});
+
+    		dispatch_dev("SvelteRegisterComponent", {
+    			component: this,
+    			tagName: "App",
+    			options,
+    			id: create_fragment$6.name
+    		});
+    	}
+    }
+
+    //import linksResources from './resources/linksResources';
+
+    const app = new App({
+    	target: document.body,
+    	props: {
+    		// try to comment out the line below and see what happens on save
+    		// name: 'friend', 
+    		//links: linksResources,
+    	}
+    });
+
+    return app;
+
+}());
 //# sourceMappingURL=bundle.js.map

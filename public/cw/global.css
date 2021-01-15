@@ -10,14 +10,14 @@
     --clr8 : #beebc3;
     --clr9 : #e4c697;
 }
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
 div, ul {
     border-radius: 1em;
 }
 body {
     background: var(--clr0);
     margin: 1.5em;
-    font-family: sans-serif;
-    font-weight: bolder;
+    font-family: 'Montserrat',sans-serif;
     color: var(--clr6);
 }
 ::-webkit-scrollbar {
