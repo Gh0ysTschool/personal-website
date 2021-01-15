@@ -6,6 +6,7 @@
     display: grid;
     grid-template-rows: 6em auto;
     background: var(--clr0);
+    font-family: 'Montserrat',arial;
 }
 .navgrid > div {
     position: relative;

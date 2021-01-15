@@ -80,8 +80,8 @@
                 in a professional environment at scale. Built with Javascript, Node.js, & Svelte
                 https://github.com/Gh0ysTschool/svelte-jira</Card>
             <Card {setPost} title='Cthulhu Wars Online' secondaryColor=true>Cthulhu Wars is a combination of strategic gaming and Lovecraftian horror, with the bonus of high-quality monster figures to make your game even more fun. Sandy Petersen, its creator, is well-known as one of the top game designers in the industry, and this is his best work so far! I am bringing this massive mechanically asymmetrical game to the online platform. Built with Javascript, Node.js, & Svelte bradleypudsey.now.sh and glacial-garden-41261.herokuapp.com/ </Card>
-            <Card title='Sci-Fi Weapons Dealer UI Menu'>bradleypudsey.now.sh/weapon-dealer-menu</Card>
-            <Card title="90's Hacking in the Browser UI w/ uiterminal.css" secondaryColor=true>Developed in a dingy smoke-filled cyberpunk bordello while Cowboy Bebop wafts gently through the airwaves omerimzali finished their demake for the browser ui on March 31st 2019 after only 24 days of devlopment. Your text will never look more retro, with support for
+            <Card {setPost} title='Sci-Fi Weapons Dealer UI Menu'>bradleypudsey.now.sh/weapon-dealer-menu</Card>
+            <Card {setPost} title="90's Hacking in the Browser UI w/ uiterminal.css" secondaryColor=true>Developed in a dingy smoke-filled cyberpunk bordello while Cowboy Bebop wafts gently through the airwaves omerimzali finished their demake for the browser ui on March 31st 2019 after only 24 days of devlopment. Your text will never look more retro, with support for
                 Terminal Lines
                 Iconic Colors
                 Forms

@@ -10,6 +10,8 @@
     --clr8 : #beebc3;
     --clr9 : #e4c697;
 }
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+
 div, ul {
     border-radius: 1em;
 }
