@@ -57,5 +57,5 @@ li > span {
     <li><span>artwork</span></li>
     <li><span>webapps</span></li>
     <li><span>gaming</span></li>
-    <li><span>writing</span></li>
+    <li><span><a href='https://write.as/bradleypudsey/'>writing</a></span></li>
 </ul>
