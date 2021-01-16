@@ -864,7 +864,7 @@ var app = (function () {
     			toggle_class(div, "mon", /*unit*/ ctx[0].tier == 1);
     			toggle_class(div, "goo", /*unit*/ ctx[0].tier == 2);
     			toggle_class(div, "gate", /*unit*/ ctx[0].gate);
-    			add_location(div, file, 51, 0, 1102);
+    			add_location(div, file, 52, 0, 1227);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -924,7 +924,8 @@ var app = (function () {
     	let el;
 
     	onMount(x => {
-    		$$invalidate(1, el.style.background = unit.owner.faction.color, el);
+    		$$invalidate(1, el.style.background = unit.owner.faction.color + ` url(./${unit.type.toLowerCase().split(" ").join("")}.webp) center center`, el);
+    		$$invalidate(1, el.style.backgroundSize = "100% 100%", el);
     	});
 
     	let click = e => {
@@ -1428,7 +1429,7 @@ var app = (function () {
     	return child_ctx;
     }
 
-    // (154:110) {#each units.filter(u=>u.place=='arcticocean') as unit (unit.id)}
+    // (159:110) {#each units.filter(u=>u.place=='arcticocean') as unit (unit.id)}
     function create_each_block_16(key_1, ctx) {
     	let div;
     	let unit;
@@ -1452,7 +1453,7 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			create_component(unit.$$.fragment);
-    			add_location(div, file$2, 153, 175, 3476);
+    			add_location(div, file$2, 158, 175, 3568);
     			this.first = div;
     		},
     		m: function mount(target, anchor) {
@@ -1508,14 +1509,14 @@ var app = (function () {
     		block,
     		id: create_each_block_16.name,
     		type: "each",
-    		source: "(154:110) {#each units.filter(u=>u.place=='arcticocean') as unit (unit.id)}",
+    		source: "(159:110) {#each units.filter(u=>u.place=='arcticocean') as unit (unit.id)}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (154:479) {#each units.filter(u=>u.place=='northpacific') as unit (unit.id)}
+    // (159:479) {#each units.filter(u=>u.place=='northpacific') as unit (unit.id)}
     function create_each_block_15(key_1, ctx) {
     	let div;
     	let unit;
@@ -1539,7 +1540,7 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			create_component(unit.$$.fragment);
-    			add_location(div, file$2, 153, 545, 3846);
+    			add_location(div, file$2, 158, 545, 3938);
     			this.first = div;
     		},
     		m: function mount(target, anchor) {
@@ -1595,14 +1596,14 @@ var app = (function () {
     		block,
     		id: create_each_block_15.name,
     		type: "each",
-    		source: "(154:479) {#each units.filter(u=>u.place=='northpacific') as unit (unit.id)}",
+    		source: "(159:479) {#each units.filter(u=>u.place=='northpacific') as unit (unit.id)}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (154:850) {#each units.filter(u=>u.place=='northamerica') as unit (unit.id)}
+    // (159:850) {#each units.filter(u=>u.place=='northamerica') as unit (unit.id)}
     function create_each_block_14(key_1, ctx) {
     	let div;
     	let unit;
@@ -1626,7 +1627,7 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			create_component(unit.$$.fragment);
-    			add_location(div, file$2, 153, 916, 4217);
+    			add_location(div, file$2, 158, 916, 4309);
     			this.first = div;
     		},
     		m: function mount(target, anchor) {
@@ -1682,14 +1683,14 @@ var app = (function () {
     		block,
     		id: create_each_block_14.name,
     		type: "each",
-    		source: "(154:850) {#each units.filter(u=>u.place=='northamerica') as unit (unit.id)}",
+    		source: "(159:850) {#each units.filter(u=>u.place=='northamerica') as unit (unit.id)}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (154:1224) {#each units.filter(u=>u.place=='northatlantic') as unit (unit.id)}
+    // (159:1224) {#each units.filter(u=>u.place=='northatlantic') as unit (unit.id)}
     function create_each_block_13(key_1, ctx) {
     	let div;
     	let unit;
@@ -1713,7 +1714,7 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			create_component(unit.$$.fragment);
-    			add_location(div, file$2, 153, 1291, 4592);
+    			add_location(div, file$2, 158, 1291, 4684);
     			this.first = div;
     		},
     		m: function mount(target, anchor) {
@@ -1769,14 +1770,14 @@ var app = (function () {
     		block,
     		id: create_each_block_13.name,
     		type: "each",
-    		source: "(154:1224) {#each units.filter(u=>u.place=='northatlantic') as unit (unit.id)}",
+    		source: "(159:1224) {#each units.filter(u=>u.place=='northatlantic') as unit (unit.id)}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (154:1594) {#each units.filter(u=>u.place=='scandinavia') as unit (unit.id)}
+    // (159:1594) {#each units.filter(u=>u.place=='scandinavia') as unit (unit.id)}
     function create_each_block_12(key_1, ctx) {
     	let div;
     	let unit;
@@ -1800,7 +1801,7 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			create_component(unit.$$.fragment);
-    			add_location(div, file$2, 153, 1659, 4960);
+    			add_location(div, file$2, 158, 1659, 5052);
     			this.first = div;
     		},
     		m: function mount(target, anchor) {
@@ -1856,14 +1857,14 @@ var app = (function () {
     		block,
     		id: create_each_block_12.name,
     		type: "each",
-    		source: "(154:1594) {#each units.filter(u=>u.place=='scandinavia') as unit (unit.id)}",
+    		source: "(159:1594) {#each units.filter(u=>u.place=='scandinavia') as unit (unit.id)}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (154:1945) {#each units.filter(u=>u.place=='europe') as unit (unit.id)}
+    // (159:1945) {#each units.filter(u=>u.place=='europe') as unit (unit.id)}
     function create_each_block_11(key_1, ctx) {
     	let div;
     	let unit;
@@ -1887,7 +1888,7 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			create_component(unit.$$.fragment);
-    			add_location(div, file$2, 153, 2005, 5306);
+    			add_location(div, file$2, 158, 2005, 5398);
     			this.first = div;
     		},
     		m: function mount(target, anchor) {
@@ -1943,14 +1944,14 @@ var app = (function () {
     		block,
     		id: create_each_block_11.name,
     		type: "each",
-    		source: "(154:1945) {#each units.filter(u=>u.place=='europe') as unit (unit.id)}",
+    		source: "(159:1945) {#each units.filter(u=>u.place=='europe') as unit (unit.id)}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (154:2295) {#each units.filter(u=>u.place=='northasia') as unit (unit.id)}
+    // (159:2295) {#each units.filter(u=>u.place=='northasia') as unit (unit.id)}
     function create_each_block_10(key_1, ctx) {
     	let div;
     	let unit;
@@ -1974,7 +1975,7 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			create_component(unit.$$.fragment);
-    			add_location(div, file$2, 153, 2358, 5659);
+    			add_location(div, file$2, 158, 2358, 5751);
     			this.first = div;
     		},
     		m: function mount(target, anchor) {
@@ -2030,14 +2031,14 @@ var app = (function () {
     		block,
     		id: create_each_block_10.name,
     		type: "each",
-    		source: "(154:2295) {#each units.filter(u=>u.place=='northasia') as unit (unit.id)}",
+    		source: "(159:2295) {#each units.filter(u=>u.place=='northasia') as unit (unit.id)}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (154:2660) {#each units.filter(u=>u.place=='southamerica') as unit (unit.id)}
+    // (159:2660) {#each units.filter(u=>u.place=='southamerica') as unit (unit.id)}
     function create_each_block_9(key_1, ctx) {
     	let div;
     	let unit;
@@ -2061,7 +2062,7 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			create_component(unit.$$.fragment);
-    			add_location(div, file$2, 153, 2726, 6027);
+    			add_location(div, file$2, 158, 2726, 6119);
     			this.first = div;
     		},
     		m: function mount(target, anchor) {
@@ -2117,14 +2118,14 @@ var app = (function () {
     		block,
     		id: create_each_block_9.name,
     		type: "each",
-    		source: "(154:2660) {#each units.filter(u=>u.place=='southamerica') as unit (unit.id)}",
+    		source: "(159:2660) {#each units.filter(u=>u.place=='southamerica') as unit (unit.id)}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (154:3022) {#each units.filter(u=>u.place=='southasia') as unit (unit.id)}
+    // (159:3022) {#each units.filter(u=>u.place=='southasia') as unit (unit.id)}
     function create_each_block_8(key_1, ctx) {
     	let div;
     	let unit;
@@ -2148,7 +2149,7 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			create_component(unit.$$.fragment);
-    			add_location(div, file$2, 153, 3085, 6386);
+    			add_location(div, file$2, 158, 3085, 6478);
     			this.first = div;
     		},
     		m: function mount(target, anchor) {
@@ -2204,14 +2205,14 @@ var app = (function () {
     		block,
     		id: create_each_block_8.name,
     		type: "each",
-    		source: "(154:3022) {#each units.filter(u=>u.place=='southasia') as unit (unit.id)}",
+    		source: "(159:3022) {#each units.filter(u=>u.place=='southasia') as unit (unit.id)}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (154:3369) {#each units.filter(u=>u.place=='arabia') as unit (unit.id)}
+    // (159:3369) {#each units.filter(u=>u.place=='arabia') as unit (unit.id)}
     function create_each_block_7(key_1, ctx) {
     	let div;
     	let unit;
@@ -2235,7 +2236,7 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			create_component(unit.$$.fragment);
-    			add_location(div, file$2, 153, 3429, 6730);
+    			add_location(div, file$2, 158, 3429, 6822);
     			this.first = div;
     		},
     		m: function mount(target, anchor) {
@@ -2291,14 +2292,14 @@ var app = (function () {
     		block,
     		id: create_each_block_7.name,
     		type: "each",
-    		source: "(154:3369) {#each units.filter(u=>u.place=='arabia') as unit (unit.id)}",
+    		source: "(159:3369) {#each units.filter(u=>u.place=='arabia') as unit (unit.id)}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (154:3722) {#each units.filter(u=>u.place=='westafrica') as unit (unit.id)}
+    // (159:3722) {#each units.filter(u=>u.place=='westafrica') as unit (unit.id)}
     function create_each_block_6(key_1, ctx) {
     	let div;
     	let unit;
@@ -2322,7 +2323,7 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			create_component(unit.$$.fragment);
-    			add_location(div, file$2, 153, 3786, 7087);
+    			add_location(div, file$2, 158, 3786, 7179);
     			this.first = div;
     		},
     		m: function mount(target, anchor) {
@@ -2378,14 +2379,14 @@ var app = (function () {
     		block,
     		id: create_each_block_6.name,
     		type: "each",
-    		source: "(154:3722) {#each units.filter(u=>u.place=='westafrica') as unit (unit.id)}",
+    		source: "(159:3722) {#each units.filter(u=>u.place=='westafrica') as unit (unit.id)}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (154:4086) {#each units.filter(u=>u.place=='indianocean') as unit (unit.id)}
+    // (159:4086) {#each units.filter(u=>u.place=='indianocean') as unit (unit.id)}
     function create_each_block_5(key_1, ctx) {
     	let div;
     	let unit;
@@ -2409,7 +2410,7 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			create_component(unit.$$.fragment);
-    			add_location(div, file$2, 153, 4151, 7452);
+    			add_location(div, file$2, 158, 4151, 7544);
     			this.first = div;
     		},
     		m: function mount(target, anchor) {
@@ -2465,14 +2466,14 @@ var app = (function () {
     		block,
     		id: create_each_block_5.name,
     		type: "each",
-    		source: "(154:4086) {#each units.filter(u=>u.place=='indianocean') as unit (unit.id)}",
+    		source: "(159:4086) {#each units.filter(u=>u.place=='indianocean') as unit (unit.id)}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (154:4449) {#each units.filter(u=>u.place=='eastafrica') as unit (unit.id)}
+    // (159:4449) {#each units.filter(u=>u.place=='eastafrica') as unit (unit.id)}
     function create_each_block_4(key_1, ctx) {
     	let div;
     	let unit;
@@ -2496,7 +2497,7 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			create_component(unit.$$.fragment);
-    			add_location(div, file$2, 153, 4513, 7814);
+    			add_location(div, file$2, 158, 4513, 7906);
     			this.first = div;
     		},
     		m: function mount(target, anchor) {
@@ -2552,14 +2553,14 @@ var app = (function () {
     		block,
     		id: create_each_block_4.name,
     		type: "each",
-    		source: "(154:4449) {#each units.filter(u=>u.place=='eastafrica') as unit (unit.id)}",
+    		source: "(159:4449) {#each units.filter(u=>u.place=='eastafrica') as unit (unit.id)}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (154:4810) {#each units.filter(u=>u.place=='antarctica') as unit (unit.id)}
+    // (159:4810) {#each units.filter(u=>u.place=='antarctica') as unit (unit.id)}
     function create_each_block_3(key_1, ctx) {
     	let div;
     	let unit;
@@ -2583,7 +2584,7 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			create_component(unit.$$.fragment);
-    			add_location(div, file$2, 153, 4874, 8175);
+    			add_location(div, file$2, 158, 4874, 8267);
     			this.first = div;
     		},
     		m: function mount(target, anchor) {
@@ -2639,14 +2640,14 @@ var app = (function () {
     		block,
     		id: create_each_block_3.name,
     		type: "each",
-    		source: "(154:4810) {#each units.filter(u=>u.place=='antarctica') as unit (unit.id)}",
+    		source: "(159:4810) {#each units.filter(u=>u.place=='antarctica') as unit (unit.id)}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (154:5180) {#each units.filter(u=>u.place=='southatlantic') as unit (unit.id)}
+    // (159:5180) {#each units.filter(u=>u.place=='southatlantic') as unit (unit.id)}
     function create_each_block_2(key_1, ctx) {
     	let div;
     	let unit;
@@ -2670,7 +2671,7 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			create_component(unit.$$.fragment);
-    			add_location(div, file$2, 153, 5247, 8548);
+    			add_location(div, file$2, 158, 5247, 8640);
     			this.first = div;
     		},
     		m: function mount(target, anchor) {
@@ -2726,14 +2727,14 @@ var app = (function () {
     		block,
     		id: create_each_block_2.name,
     		type: "each",
-    		source: "(154:5180) {#each units.filter(u=>u.place=='southatlantic') as unit (unit.id)}",
+    		source: "(159:5180) {#each units.filter(u=>u.place=='southatlantic') as unit (unit.id)}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (154:5553) {#each units.filter(u=>u.place=='southpacific') as unit (unit.id)}
+    // (159:5553) {#each units.filter(u=>u.place=='southpacific') as unit (unit.id)}
     function create_each_block_1(key_1, ctx) {
     	let div;
     	let unit;
@@ -2757,7 +2758,7 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			create_component(unit.$$.fragment);
-    			add_location(div, file$2, 153, 5619, 8920);
+    			add_location(div, file$2, 158, 5619, 9012);
     			this.first = div;
     		},
     		m: function mount(target, anchor) {
@@ -2813,14 +2814,14 @@ var app = (function () {
     		block,
     		id: create_each_block_1.name,
     		type: "each",
-    		source: "(154:5553) {#each units.filter(u=>u.place=='southpacific') as unit (unit.id)}",
+    		source: "(159:5553) {#each units.filter(u=>u.place=='southpacific') as unit (unit.id)}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (154:5915) {#each units.filter(u=>u.place=='australia') as unit (unit.id)}
+    // (159:5915) {#each units.filter(u=>u.place=='australia') as unit (unit.id)}
     function create_each_block(key_1, ctx) {
     	let div;
     	let unit;
@@ -2844,7 +2845,7 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			create_component(unit.$$.fragment);
-    			add_location(div, file$2, 153, 5978, 9279);
+    			add_location(div, file$2, 158, 5978, 9371);
     			this.first = div;
     		},
     		m: function mount(target, anchor) {
@@ -2900,7 +2901,7 @@ var app = (function () {
     		block,
     		id: create_each_block.name,
     		type: "each",
-    		source: "(154:5915) {#each units.filter(u=>u.place=='australia') as unit (unit.id)}",
+    		source: "(159:5915) {#each units.filter(u=>u.place=='australia') as unit (unit.id)}",
     		ctx
     	});
 
@@ -3478,61 +3479,61 @@ var app = (function () {
     			each16_anchor = empty();
     			create_component(gate16.$$.fragment);
     			div18 = element("div");
-    			attr_dev(div0, "class", "l arcticocean svelte-1dg1m99");
+    			attr_dev(div0, "class", "l arcticocean svelte-17boj02");
     			attr_dev(div0, "name", "arcticocean");
-    			add_location(div0, file$2, 153, 19, 3320);
-    			attr_dev(div1, "class", "l northpacific svelte-1dg1m99");
+    			add_location(div0, file$2, 158, 19, 3412);
+    			attr_dev(div1, "class", "l northpacific svelte-17boj02");
     			attr_dev(div1, "name", "northpacific");
-    			add_location(div1, file$2, 153, 385, 3686);
-    			attr_dev(div2, "class", "l northamerica svelte-1dg1m99");
+    			add_location(div1, file$2, 158, 385, 3778);
+    			attr_dev(div2, "class", "l northamerica svelte-17boj02");
     			attr_dev(div2, "name", "northamerica");
-    			add_location(div2, file$2, 153, 756, 4057);
-    			attr_dev(div3, "class", "l northatlantic svelte-1dg1m99");
+    			add_location(div2, file$2, 158, 756, 4149);
+    			attr_dev(div3, "class", "l northatlantic svelte-17boj02");
     			attr_dev(div3, "name", "northatlantic");
-    			add_location(div3, file$2, 153, 1127, 4428);
-    			attr_dev(div4, "class", "l scandinavia svelte-1dg1m99");
+    			add_location(div3, file$2, 158, 1127, 4520);
+    			attr_dev(div4, "class", "l scandinavia svelte-17boj02");
     			attr_dev(div4, "name", "scandinavia");
-    			add_location(div4, file$2, 153, 1503, 4804);
-    			attr_dev(div5, "class", "l europe svelte-1dg1m99");
+    			add_location(div4, file$2, 158, 1503, 4896);
+    			attr_dev(div5, "class", "l europe svelte-17boj02");
     			attr_dev(div5, "name", "europe");
-    			add_location(div5, file$2, 153, 1869, 5170);
-    			attr_dev(div6, "class", "l northasia svelte-1dg1m99");
+    			add_location(div5, file$2, 158, 1869, 5262);
+    			attr_dev(div6, "class", "l northasia svelte-17boj02");
     			attr_dev(div6, "name", "northasia");
-    			add_location(div6, file$2, 153, 2210, 5511);
-    			attr_dev(div7, "class", "l southamerica svelte-1dg1m99");
+    			add_location(div6, file$2, 158, 2210, 5603);
+    			attr_dev(div7, "class", "l southamerica svelte-17boj02");
     			attr_dev(div7, "name", "southamerica");
-    			add_location(div7, file$2, 153, 2566, 5867);
-    			attr_dev(div8, "class", "l southasia svelte-1dg1m99");
+    			add_location(div7, file$2, 158, 2566, 5959);
+    			attr_dev(div8, "class", "l southasia svelte-17boj02");
     			attr_dev(div8, "name", "southasia");
-    			add_location(div8, file$2, 153, 2937, 6238);
-    			attr_dev(div9, "class", "l arabia svelte-1dg1m99");
+    			add_location(div8, file$2, 158, 2937, 6330);
+    			attr_dev(div9, "class", "l arabia svelte-17boj02");
     			attr_dev(div9, "name", "arabia");
-    			add_location(div9, file$2, 153, 3293, 6594);
-    			attr_dev(div10, "class", "l westafrica svelte-1dg1m99");
+    			add_location(div9, file$2, 158, 3293, 6686);
+    			attr_dev(div10, "class", "l westafrica svelte-17boj02");
     			attr_dev(div10, "name", "westafrica");
-    			add_location(div10, file$2, 153, 3634, 6935);
-    			attr_dev(div11, "class", "l indianocean svelte-1dg1m99");
+    			add_location(div10, file$2, 158, 3634, 7027);
+    			attr_dev(div11, "class", "l indianocean svelte-17boj02");
     			attr_dev(div11, "name", "indianocean");
-    			add_location(div11, file$2, 153, 3995, 7296);
-    			attr_dev(div12, "class", "l eastafrica svelte-1dg1m99");
+    			add_location(div11, file$2, 158, 3995, 7388);
+    			attr_dev(div12, "class", "l eastafrica svelte-17boj02");
     			attr_dev(div12, "name", "eastafrica");
-    			add_location(div12, file$2, 153, 4361, 7662);
-    			attr_dev(div13, "class", "l antarctica svelte-1dg1m99");
+    			add_location(div12, file$2, 158, 4361, 7754);
+    			attr_dev(div13, "class", "l antarctica svelte-17boj02");
     			attr_dev(div13, "name", "antarctica");
-    			add_location(div13, file$2, 153, 4722, 8023);
-    			attr_dev(div14, "class", "l southatlantic svelte-1dg1m99");
+    			add_location(div13, file$2, 158, 4722, 8115);
+    			attr_dev(div14, "class", "l southatlantic svelte-17boj02");
     			attr_dev(div14, "name", "southatlantic");
-    			add_location(div14, file$2, 153, 5083, 8384);
-    			attr_dev(div15, "class", "l southpacific svelte-1dg1m99");
+    			add_location(div14, file$2, 158, 5083, 8476);
+    			attr_dev(div15, "class", "l southpacific svelte-17boj02");
     			attr_dev(div15, "name", "southpacific");
-    			add_location(div15, file$2, 153, 5459, 8760);
-    			attr_dev(div16, "class", "l australia svelte-1dg1m99");
+    			add_location(div15, file$2, 158, 5459, 8852);
+    			attr_dev(div16, "class", "l australia svelte-17boj02");
     			attr_dev(div16, "name", "australia");
-    			add_location(div16, file$2, 153, 5830, 9131);
-    			attr_dev(div17, "class", "grid2 svelte-1dg1m99");
-    			add_location(div17, file$2, 153, 0, 3301);
-    			attr_dev(div18, "class", "grid svelte-1dg1m99");
-    			add_location(div18, file$2, 153, 6192, 9493);
+    			add_location(div16, file$2, 158, 5830, 9223);
+    			attr_dev(div17, "class", "grid2 svelte-17boj02");
+    			add_location(div17, file$2, 158, 0, 3393);
+    			attr_dev(div18, "class", "grid svelte-17boj02");
+    			add_location(div18, file$2, 158, 6192, 9585);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -5259,7 +5260,7 @@ var app = (function () {
     	return child_ctx;
     }
 
-    // (72:165) {#each player.faction.bookreqs as book}
+    // (78:165) {#each player.faction.bookreqs as book}
     function create_each_block_3$1(ctx) {
     	let li;
     	let t_value = Object.keys(/*book*/ ctx[13])[0] + "";
@@ -5269,8 +5270,8 @@ var app = (function () {
     		c: function create() {
     			li = element("li");
     			t = text(t_value);
-    			attr_dev(li, "class", "svelte-rlqyg1");
-    			add_location(li, file$4, 71, 204, 1848);
+    			attr_dev(li, "class", "svelte-cnygka");
+    			add_location(li, file$4, 77, 204, 1894);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, li, anchor);
@@ -5288,14 +5289,14 @@ var app = (function () {
     		block,
     		id: create_each_block_3$1.name,
     		type: "each",
-    		source: "(72:165) {#each player.faction.bookreqs as book}",
+    		source: "(78:165) {#each player.faction.bookreqs as book}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (72:242) {#each player.books as book}
+    // (78:242) {#each player.books as book}
     function create_each_block_2$1(ctx) {
     	let li;
     	let t_value = /*book*/ ctx[13] + "";
@@ -5305,8 +5306,8 @@ var app = (function () {
     		c: function create() {
     			li = element("li");
     			t = text(t_value);
-    			attr_dev(li, "class", "active svelte-rlqyg1");
-    			add_location(li, file$4, 71, 270, 1914);
+    			attr_dev(li, "class", "active svelte-cnygka");
+    			add_location(li, file$4, 77, 270, 1960);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, li, anchor);
@@ -5324,14 +5325,14 @@ var app = (function () {
     		block,
     		id: create_each_block_2$1.name,
     		type: "each",
-    		source: "(72:242) {#each player.books as book}",
+    		source: "(78:242) {#each player.books as book}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (72:376) {#each player.units.filter( u => u.place == '') as unit}
+    // (78:326) {#each player.units.filter( u => u.place == '') as unit}
     function create_each_block_1$1(ctx) {
     	let unit;
     	let current;
@@ -5376,14 +5377,14 @@ var app = (function () {
     		block,
     		id: create_each_block_1$1.name,
     		type: "each",
-    		source: "(72:376) {#each player.units.filter( u => u.place == '') as unit}",
+    		source: "(78:326) {#each player.units.filter( u => u.place == '') as unit}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (72:477) {#each G.units.filter( u => u.place == player.faction.name) as unit}
+    // (78:427) {#each G.units.filter( u => u.place == player.faction.name) as unit}
     function create_each_block$2(ctx) {
     	let unit;
     	let current;
@@ -5428,7 +5429,7 @@ var app = (function () {
     		block,
     		id: create_each_block$2.name,
     		type: "each",
-    		source: "(72:477) {#each G.units.filter( u => u.place == player.faction.name) as unit}",
+    		source: "(78:427) {#each G.units.filter( u => u.place == player.faction.name) as unit}",
     		ctx
     	});
 
@@ -5529,13 +5530,12 @@ var app = (function () {
     				each_blocks[i].c();
     			}
 
-    			set_style(div0, "display", "grid");
-    			set_style(div0, "grid-template-columns", "auto auto auto auto");
-    			add_location(div0, file$4, 71, 307, 1951);
-    			attr_dev(ul, "class", "details svelte-rlqyg1");
-    			add_location(ul, file$4, 71, 144, 1788);
-    			attr_dev(div1, "class", "player2 svelte-rlqyg1");
-    			add_location(div1, file$4, 71, 0, 1644);
+    			attr_dev(div0, "class", "units svelte-cnygka");
+    			add_location(div0, file$4, 77, 307, 1997);
+    			attr_dev(ul, "class", "details svelte-cnygka");
+    			add_location(ul, file$4, 77, 144, 1834);
+    			attr_dev(div1, "class", "player2 svelte-cnygka");
+    			add_location(div1, file$4, 77, 0, 1690);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -6822,7 +6822,7 @@ var app = (function () {
                 {...G$3.unit("Hastur",p,'',10,f=>G$3.ritual.cost,2),...awakenhast},
                 {...G$3.unit("King in Yellow",p,'',4,0,2),...awakenking},
                 ...[0,1,2,3,4,5].map( f=> G$3.unit('Undead',p,'',1,f=>G$3.units.filter( u => u.place == G$3.choices.combat.place && u.type == "Undead").length-1,1)),
-                ...[0,1,2,3].map( f=> G$3.unit("Bya'khee",p,'',2,f=>G$3.units.filter( u => u.place == G$3.choices.combat.place && u.type == "Bya'khee").length+1,1)),
+                ...[0,1,2,3].map( f=> G$3.unit("Byakhee",p,'',2,f=>G$3.units.filter( u => u.place == G$3.choices.combat.place && u.type == "Bya'khee").length+1,1)),
             ];
         };
 
@@ -7676,20 +7676,74 @@ var app = (function () {
 
     function get_each_context$3(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[3] = list[i];
+    	child_ctx[19] = list[i];
     	return child_ctx;
     }
 
     function get_each_context_1$2(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[21] = list[i];
+    	child_ctx[3] = list[i];
     	return child_ctx;
     }
 
-    // (127:409) {:else}
+    // (127:35) {#each G.players as player}
+    function create_each_block_1$2(ctx) {
+    	let player_1;
+    	let current;
+
+    	player_1 = new Player({
+    			props: {
+    				choose: /*G*/ ctx[0].choose,
+    				player: /*player*/ ctx[3],
+    				G: /*G*/ ctx[0]
+    			},
+    			$$inline: true
+    		});
+
+    	const block = {
+    		c: function create() {
+    			create_component(player_1.$$.fragment);
+    		},
+    		m: function mount(target, anchor) {
+    			mount_component(player_1, target, anchor);
+    			current = true;
+    		},
+    		p: function update(ctx, dirty) {
+    			const player_1_changes = {};
+    			if (dirty & /*G*/ 1) player_1_changes.choose = /*G*/ ctx[0].choose;
+    			if (dirty & /*G*/ 1) player_1_changes.player = /*player*/ ctx[3];
+    			if (dirty & /*G*/ 1) player_1_changes.G = /*G*/ ctx[0];
+    			player_1.$set(player_1_changes);
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(player_1.$$.fragment, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(player_1.$$.fragment, local);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			destroy_component(player_1, detaching);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_each_block_1$2.name,
+    		type: "each",
+    		source: "(127:35) {#each G.players as player}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (127:573) {:else}
     function create_else_block(ctx) {
     	let li;
-    	let t_value = /*action*/ ctx[21] + "";
+    	let t_value = /*action*/ ctx[19] + "";
     	let t;
     	let mounted;
     	let dispose;
@@ -7698,8 +7752,8 @@ var app = (function () {
     		c: function create() {
     			li = element("li");
     			t = text(t_value);
-    			attr_dev(li, "class", "svelte-1aur6c4");
-    			add_location(li, file$5, 126, 416, 4039);
+    			attr_dev(li, "class", "svelte-mis2cl");
+    			add_location(li, file$5, 126, 580, 4203);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, li, anchor);
@@ -7710,7 +7764,7 @@ var app = (function () {
     					li,
     					"click",
     					function () {
-    						if (is_function(/*click*/ ctx[2](/*action*/ ctx[21]))) /*click*/ ctx[2](/*action*/ ctx[21]).apply(this, arguments);
+    						if (is_function(/*click*/ ctx[2](/*action*/ ctx[19]))) /*click*/ ctx[2](/*action*/ ctx[19]).apply(this, arguments);
     					},
     					false,
     					false,
@@ -7722,7 +7776,7 @@ var app = (function () {
     		},
     		p: function update(new_ctx, dirty) {
     			ctx = new_ctx;
-    			if (dirty & /*actions*/ 2 && t_value !== (t_value = /*action*/ ctx[21] + "")) set_data_dev(t, t_value);
+    			if (dirty & /*actions*/ 2 && t_value !== (t_value = /*action*/ ctx[19] + "")) set_data_dev(t, t_value);
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(li);
@@ -7735,17 +7789,17 @@ var app = (function () {
     		block,
     		id: create_else_block.name,
     		type: "else",
-    		source: "(127:409) {:else}",
+    		source: "(127:573) {:else}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (127:352) 
+    // (127:479) 
     function create_if_block_3(ctx) {
     	let li;
-    	let t_value = /*action*/ ctx[21].faction.name + "";
+    	let t_value = /*action*/ ctx[19].faction.name + "";
     	let t;
     	let mounted;
     	let dispose;
@@ -7754,8 +7808,9 @@ var app = (function () {
     		c: function create() {
     			li = element("li");
     			t = text(t_value);
-    			attr_dev(li, "class", "svelte-1aur6c4");
-    			add_location(li, file$5, 126, 352, 3975);
+    			set_style(li, "color", /*action*/ ctx[19].faction.color);
+    			attr_dev(li, "class", "svelte-mis2cl");
+    			add_location(li, file$5, 126, 479, 4102);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, li, anchor);
@@ -7766,7 +7821,7 @@ var app = (function () {
     					li,
     					"click",
     					function () {
-    						if (is_function(/*click*/ ctx[2](/*action*/ ctx[21]))) /*click*/ ctx[2](/*action*/ ctx[21]).apply(this, arguments);
+    						if (is_function(/*click*/ ctx[2](/*action*/ ctx[19]))) /*click*/ ctx[2](/*action*/ ctx[19]).apply(this, arguments);
     					},
     					false,
     					false,
@@ -7778,7 +7833,11 @@ var app = (function () {
     		},
     		p: function update(new_ctx, dirty) {
     			ctx = new_ctx;
-    			if (dirty & /*actions*/ 2 && t_value !== (t_value = /*action*/ ctx[21].faction.name + "")) set_data_dev(t, t_value);
+    			if (dirty & /*actions*/ 2 && t_value !== (t_value = /*action*/ ctx[19].faction.name + "")) set_data_dev(t, t_value);
+
+    			if (dirty & /*actions*/ 2) {
+    				set_style(li, "color", /*action*/ ctx[19].faction.color);
+    			}
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(li);
@@ -7791,20 +7850,20 @@ var app = (function () {
     		block,
     		id: create_if_block_3.name,
     		type: "if",
-    		source: "(127:352) ",
+    		source: "(127:479) ",
     		ctx
     	});
 
     	return block;
     }
 
-    // (127:150) {#if G.stage.includes("unit")}
+    // (127:234) {#if G.stage.includes("unit")}
     function create_if_block_2(ctx) {
     	let li;
-    	let t0_value = /*action*/ ctx[21].type + "";
+    	let t0_value = /*action*/ ctx[19].type + "";
     	let t0;
     	let t1;
-    	let t2_value = (/*action*/ ctx[21].place || "pool") + "";
+    	let t2_value = (/*action*/ ctx[19].place || "pool") + "";
     	let t2;
     	let mounted;
     	let dispose;
@@ -7815,8 +7874,9 @@ var app = (function () {
     			t0 = text(t0_value);
     			t1 = text(" in ");
     			t2 = text(t2_value);
-    			attr_dev(li, "class", "svelte-1aur6c4");
-    			add_location(li, file$5, 126, 180, 3803);
+    			set_style(li, "color", /*action*/ ctx[19].owner.faction.color);
+    			attr_dev(li, "class", "svelte-mis2cl");
+    			add_location(li, file$5, 126, 264, 3887);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, li, anchor);
@@ -7829,7 +7889,7 @@ var app = (function () {
     					li,
     					"click",
     					function () {
-    						if (is_function(/*click*/ ctx[2](/*action*/ ctx[21]))) /*click*/ ctx[2](/*action*/ ctx[21]).apply(this, arguments);
+    						if (is_function(/*click*/ ctx[2](/*action*/ ctx[19]))) /*click*/ ctx[2](/*action*/ ctx[19]).apply(this, arguments);
     					},
     					false,
     					false,
@@ -7841,8 +7901,12 @@ var app = (function () {
     		},
     		p: function update(new_ctx, dirty) {
     			ctx = new_ctx;
-    			if (dirty & /*actions*/ 2 && t0_value !== (t0_value = /*action*/ ctx[21].type + "")) set_data_dev(t0, t0_value);
-    			if (dirty & /*actions*/ 2 && t2_value !== (t2_value = (/*action*/ ctx[21].place || "pool") + "")) set_data_dev(t2, t2_value);
+    			if (dirty & /*actions*/ 2 && t0_value !== (t0_value = /*action*/ ctx[19].type + "")) set_data_dev(t0, t0_value);
+    			if (dirty & /*actions*/ 2 && t2_value !== (t2_value = (/*action*/ ctx[19].place || "pool") + "")) set_data_dev(t2, t2_value);
+
+    			if (dirty & /*actions*/ 2) {
+    				set_style(li, "color", /*action*/ ctx[19].owner.faction.color);
+    			}
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(li);
@@ -7855,15 +7919,15 @@ var app = (function () {
     		block,
     		id: create_if_block_2.name,
     		type: "if",
-    		source: "(127:150) {#if G.stage.includes(\\\"unit\\\")}",
+    		source: "(127:234) {#if G.stage.includes(\\\"unit\\\")}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (127:125) {#each actions as action}
-    function create_each_block_1$2(ctx) {
+    // (127:209) {#each actions as action}
+    function create_each_block$3(ctx) {
     	let show_if;
     	let show_if_1;
     	let if_block_anchor;
@@ -7909,16 +7973,16 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_each_block_1$2.name,
+    		id: create_each_block$3.name,
     		type: "each",
-    		source: "(127:125) {#each actions as action}",
+    		source: "(127:209) {#each actions as action}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (127:687) 
+    // (127:851) 
     function create_if_block_1(ctx) {
     	let li;
     	let mounted;
@@ -7928,8 +7992,8 @@ var app = (function () {
     		c: function create() {
     			li = element("li");
     			li.textContent = "done";
-    			attr_dev(li, "class", "svelte-1aur6c4");
-    			add_location(li, file$5, 126, 687, 4310);
+    			attr_dev(li, "class", "svelte-mis2cl");
+    			add_location(li, file$5, 126, 851, 4474);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, li, anchor);
@@ -7963,14 +8027,14 @@ var app = (function () {
     		block,
     		id: create_if_block_1.name,
     		type: "if",
-    		source: "(127:687) ",
+    		source: "(127:851) ",
     		ctx
     	});
 
     	return block;
     }
 
-    // (127:472) {#if G.phases[G.phase].stages && G.phases[G.phase].stages[G.stage].moves.done}
+    // (127:636) {#if G.phases[G.phase].stages && G.phases[G.phase].stages[G.stage].moves.done}
     function create_if_block$1(ctx) {
     	let li;
     	let mounted;
@@ -7980,8 +8044,8 @@ var app = (function () {
     		c: function create() {
     			li = element("li");
     			li.textContent = "done";
-    			attr_dev(li, "class", "svelte-1aur6c4");
-    			add_location(li, file$5, 126, 550, 4173);
+    			attr_dev(li, "class", "svelte-mis2cl");
+    			add_location(li, file$5, 126, 714, 4337);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, li, anchor);
@@ -8015,61 +8079,7 @@ var app = (function () {
     		block,
     		id: create_if_block$1.name,
     		type: "if",
-    		source: "(127:472) {#if G.phases[G.phase].stages && G.phases[G.phase].stages[G.stage].moves.done}",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    // (127:758) {#each G.players as player}
-    function create_each_block$3(ctx) {
-    	let player_1;
-    	let current;
-
-    	player_1 = new Player({
-    			props: {
-    				choose: /*G*/ ctx[0].choose,
-    				player: /*player*/ ctx[3],
-    				G: /*G*/ ctx[0]
-    			},
-    			$$inline: true
-    		});
-
-    	const block = {
-    		c: function create() {
-    			create_component(player_1.$$.fragment);
-    		},
-    		m: function mount(target, anchor) {
-    			mount_component(player_1, target, anchor);
-    			current = true;
-    		},
-    		p: function update(ctx, dirty) {
-    			const player_1_changes = {};
-    			if (dirty & /*G*/ 1) player_1_changes.choose = /*G*/ ctx[0].choose;
-    			if (dirty & /*G*/ 1) player_1_changes.player = /*player*/ ctx[3];
-    			if (dirty & /*G*/ 1) player_1_changes.G = /*G*/ ctx[0];
-    			player_1.$set(player_1_changes);
-    		},
-    		i: function intro(local) {
-    			if (current) return;
-    			transition_in(player_1.$$.fragment, local);
-    			current = true;
-    		},
-    		o: function outro(local) {
-    			transition_out(player_1.$$.fragment, local);
-    			current = false;
-    		},
-    		d: function destroy(detaching) {
-    			destroy_component(player_1, detaching);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_each_block$3.name,
-    		type: "each",
-    		source: "(127:758) {#each G.players as player}",
+    		source: "(127:636) {#if G.phases[G.phase].stages && G.phases[G.phase].stages[G.stage].moves.done}",
     		ctx
     	});
 
@@ -8082,7 +8092,7 @@ var app = (function () {
     	let div0;
     	let t;
     	let ul;
-    	let each0_anchor;
+    	let each1_anchor;
     	let current;
     	const map_spread_levels = [/*G*/ ctx[0]];
     	let map_props = {};
@@ -8092,12 +8102,24 @@ var app = (function () {
     	}
 
     	map = new Map$1({ props: map_props, $$inline: true });
-    	let each_value_1 = /*actions*/ ctx[1];
+    	let each_value_1 = /*G*/ ctx[0].players;
     	validate_each_argument(each_value_1);
     	let each_blocks_1 = [];
 
     	for (let i = 0; i < each_value_1.length; i += 1) {
     		each_blocks_1[i] = create_each_block_1$2(get_each_context_1$2(ctx, each_value_1, i));
+    	}
+
+    	const out = i => transition_out(each_blocks_1[i], 1, 1, () => {
+    		each_blocks_1[i] = null;
+    	});
+
+    	let each_value = /*actions*/ ctx[1];
+    	validate_each_argument(each_value);
+    	let each_blocks = [];
+
+    	for (let i = 0; i < each_value.length; i += 1) {
+    		each_blocks[i] = create_each_block$3(get_each_context$3(ctx, each_value, i));
     	}
 
     	function select_block_type_1(ctx, dirty) {
@@ -8107,44 +8129,33 @@ var app = (function () {
 
     	let current_block_type = select_block_type_1(ctx);
     	let if_block = current_block_type && current_block_type(ctx);
-    	let each_value = /*G*/ ctx[0].players;
-    	validate_each_argument(each_value);
-    	let each_blocks = [];
-
-    	for (let i = 0; i < each_value.length; i += 1) {
-    		each_blocks[i] = create_each_block$3(get_each_context$3(ctx, each_value, i));
-    	}
-
-    	const out = i => transition_out(each_blocks[i], 1, 1, () => {
-    		each_blocks[i] = null;
-    	});
 
     	const block = {
     		c: function create() {
     			create_component(map.$$.fragment);
     			div1 = element("div");
-    			div0 = element("div");
-    			t = text("actions");
-    			ul = element("ul");
 
     			for (let i = 0; i < each_blocks_1.length; i += 1) {
     				each_blocks_1[i].c();
     			}
 
-    			each0_anchor = empty();
-    			if (if_block) if_block.c();
+    			div0 = element("div");
+    			t = text("actions");
+    			ul = element("ul");
 
     			for (let i = 0; i < each_blocks.length; i += 1) {
     				each_blocks[i].c();
     			}
 
+    			each1_anchor = empty();
+    			if (if_block) if_block.c();
     			set_style(ul, "padding", "0");
-    			attr_dev(ul, "class", "svelte-1aur6c4");
-    			add_location(ul, file$5, 126, 103, 3726);
-    			attr_dev(div0, "class", "actions svelte-1aur6c4");
+    			attr_dev(ul, "class", "svelte-mis2cl");
+    			add_location(ul, file$5, 126, 187, 3810);
+    			attr_dev(div0, "class", "actions svelte-mis2cl");
     			set_style(div0, "color", /*G*/ ctx[0].player.faction.color);
-    			add_location(div0, file$5, 126, 35, 3658);
-    			attr_dev(div1, "class", "hud svelte-1aur6c4");
+    			add_location(div0, file$5, 126, 119, 3742);
+    			attr_dev(div1, "class", "hud svelte-mis2cl");
     			add_location(div1, file$5, 126, 18, 3641);
     		},
     		l: function claim(nodes) {
@@ -8153,21 +8164,21 @@ var app = (function () {
     		m: function mount(target, anchor) {
     			mount_component(map, target, anchor);
     			insert_dev(target, div1, anchor);
+
+    			for (let i = 0; i < each_blocks_1.length; i += 1) {
+    				each_blocks_1[i].m(div1, null);
+    			}
+
     			append_dev(div1, div0);
     			append_dev(div0, t);
     			append_dev(div0, ul);
 
-    			for (let i = 0; i < each_blocks_1.length; i += 1) {
-    				each_blocks_1[i].m(ul, null);
-    			}
-
-    			append_dev(ul, each0_anchor);
-    			if (if_block) if_block.m(ul, null);
-
     			for (let i = 0; i < each_blocks.length; i += 1) {
-    				each_blocks[i].m(div1, null);
+    				each_blocks[i].m(ul, null);
     			}
 
+    			append_dev(ul, each1_anchor);
+    			if (if_block) if_block.m(ul, null);
     			current = true;
     		},
     		p: function update(ctx, [dirty]) {
@@ -8177,8 +8188,8 @@ var app = (function () {
 
     			map.$set(map_changes);
 
-    			if (dirty & /*click, actions, G*/ 7) {
-    				each_value_1 = /*actions*/ ctx[1];
+    			if (dirty & /*G*/ 1) {
+    				each_value_1 = /*G*/ ctx[0].players;
     				validate_each_argument(each_value_1);
     				let i;
 
@@ -8187,18 +8198,46 @@ var app = (function () {
 
     					if (each_blocks_1[i]) {
     						each_blocks_1[i].p(child_ctx, dirty);
+    						transition_in(each_blocks_1[i], 1);
     					} else {
     						each_blocks_1[i] = create_each_block_1$2(child_ctx);
     						each_blocks_1[i].c();
-    						each_blocks_1[i].m(ul, each0_anchor);
+    						transition_in(each_blocks_1[i], 1);
+    						each_blocks_1[i].m(div1, div0);
     					}
     				}
 
-    				for (; i < each_blocks_1.length; i += 1) {
-    					each_blocks_1[i].d(1);
+    				group_outros();
+
+    				for (i = each_value_1.length; i < each_blocks_1.length; i += 1) {
+    					out(i);
     				}
 
-    				each_blocks_1.length = each_value_1.length;
+    				check_outros();
+    			}
+
+    			if (dirty & /*actions, click, G*/ 7) {
+    				each_value = /*actions*/ ctx[1];
+    				validate_each_argument(each_value);
+    				let i;
+
+    				for (i = 0; i < each_value.length; i += 1) {
+    					const child_ctx = get_each_context$3(ctx, each_value, i);
+
+    					if (each_blocks[i]) {
+    						each_blocks[i].p(child_ctx, dirty);
+    					} else {
+    						each_blocks[i] = create_each_block$3(child_ctx);
+    						each_blocks[i].c();
+    						each_blocks[i].m(ul, each1_anchor);
+    					}
+    				}
+
+    				for (; i < each_blocks.length; i += 1) {
+    					each_blocks[i].d(1);
+    				}
+
+    				each_blocks.length = each_value.length;
     			}
 
     			if (current_block_type === (current_block_type = select_block_type_1(ctx)) && if_block) {
@@ -8216,51 +8255,23 @@ var app = (function () {
     			if (!current || dirty & /*G*/ 1) {
     				set_style(div0, "color", /*G*/ ctx[0].player.faction.color);
     			}
-
-    			if (dirty & /*G*/ 1) {
-    				each_value = /*G*/ ctx[0].players;
-    				validate_each_argument(each_value);
-    				let i;
-
-    				for (i = 0; i < each_value.length; i += 1) {
-    					const child_ctx = get_each_context$3(ctx, each_value, i);
-
-    					if (each_blocks[i]) {
-    						each_blocks[i].p(child_ctx, dirty);
-    						transition_in(each_blocks[i], 1);
-    					} else {
-    						each_blocks[i] = create_each_block$3(child_ctx);
-    						each_blocks[i].c();
-    						transition_in(each_blocks[i], 1);
-    						each_blocks[i].m(div1, null);
-    					}
-    				}
-
-    				group_outros();
-
-    				for (i = each_value.length; i < each_blocks.length; i += 1) {
-    					out(i);
-    				}
-
-    				check_outros();
-    			}
     		},
     		i: function intro(local) {
     			if (current) return;
     			transition_in(map.$$.fragment, local);
 
-    			for (let i = 0; i < each_value.length; i += 1) {
-    				transition_in(each_blocks[i]);
+    			for (let i = 0; i < each_value_1.length; i += 1) {
+    				transition_in(each_blocks_1[i]);
     			}
 
     			current = true;
     		},
     		o: function outro(local) {
     			transition_out(map.$$.fragment, local);
-    			each_blocks = each_blocks.filter(Boolean);
+    			each_blocks_1 = each_blocks_1.filter(Boolean);
 
-    			for (let i = 0; i < each_blocks.length; i += 1) {
-    				transition_out(each_blocks[i]);
+    			for (let i = 0; i < each_blocks_1.length; i += 1) {
+    				transition_out(each_blocks_1[i]);
     			}
 
     			current = false;
@@ -8269,12 +8280,11 @@ var app = (function () {
     			destroy_component(map, detaching);
     			if (detaching) detach_dev(div1);
     			destroy_each(each_blocks_1, detaching);
+    			destroy_each(each_blocks, detaching);
 
     			if (if_block) {
     				if_block.d();
     			}
-
-    			destroy_each(each_blocks, detaching);
     		}
     	};
 
