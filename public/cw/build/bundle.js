@@ -34,6 +34,42 @@ var app = (function () {
     function is_empty(obj) {
         return Object.keys(obj).length === 0;
     }
+    function create_slot(definition, ctx, $$scope, fn) {
+        if (definition) {
+            const slot_ctx = get_slot_context(definition, ctx, $$scope, fn);
+            return definition[0](slot_ctx);
+        }
+    }
+    function get_slot_context(definition, ctx, $$scope, fn) {
+        return definition[1] && fn
+            ? assign($$scope.ctx.slice(), definition[1](fn(ctx)))
+            : $$scope.ctx;
+    }
+    function get_slot_changes(definition, $$scope, dirty, fn) {
+        if (definition[2] && fn) {
+            const lets = definition[2](fn(dirty));
+            if ($$scope.dirty === undefined) {
+                return lets;
+            }
+            if (typeof lets === 'object') {
+                const merged = [];
+                const len = Math.max($$scope.dirty.length, lets.length);
+                for (let i = 0; i < len; i += 1) {
+                    merged[i] = $$scope.dirty[i] | lets[i];
+                }
+                return merged;
+            }
+            return $$scope.dirty | lets;
+        }
+        return $$scope.dirty;
+    }
+    function update_slot(slot, slot_definition, ctx, $$scope, dirty, get_slot_changes_fn, get_slot_context_fn) {
+        const slot_changes = get_slot_changes(slot_definition, $$scope, dirty, get_slot_changes_fn);
+        if (slot_changes) {
+            const slot_context = get_slot_context(slot_definition, ctx, $$scope, get_slot_context_fn);
+            slot.p(slot_context, slot_changes);
+        }
+    }
 
     const is_client = typeof window !== 'undefined';
     let now = is_client
@@ -851,27 +887,23 @@ var app = (function () {
 
     function create_fragment(ctx) {
     	let div;
-    	let t_value = /*unit*/ ctx[0].type[0] + "";
-    	let t;
     	let mounted;
     	let dispose;
 
     	const block = {
     		c: function create() {
     			div = element("div");
-    			t = text(t_value);
-    			attr_dev(div, "class", "unit svelte-1uf1z5d");
+    			attr_dev(div, "class", "unit svelte-2691e1");
     			toggle_class(div, "mon", /*unit*/ ctx[0].tier == 1);
     			toggle_class(div, "goo", /*unit*/ ctx[0].tier == 2);
     			toggle_class(div, "gate", /*unit*/ ctx[0].gate);
-    			add_location(div, file, 52, 0, 1227);
+    			add_location(div, file, 54, 0, 1350);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
-    			append_dev(div, t);
     			/*div_binding*/ ctx[4](div);
 
     			if (!mounted) {
@@ -880,8 +912,6 @@ var app = (function () {
     			}
     		},
     		p: function update(ctx, [dirty]) {
-    			if (dirty & /*unit*/ 1 && t_value !== (t_value = /*unit*/ ctx[0].type[0] + "")) set_data_dev(t, t_value);
-
     			if (dirty & /*unit*/ 1) {
     				toggle_class(div, "mon", /*unit*/ ctx[0].tier == 1);
     			}
@@ -924,7 +954,8 @@ var app = (function () {
     	let el;
 
     	onMount(x => {
-    		$$invalidate(1, el.style.background = unit.owner.faction.color + ` url(./${unit.type.toLowerCase().split(" ").join("")}.webp) center center`, el);
+    		let imgurl = (unit.type == "cult" ? unit.owner.faction.name : "") + unit.type.toLowerCase().replaceAll("'", "").split(" ").join("");
+    		$$invalidate(1, el.style.background = unit.owner.faction.color + ` url(./${imgurl}.webp) center center`, el);
     		$$invalidate(1, el.style.backgroundSize = "100% 100%", el);
     	});
 
@@ -1429,7 +1460,7 @@ var app = (function () {
     	return child_ctx;
     }
 
-    // (159:110) {#each units.filter(u=>u.place=='arcticocean') as unit (unit.id)}
+    // (160:110) {#each units.filter(u=>u.place=='arcticocean') as unit (unit.id)}
     function create_each_block_16(key_1, ctx) {
     	let div;
     	let unit;
@@ -1453,7 +1484,7 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			create_component(unit.$$.fragment);
-    			add_location(div, file$2, 158, 175, 3568);
+    			add_location(div, file$2, 159, 175, 3595);
     			this.first = div;
     		},
     		m: function mount(target, anchor) {
@@ -1509,14 +1540,14 @@ var app = (function () {
     		block,
     		id: create_each_block_16.name,
     		type: "each",
-    		source: "(159:110) {#each units.filter(u=>u.place=='arcticocean') as unit (unit.id)}",
+    		source: "(160:110) {#each units.filter(u=>u.place=='arcticocean') as unit (unit.id)}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (159:479) {#each units.filter(u=>u.place=='northpacific') as unit (unit.id)}
+    // (160:479) {#each units.filter(u=>u.place=='northpacific') as unit (unit.id)}
     function create_each_block_15(key_1, ctx) {
     	let div;
     	let unit;
@@ -1540,7 +1571,7 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			create_component(unit.$$.fragment);
-    			add_location(div, file$2, 158, 545, 3938);
+    			add_location(div, file$2, 159, 545, 3965);
     			this.first = div;
     		},
     		m: function mount(target, anchor) {
@@ -1596,14 +1627,14 @@ var app = (function () {
     		block,
     		id: create_each_block_15.name,
     		type: "each",
-    		source: "(159:479) {#each units.filter(u=>u.place=='northpacific') as unit (unit.id)}",
+    		source: "(160:479) {#each units.filter(u=>u.place=='northpacific') as unit (unit.id)}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (159:850) {#each units.filter(u=>u.place=='northamerica') as unit (unit.id)}
+    // (160:850) {#each units.filter(u=>u.place=='northamerica') as unit (unit.id)}
     function create_each_block_14(key_1, ctx) {
     	let div;
     	let unit;
@@ -1627,7 +1658,7 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			create_component(unit.$$.fragment);
-    			add_location(div, file$2, 158, 916, 4309);
+    			add_location(div, file$2, 159, 916, 4336);
     			this.first = div;
     		},
     		m: function mount(target, anchor) {
@@ -1683,14 +1714,14 @@ var app = (function () {
     		block,
     		id: create_each_block_14.name,
     		type: "each",
-    		source: "(159:850) {#each units.filter(u=>u.place=='northamerica') as unit (unit.id)}",
+    		source: "(160:850) {#each units.filter(u=>u.place=='northamerica') as unit (unit.id)}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (159:1224) {#each units.filter(u=>u.place=='northatlantic') as unit (unit.id)}
+    // (160:1224) {#each units.filter(u=>u.place=='northatlantic') as unit (unit.id)}
     function create_each_block_13(key_1, ctx) {
     	let div;
     	let unit;
@@ -1714,7 +1745,7 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			create_component(unit.$$.fragment);
-    			add_location(div, file$2, 158, 1291, 4684);
+    			add_location(div, file$2, 159, 1291, 4711);
     			this.first = div;
     		},
     		m: function mount(target, anchor) {
@@ -1770,14 +1801,14 @@ var app = (function () {
     		block,
     		id: create_each_block_13.name,
     		type: "each",
-    		source: "(159:1224) {#each units.filter(u=>u.place=='northatlantic') as unit (unit.id)}",
+    		source: "(160:1224) {#each units.filter(u=>u.place=='northatlantic') as unit (unit.id)}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (159:1594) {#each units.filter(u=>u.place=='scandinavia') as unit (unit.id)}
+    // (160:1594) {#each units.filter(u=>u.place=='scandinavia') as unit (unit.id)}
     function create_each_block_12(key_1, ctx) {
     	let div;
     	let unit;
@@ -1801,7 +1832,7 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			create_component(unit.$$.fragment);
-    			add_location(div, file$2, 158, 1659, 5052);
+    			add_location(div, file$2, 159, 1659, 5079);
     			this.first = div;
     		},
     		m: function mount(target, anchor) {
@@ -1857,14 +1888,14 @@ var app = (function () {
     		block,
     		id: create_each_block_12.name,
     		type: "each",
-    		source: "(159:1594) {#each units.filter(u=>u.place=='scandinavia') as unit (unit.id)}",
+    		source: "(160:1594) {#each units.filter(u=>u.place=='scandinavia') as unit (unit.id)}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (159:1945) {#each units.filter(u=>u.place=='europe') as unit (unit.id)}
+    // (160:1945) {#each units.filter(u=>u.place=='europe') as unit (unit.id)}
     function create_each_block_11(key_1, ctx) {
     	let div;
     	let unit;
@@ -1888,7 +1919,7 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			create_component(unit.$$.fragment);
-    			add_location(div, file$2, 158, 2005, 5398);
+    			add_location(div, file$2, 159, 2005, 5425);
     			this.first = div;
     		},
     		m: function mount(target, anchor) {
@@ -1944,14 +1975,14 @@ var app = (function () {
     		block,
     		id: create_each_block_11.name,
     		type: "each",
-    		source: "(159:1945) {#each units.filter(u=>u.place=='europe') as unit (unit.id)}",
+    		source: "(160:1945) {#each units.filter(u=>u.place=='europe') as unit (unit.id)}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (159:2295) {#each units.filter(u=>u.place=='northasia') as unit (unit.id)}
+    // (160:2295) {#each units.filter(u=>u.place=='northasia') as unit (unit.id)}
     function create_each_block_10(key_1, ctx) {
     	let div;
     	let unit;
@@ -1975,7 +2006,7 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			create_component(unit.$$.fragment);
-    			add_location(div, file$2, 158, 2358, 5751);
+    			add_location(div, file$2, 159, 2358, 5778);
     			this.first = div;
     		},
     		m: function mount(target, anchor) {
@@ -2031,14 +2062,14 @@ var app = (function () {
     		block,
     		id: create_each_block_10.name,
     		type: "each",
-    		source: "(159:2295) {#each units.filter(u=>u.place=='northasia') as unit (unit.id)}",
+    		source: "(160:2295) {#each units.filter(u=>u.place=='northasia') as unit (unit.id)}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (159:2660) {#each units.filter(u=>u.place=='southamerica') as unit (unit.id)}
+    // (160:2660) {#each units.filter(u=>u.place=='southamerica') as unit (unit.id)}
     function create_each_block_9(key_1, ctx) {
     	let div;
     	let unit;
@@ -2062,7 +2093,7 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			create_component(unit.$$.fragment);
-    			add_location(div, file$2, 158, 2726, 6119);
+    			add_location(div, file$2, 159, 2726, 6146);
     			this.first = div;
     		},
     		m: function mount(target, anchor) {
@@ -2118,14 +2149,14 @@ var app = (function () {
     		block,
     		id: create_each_block_9.name,
     		type: "each",
-    		source: "(159:2660) {#each units.filter(u=>u.place=='southamerica') as unit (unit.id)}",
+    		source: "(160:2660) {#each units.filter(u=>u.place=='southamerica') as unit (unit.id)}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (159:3022) {#each units.filter(u=>u.place=='southasia') as unit (unit.id)}
+    // (160:3022) {#each units.filter(u=>u.place=='southasia') as unit (unit.id)}
     function create_each_block_8(key_1, ctx) {
     	let div;
     	let unit;
@@ -2149,7 +2180,7 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			create_component(unit.$$.fragment);
-    			add_location(div, file$2, 158, 3085, 6478);
+    			add_location(div, file$2, 159, 3085, 6505);
     			this.first = div;
     		},
     		m: function mount(target, anchor) {
@@ -2205,14 +2236,14 @@ var app = (function () {
     		block,
     		id: create_each_block_8.name,
     		type: "each",
-    		source: "(159:3022) {#each units.filter(u=>u.place=='southasia') as unit (unit.id)}",
+    		source: "(160:3022) {#each units.filter(u=>u.place=='southasia') as unit (unit.id)}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (159:3369) {#each units.filter(u=>u.place=='arabia') as unit (unit.id)}
+    // (160:3369) {#each units.filter(u=>u.place=='arabia') as unit (unit.id)}
     function create_each_block_7(key_1, ctx) {
     	let div;
     	let unit;
@@ -2236,7 +2267,7 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			create_component(unit.$$.fragment);
-    			add_location(div, file$2, 158, 3429, 6822);
+    			add_location(div, file$2, 159, 3429, 6849);
     			this.first = div;
     		},
     		m: function mount(target, anchor) {
@@ -2292,14 +2323,14 @@ var app = (function () {
     		block,
     		id: create_each_block_7.name,
     		type: "each",
-    		source: "(159:3369) {#each units.filter(u=>u.place=='arabia') as unit (unit.id)}",
+    		source: "(160:3369) {#each units.filter(u=>u.place=='arabia') as unit (unit.id)}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (159:3722) {#each units.filter(u=>u.place=='westafrica') as unit (unit.id)}
+    // (160:3722) {#each units.filter(u=>u.place=='westafrica') as unit (unit.id)}
     function create_each_block_6(key_1, ctx) {
     	let div;
     	let unit;
@@ -2323,7 +2354,7 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			create_component(unit.$$.fragment);
-    			add_location(div, file$2, 158, 3786, 7179);
+    			add_location(div, file$2, 159, 3786, 7206);
     			this.first = div;
     		},
     		m: function mount(target, anchor) {
@@ -2379,14 +2410,14 @@ var app = (function () {
     		block,
     		id: create_each_block_6.name,
     		type: "each",
-    		source: "(159:3722) {#each units.filter(u=>u.place=='westafrica') as unit (unit.id)}",
+    		source: "(160:3722) {#each units.filter(u=>u.place=='westafrica') as unit (unit.id)}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (159:4086) {#each units.filter(u=>u.place=='indianocean') as unit (unit.id)}
+    // (160:4086) {#each units.filter(u=>u.place=='indianocean') as unit (unit.id)}
     function create_each_block_5(key_1, ctx) {
     	let div;
     	let unit;
@@ -2410,7 +2441,7 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			create_component(unit.$$.fragment);
-    			add_location(div, file$2, 158, 4151, 7544);
+    			add_location(div, file$2, 159, 4151, 7571);
     			this.first = div;
     		},
     		m: function mount(target, anchor) {
@@ -2466,14 +2497,14 @@ var app = (function () {
     		block,
     		id: create_each_block_5.name,
     		type: "each",
-    		source: "(159:4086) {#each units.filter(u=>u.place=='indianocean') as unit (unit.id)}",
+    		source: "(160:4086) {#each units.filter(u=>u.place=='indianocean') as unit (unit.id)}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (159:4449) {#each units.filter(u=>u.place=='eastafrica') as unit (unit.id)}
+    // (160:4449) {#each units.filter(u=>u.place=='eastafrica') as unit (unit.id)}
     function create_each_block_4(key_1, ctx) {
     	let div;
     	let unit;
@@ -2497,7 +2528,7 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			create_component(unit.$$.fragment);
-    			add_location(div, file$2, 158, 4513, 7906);
+    			add_location(div, file$2, 159, 4513, 7933);
     			this.first = div;
     		},
     		m: function mount(target, anchor) {
@@ -2553,14 +2584,14 @@ var app = (function () {
     		block,
     		id: create_each_block_4.name,
     		type: "each",
-    		source: "(159:4449) {#each units.filter(u=>u.place=='eastafrica') as unit (unit.id)}",
+    		source: "(160:4449) {#each units.filter(u=>u.place=='eastafrica') as unit (unit.id)}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (159:4810) {#each units.filter(u=>u.place=='antarctica') as unit (unit.id)}
+    // (160:4810) {#each units.filter(u=>u.place=='antarctica') as unit (unit.id)}
     function create_each_block_3(key_1, ctx) {
     	let div;
     	let unit;
@@ -2584,7 +2615,7 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			create_component(unit.$$.fragment);
-    			add_location(div, file$2, 158, 4874, 8267);
+    			add_location(div, file$2, 159, 4874, 8294);
     			this.first = div;
     		},
     		m: function mount(target, anchor) {
@@ -2640,14 +2671,14 @@ var app = (function () {
     		block,
     		id: create_each_block_3.name,
     		type: "each",
-    		source: "(159:4810) {#each units.filter(u=>u.place=='antarctica') as unit (unit.id)}",
+    		source: "(160:4810) {#each units.filter(u=>u.place=='antarctica') as unit (unit.id)}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (159:5180) {#each units.filter(u=>u.place=='southatlantic') as unit (unit.id)}
+    // (160:5180) {#each units.filter(u=>u.place=='southatlantic') as unit (unit.id)}
     function create_each_block_2(key_1, ctx) {
     	let div;
     	let unit;
@@ -2671,7 +2702,7 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			create_component(unit.$$.fragment);
-    			add_location(div, file$2, 158, 5247, 8640);
+    			add_location(div, file$2, 159, 5247, 8667);
     			this.first = div;
     		},
     		m: function mount(target, anchor) {
@@ -2727,14 +2758,14 @@ var app = (function () {
     		block,
     		id: create_each_block_2.name,
     		type: "each",
-    		source: "(159:5180) {#each units.filter(u=>u.place=='southatlantic') as unit (unit.id)}",
+    		source: "(160:5180) {#each units.filter(u=>u.place=='southatlantic') as unit (unit.id)}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (159:5553) {#each units.filter(u=>u.place=='southpacific') as unit (unit.id)}
+    // (160:5553) {#each units.filter(u=>u.place=='southpacific') as unit (unit.id)}
     function create_each_block_1(key_1, ctx) {
     	let div;
     	let unit;
@@ -2758,7 +2789,7 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			create_component(unit.$$.fragment);
-    			add_location(div, file$2, 158, 5619, 9012);
+    			add_location(div, file$2, 159, 5619, 9039);
     			this.first = div;
     		},
     		m: function mount(target, anchor) {
@@ -2814,14 +2845,14 @@ var app = (function () {
     		block,
     		id: create_each_block_1.name,
     		type: "each",
-    		source: "(159:5553) {#each units.filter(u=>u.place=='southpacific') as unit (unit.id)}",
+    		source: "(160:5553) {#each units.filter(u=>u.place=='southpacific') as unit (unit.id)}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (159:5915) {#each units.filter(u=>u.place=='australia') as unit (unit.id)}
+    // (160:5915) {#each units.filter(u=>u.place=='australia') as unit (unit.id)}
     function create_each_block(key_1, ctx) {
     	let div;
     	let unit;
@@ -2845,7 +2876,7 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			create_component(unit.$$.fragment);
-    			add_location(div, file$2, 158, 5978, 9371);
+    			add_location(div, file$2, 159, 5978, 9398);
     			this.first = div;
     		},
     		m: function mount(target, anchor) {
@@ -2901,7 +2932,7 @@ var app = (function () {
     		block,
     		id: create_each_block.name,
     		type: "each",
-    		source: "(159:5915) {#each units.filter(u=>u.place=='australia') as unit (unit.id)}",
+    		source: "(160:5915) {#each units.filter(u=>u.place=='australia') as unit (unit.id)}",
     		ctx
     	});
 
@@ -3479,61 +3510,61 @@ var app = (function () {
     			each16_anchor = empty();
     			create_component(gate16.$$.fragment);
     			div18 = element("div");
-    			attr_dev(div0, "class", "l arcticocean svelte-17boj02");
+    			attr_dev(div0, "class", "l arcticocean svelte-138shqo");
     			attr_dev(div0, "name", "arcticocean");
-    			add_location(div0, file$2, 158, 19, 3412);
-    			attr_dev(div1, "class", "l northpacific svelte-17boj02");
+    			add_location(div0, file$2, 159, 19, 3439);
+    			attr_dev(div1, "class", "l northpacific svelte-138shqo");
     			attr_dev(div1, "name", "northpacific");
-    			add_location(div1, file$2, 158, 385, 3778);
-    			attr_dev(div2, "class", "l northamerica svelte-17boj02");
+    			add_location(div1, file$2, 159, 385, 3805);
+    			attr_dev(div2, "class", "l northamerica svelte-138shqo");
     			attr_dev(div2, "name", "northamerica");
-    			add_location(div2, file$2, 158, 756, 4149);
-    			attr_dev(div3, "class", "l northatlantic svelte-17boj02");
+    			add_location(div2, file$2, 159, 756, 4176);
+    			attr_dev(div3, "class", "l northatlantic svelte-138shqo");
     			attr_dev(div3, "name", "northatlantic");
-    			add_location(div3, file$2, 158, 1127, 4520);
-    			attr_dev(div4, "class", "l scandinavia svelte-17boj02");
+    			add_location(div3, file$2, 159, 1127, 4547);
+    			attr_dev(div4, "class", "l scandinavia svelte-138shqo");
     			attr_dev(div4, "name", "scandinavia");
-    			add_location(div4, file$2, 158, 1503, 4896);
-    			attr_dev(div5, "class", "l europe svelte-17boj02");
+    			add_location(div4, file$2, 159, 1503, 4923);
+    			attr_dev(div5, "class", "l europe svelte-138shqo");
     			attr_dev(div5, "name", "europe");
-    			add_location(div5, file$2, 158, 1869, 5262);
-    			attr_dev(div6, "class", "l northasia svelte-17boj02");
+    			add_location(div5, file$2, 159, 1869, 5289);
+    			attr_dev(div6, "class", "l northasia svelte-138shqo");
     			attr_dev(div6, "name", "northasia");
-    			add_location(div6, file$2, 158, 2210, 5603);
-    			attr_dev(div7, "class", "l southamerica svelte-17boj02");
+    			add_location(div6, file$2, 159, 2210, 5630);
+    			attr_dev(div7, "class", "l southamerica svelte-138shqo");
     			attr_dev(div7, "name", "southamerica");
-    			add_location(div7, file$2, 158, 2566, 5959);
-    			attr_dev(div8, "class", "l southasia svelte-17boj02");
+    			add_location(div7, file$2, 159, 2566, 5986);
+    			attr_dev(div8, "class", "l southasia svelte-138shqo");
     			attr_dev(div8, "name", "southasia");
-    			add_location(div8, file$2, 158, 2937, 6330);
-    			attr_dev(div9, "class", "l arabia svelte-17boj02");
+    			add_location(div8, file$2, 159, 2937, 6357);
+    			attr_dev(div9, "class", "l arabia svelte-138shqo");
     			attr_dev(div9, "name", "arabia");
-    			add_location(div9, file$2, 158, 3293, 6686);
-    			attr_dev(div10, "class", "l westafrica svelte-17boj02");
+    			add_location(div9, file$2, 159, 3293, 6713);
+    			attr_dev(div10, "class", "l westafrica svelte-138shqo");
     			attr_dev(div10, "name", "westafrica");
-    			add_location(div10, file$2, 158, 3634, 7027);
-    			attr_dev(div11, "class", "l indianocean svelte-17boj02");
+    			add_location(div10, file$2, 159, 3634, 7054);
+    			attr_dev(div11, "class", "l indianocean svelte-138shqo");
     			attr_dev(div11, "name", "indianocean");
-    			add_location(div11, file$2, 158, 3995, 7388);
-    			attr_dev(div12, "class", "l eastafrica svelte-17boj02");
+    			add_location(div11, file$2, 159, 3995, 7415);
+    			attr_dev(div12, "class", "l eastafrica svelte-138shqo");
     			attr_dev(div12, "name", "eastafrica");
-    			add_location(div12, file$2, 158, 4361, 7754);
-    			attr_dev(div13, "class", "l antarctica svelte-17boj02");
+    			add_location(div12, file$2, 159, 4361, 7781);
+    			attr_dev(div13, "class", "l antarctica svelte-138shqo");
     			attr_dev(div13, "name", "antarctica");
-    			add_location(div13, file$2, 158, 4722, 8115);
-    			attr_dev(div14, "class", "l southatlantic svelte-17boj02");
+    			add_location(div13, file$2, 159, 4722, 8142);
+    			attr_dev(div14, "class", "l southatlantic svelte-138shqo");
     			attr_dev(div14, "name", "southatlantic");
-    			add_location(div14, file$2, 158, 5083, 8476);
-    			attr_dev(div15, "class", "l southpacific svelte-17boj02");
+    			add_location(div14, file$2, 159, 5083, 8503);
+    			attr_dev(div15, "class", "l southpacific svelte-138shqo");
     			attr_dev(div15, "name", "southpacific");
-    			add_location(div15, file$2, 158, 5459, 8852);
-    			attr_dev(div16, "class", "l australia svelte-17boj02");
+    			add_location(div15, file$2, 159, 5459, 8879);
+    			attr_dev(div16, "class", "l australia svelte-138shqo");
     			attr_dev(div16, "name", "australia");
-    			add_location(div16, file$2, 158, 5830, 9223);
-    			attr_dev(div17, "class", "grid2 svelte-17boj02");
-    			add_location(div17, file$2, 158, 0, 3393);
-    			attr_dev(div18, "class", "grid svelte-17boj02");
-    			add_location(div18, file$2, 158, 6192, 9585);
+    			add_location(div16, file$2, 159, 5830, 9250);
+    			attr_dev(div17, "class", "grid2 svelte-138shqo");
+    			add_location(div17, file$2, 159, 0, 3420);
+    			attr_dev(div18, "class", "grid svelte-138shqo");
+    			add_location(div18, file$2, 159, 6192, 9612);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -5231,10 +5262,599 @@ var app = (function () {
     	}
     }
 
+    /* src\components\cw\Tooltip.svelte generated by Svelte v3.29.0 */
+    const file$4 = "src\\components\\cw\\Tooltip.svelte";
+    const get_custom_tip_slot_changes = dirty => ({});
+    const get_custom_tip_slot_context = ctx => ({});
+
+    // (106:290) {:else}
+    function create_else_block(ctx) {
+    	let current;
+    	const custom_tip_slot_template = /*#slots*/ ctx[13]["custom-tip"];
+    	const custom_tip_slot = create_slot(custom_tip_slot_template, ctx, /*$$scope*/ ctx[12], get_custom_tip_slot_context);
+
+    	const block = {
+    		c: function create() {
+    			if (custom_tip_slot) custom_tip_slot.c();
+    		},
+    		m: function mount(target, anchor) {
+    			if (custom_tip_slot) {
+    				custom_tip_slot.m(target, anchor);
+    			}
+
+    			current = true;
+    		},
+    		p: function update(ctx, dirty) {
+    			if (custom_tip_slot) {
+    				if (custom_tip_slot.p && dirty & /*$$scope*/ 4096) {
+    					update_slot(custom_tip_slot, custom_tip_slot_template, ctx, /*$$scope*/ ctx[12], dirty, get_custom_tip_slot_changes, get_custom_tip_slot_context);
+    				}
+    			}
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(custom_tip_slot, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(custom_tip_slot, local);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			if (custom_tip_slot) custom_tip_slot.d(detaching);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_else_block.name,
+    		type: "else",
+    		source: "(106:290) {:else}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (106:237) {#if tip}
+    function create_if_block$1(ctx) {
+    	let div;
+    	let t;
+
+    	const block = {
+    		c: function create() {
+    			div = element("div");
+    			t = text(/*tip*/ ctx[0]);
+    			attr_dev(div, "class", "default-tip svelte-kudgmo");
+    			attr_dev(div, "style", /*style*/ ctx[7]);
+    			add_location(div, file$4, 105, 246, 8876);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+    			append_dev(div, t);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*tip*/ 1) set_data_dev(t, /*tip*/ ctx[0]);
+    		},
+    		i: noop,
+    		o: noop,
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block$1.name,
+    		type: "if",
+    		source: "(106:237) {#if tip}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function create_fragment$4(ctx) {
+    	let div1;
+    	let span;
+    	let div0;
+    	let current_block_type_index;
+    	let if_block;
+    	let current;
+    	let mounted;
+    	let dispose;
+    	const default_slot_template = /*#slots*/ ctx[13].default;
+    	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[12], null);
+    	const if_block_creators = [create_if_block$1, create_else_block];
+    	const if_blocks = [];
+
+    	function select_block_type(ctx, dirty) {
+    		if (/*tip*/ ctx[0]) return 0;
+    		return 1;
+    	}
+
+    	current_block_type_index = select_block_type(ctx);
+    	if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
+
+    	const block = {
+    		c: function create() {
+    			div1 = element("div");
+    			span = element("span");
+    			if (default_slot) default_slot.c();
+    			div0 = element("div");
+    			if_block.c();
+    			attr_dev(span, "class", "tooltip-slot svelte-kudgmo");
+    			add_location(span, file$4, 105, 110, 8740);
+    			attr_dev(div0, "class", "tooltip svelte-kudgmo");
+    			toggle_class(div0, "active", /*active*/ ctx[5]);
+    			toggle_class(div0, "left", /*left*/ ctx[4]);
+    			toggle_class(div0, "right", /*right*/ ctx[2]);
+    			toggle_class(div0, "bottom", /*bottom*/ ctx[3]);
+    			toggle_class(div0, "top", /*top*/ ctx[1]);
+    			add_location(div0, file$4, 105, 157, 8787);
+    			attr_dev(div1, "class", "tooltip-wrapper svelte-kudgmo");
+    			add_location(div1, file$4, 105, 0, 8630);
+    		},
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div1, anchor);
+    			append_dev(div1, span);
+
+    			if (default_slot) {
+    				default_slot.m(span, null);
+    			}
+
+    			append_dev(div1, div0);
+    			if_blocks[current_block_type_index].m(div0, null);
+    			/*div1_binding*/ ctx[14](div1);
+    			current = true;
+
+    			if (!mounted) {
+    				dispose = [
+    					listen_dev(div1, "mouseover", /*hoverhandle*/ ctx[8], false, false, false),
+    					listen_dev(div1, "mouseleave", /*leavehandle*/ ctx[9], false, false, false)
+    				];
+
+    				mounted = true;
+    			}
+    		},
+    		p: function update(ctx, [dirty]) {
+    			if (default_slot) {
+    				if (default_slot.p && dirty & /*$$scope*/ 4096) {
+    					update_slot(default_slot, default_slot_template, ctx, /*$$scope*/ ctx[12], dirty, null, null);
+    				}
+    			}
+
+    			let previous_block_index = current_block_type_index;
+    			current_block_type_index = select_block_type(ctx);
+
+    			if (current_block_type_index === previous_block_index) {
+    				if_blocks[current_block_type_index].p(ctx, dirty);
+    			} else {
+    				group_outros();
+
+    				transition_out(if_blocks[previous_block_index], 1, 1, () => {
+    					if_blocks[previous_block_index] = null;
+    				});
+
+    				check_outros();
+    				if_block = if_blocks[current_block_type_index];
+
+    				if (!if_block) {
+    					if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
+    					if_block.c();
+    				}
+
+    				transition_in(if_block, 1);
+    				if_block.m(div0, null);
+    			}
+
+    			if (dirty & /*active*/ 32) {
+    				toggle_class(div0, "active", /*active*/ ctx[5]);
+    			}
+
+    			if (dirty & /*left*/ 16) {
+    				toggle_class(div0, "left", /*left*/ ctx[4]);
+    			}
+
+    			if (dirty & /*right*/ 4) {
+    				toggle_class(div0, "right", /*right*/ ctx[2]);
+    			}
+
+    			if (dirty & /*bottom*/ 8) {
+    				toggle_class(div0, "bottom", /*bottom*/ ctx[3]);
+    			}
+
+    			if (dirty & /*top*/ 2) {
+    				toggle_class(div0, "top", /*top*/ ctx[1]);
+    			}
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(default_slot, local);
+    			transition_in(if_block);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(default_slot, local);
+    			transition_out(if_block);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div1);
+    			if (default_slot) default_slot.d(detaching);
+    			if_blocks[current_block_type_index].d();
+    			/*div1_binding*/ ctx[14](null);
+    			mounted = false;
+    			run_all(dispose);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_fragment$4.name,
+    		type: "component",
+    		source: "",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function instance$4($$self, $$props, $$invalidate) {
+    	let { $$slots: slots = {}, $$scope } = $$props;
+    	validate_slots("Tooltip", slots, ['default','custom-tip']);
+
+    	let { tip = "" } = $$props,
+    		{ key } = $$props,
+    		{ top = false } = $$props,
+    		{ right = false } = $$props,
+    		{ bottom = false } = $$props,
+    		{ left = false } = $$props,
+    		{ active = false } = $$props,
+    		{ color = "#757575" } = $$props;
+
+    	let descriptions = {
+    		"Absorb": "(Pre-Battle): If a Shoggoth is present, Eliminate one or more of your Monsters or Cultists in the Battle. For each Unit so removed, add 3 dice to the Shoggoth's Combat for that Battle.",
+    		"Devolve": "(Ongoing): After any player's Action, you may replace any number of your Acolyte Cultists on the Map with the same number of Deep Ones from your Pool.",
+    		"Dreams": "(Action: Cost 2): Choose an Area containing an enemy's Acolyte Cultist. Your enemy must Eliminate one of his Acolyte Cultists from that Area and replace it with one from your Pool.",
+    		"Regenerate": "(Post-Battle): Assign up to 2 Kill or Pain Battle results to the same Starspawn. If 2 Kills are applied, the Starpspawn is Killed. On any other combination of Kill or Pain results, the Starspawn is only Pained.",
+    		"Submerge": "(Action: Cost 1): If Cthulhu is in an ocean or sea Area, remove him from the Map and place him on your Faction Card, along with any or all of your Units in the Area. Later, as a 0-cost Action, you may place Cthulhu, plus all accompanying Units, into any Area.",
+    		"Y'hn Nthlei": "(Ongoing): During the Gather Power Phase, if Cthulhu is in play, gain 1 Power for each enemy-controlled Gate in an ocean or sea Area.",
+    		"Immortal": "(Ongoing): Once Cthulhu has Awakened, he costs only 4 Power each subsequent time he is Awakened. Whenever you Awaken any Great Old One, gain 1 Elder Sign.",
+    		"Devour": "(Pre-Battle): The enemy player chooses and Eliminates one of his Monsters or Cultists in the Battle.",
+    		"Abduct": "(Pre-Battle): Eliminate one or more Nightgaunts from the Battle. For each one Eliminated, your enemy must Eliminate one of his own Monsters or Cultists from the Battle.",
+    		"Emissary of the Outer Gods": "(Post-Battle): Unless an enemy Great Old One is involved in the Battle, a Kill applied to Nyarlathotep becomes a Pain. If Nyarlathotep cannot be Pained due to being surrounded, he is not Eliminated.",
+    		"Invisibility": "(Pre-Battle): Select one Monster or Cultist (from either Faction) for each Flying Polyp present and 'exempt' it. The selected Unit does not participate in the rest of the Battle.",
+    		"Madness": "(Ongoing): After all Pain results have been assigned, you, rather than the Units' owners, choose the Area(s) to which all Pained Units will go. You may apply these results in any order (rather than the normal 'attacker first, then defender'), but you must still follow all other rules. Do this even for Battles in which you did not participate.",
+    		"Seek and Destroy": "(Pre-Battle): Immediately move any or all Hunting Horrors from any Area(s) into the Battle Area.",
+    		"The Thousand Forms": "(Action: Cost 0): If Nyarlathotep is in play, roll a die. Your foes lose that much Power between them; they have 1 minute to decide how much each loses. If they cannot agree, you receive Power equal to the number rolled. Flip this spellbook over; it cannot be used again in this Action Phase. During the Gather Power Phase, flip it face-up again.",
+    		"Flight": "(Ongoing): All of your Units can fly (even Cultists). When Moved, they can travel 2 Areas. They can fly over Areas containing enemy units.",
+    		"The Habinger": "(Post-Battle): If Nyarlathotep is in a Battle in which one or more enemy Great Old Ones are Pained or Killed, you receive Power equal to half of the cost of Awakening those Great Old Ones. For each enemy Great Old One Pained or Killed, you may choose to receive 2 Elder Signs instead of Power.",
+    		"He Who Must Not Be Named": "(Action: Cost 1): Move Hastur to any Area containing a Cultist of any Faction. You may then take a second, different Action. You may NOT take The Screaming Dead as your second Action.",
+    		"Passion": "(Ongoing): When one or more of your Cultists are Eliminated by an enemy (Killed, Captured, etc.), gain 1 Power.",
+    		"Shriek of the Byakhee": "(Action: Cost 1): Move any or all Byakhee from their current Area(s) to any one Area on the Map.",
+    		"The Screaming Dead": "(Action: Cost 1): Move the King in Yellow to an adjacent Area. Any Undead in the same Area can move with him for free. You may then take a second, different Action. You may NOT take He Who is Not to be Named as your second Action.",
+    		"The Third Eye": "(Ongoing): If Hastur is in play, the cost of Desecration is reduced by 1. If the Desecration succeeds, you also receive 1 Elder Sign.",
+    		"Zin Gaya": "(Action: Cost 1): Choose an Area containing any of your Undead and at least one enemy Acolyte Cultist. Your enemy Eliminates one of his Acolyte Cultists from that Area. Place an Undead from your Pool into that Area.",
+    		"Feast": "(Gather Power Phase): Gain +1 Power for each Area containing both a Desecration token and one or more of your Units.",
+    		"Desecrate": "(Action: Cost 2): If the King is in an Area with no Desecration token, roll 1 die. If the roll is equal to or less than the number of your Units in the Area (including the King), place a Desecration token in the Area. Whether you succeed or fail, place a Monster or Cultist with a cost of 2 or less in the Area.",
+    		"Vengence": "(Post-Battle): If Hastur is involved in a Battle, choose which Combat results are applied to which enemy Units (e.g., apply a Kill to a particular Great Old One).",
+    		"Blood Sacrifice": "(Doom Phase): If Shub-Niggurath is in play during the Doom Phase, you can choose to eliminate one of your Cultists. If you do, gain 1 Elder Sign.",
+    		"Frenzy": "(Ongoing): Your Cultists now have 1 Combat.",
+    		"Ghroth": "(Action: Cost 2): Roll a die. If the result is less than or equal to the number of Areas containing Fungi, your enemies must Eliminate a number of Cultists equal to the die roll. They have 1 minute in which to decide how to distribute these Eliminations. If time runs out, you choose for them. If the die roll is greater than the number of Areas with Fungi, place any Faction's Acolyte anywhere on the map.",
+    		"Necrophagy": "(Post-Battle): Move any or all Ghouls (who did not participate in the Battle) from any Area to the Battle Area, even if your Faction was not involved in the Battle. Each side involved in the Battle suffers an additional Pain result for each Ghoul moved in this way.",
+    		"The Red Sign": "(Ongoing): Dark Young can Create and Control Gates. Each adds 1 to Shub-Niggurath's Combat and each provides 1 Power during the Gather Power Phase. They do not act as Cultists with respect to any other purpose.",
+    		"The Thousand Young": "(Ongoing): If Shub-Niggurath is in play, Ghouls, Fungi, and Dark Young each cost 1 less Power to Summon.",
+    		"Avatar": "(Action: Cost 1): Choose an Area and a Faction. Swap the location of Shub-Niggurath with that of a Monster or Cultist in the chosen Area. The owner of the chosen Faction chooses which Unit to relocate.",
+    		"Fertility Cult": "(Ongoing): You may Summon Monsters as an Unlimited Action."
+    	};
+
+    	onMount(f => {
+    		el = document.body.querySelector(".tooltip");
+    	});
+
+    	let el,
+    		style = `background-color: ${color};`,
+    		wrapper,
+    		hoverhandle = () => {
+    			el.classList.remove("hidden");
+    			el.style.left = wrapper.getBoundingClientRect().x - el.offsetWidth + "px";
+    			el.style.top = wrapper.getBoundingClientRect().y - el.offsetHeight + 10 + "px";
+    			el.innerText = descriptions[key];
+    		},
+    		leavehandle = () => {
+    			el.classList.add("hidden");
+    		};
+
+    	const writable_props = ["tip", "key", "top", "right", "bottom", "left", "active", "color"];
+
+    	Object.keys($$props).forEach(key => {
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<Tooltip> was created with unknown prop '${key}'`);
+    	});
+
+    	function div1_binding($$value) {
+    		binding_callbacks[$$value ? "unshift" : "push"](() => {
+    			wrapper = $$value;
+    			$$invalidate(6, wrapper);
+    		});
+    	}
+
+    	$$self.$$set = $$props => {
+    		if ("tip" in $$props) $$invalidate(0, tip = $$props.tip);
+    		if ("key" in $$props) $$invalidate(10, key = $$props.key);
+    		if ("top" in $$props) $$invalidate(1, top = $$props.top);
+    		if ("right" in $$props) $$invalidate(2, right = $$props.right);
+    		if ("bottom" in $$props) $$invalidate(3, bottom = $$props.bottom);
+    		if ("left" in $$props) $$invalidate(4, left = $$props.left);
+    		if ("active" in $$props) $$invalidate(5, active = $$props.active);
+    		if ("color" in $$props) $$invalidate(11, color = $$props.color);
+    		if ("$$scope" in $$props) $$invalidate(12, $$scope = $$props.$$scope);
+    	};
+
+    	$$self.$capture_state = () => ({
+    		onMount,
+    		tip,
+    		key,
+    		top,
+    		right,
+    		bottom,
+    		left,
+    		active,
+    		color,
+    		descriptions,
+    		el,
+    		style,
+    		wrapper,
+    		hoverhandle,
+    		leavehandle
+    	});
+
+    	$$self.$inject_state = $$props => {
+    		if ("tip" in $$props) $$invalidate(0, tip = $$props.tip);
+    		if ("key" in $$props) $$invalidate(10, key = $$props.key);
+    		if ("top" in $$props) $$invalidate(1, top = $$props.top);
+    		if ("right" in $$props) $$invalidate(2, right = $$props.right);
+    		if ("bottom" in $$props) $$invalidate(3, bottom = $$props.bottom);
+    		if ("left" in $$props) $$invalidate(4, left = $$props.left);
+    		if ("active" in $$props) $$invalidate(5, active = $$props.active);
+    		if ("color" in $$props) $$invalidate(11, color = $$props.color);
+    		if ("descriptions" in $$props) descriptions = $$props.descriptions;
+    		if ("el" in $$props) el = $$props.el;
+    		if ("style" in $$props) $$invalidate(7, style = $$props.style);
+    		if ("wrapper" in $$props) $$invalidate(6, wrapper = $$props.wrapper);
+    		if ("hoverhandle" in $$props) $$invalidate(8, hoverhandle = $$props.hoverhandle);
+    		if ("leavehandle" in $$props) $$invalidate(9, leavehandle = $$props.leavehandle);
+    	};
+
+    	if ($$props && "$$inject" in $$props) {
+    		$$self.$inject_state($$props.$$inject);
+    	}
+
+    	return [
+    		tip,
+    		top,
+    		right,
+    		bottom,
+    		left,
+    		active,
+    		wrapper,
+    		style,
+    		hoverhandle,
+    		leavehandle,
+    		key,
+    		color,
+    		$$scope,
+    		slots,
+    		div1_binding
+    	];
+    }
+
+    class Tooltip extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+
+    		init(this, options, instance$4, create_fragment$4, safe_not_equal, {
+    			tip: 0,
+    			key: 10,
+    			top: 1,
+    			right: 2,
+    			bottom: 3,
+    			left: 4,
+    			active: 5,
+    			color: 11
+    		});
+
+    		dispatch_dev("SvelteRegisterComponent", {
+    			component: this,
+    			tagName: "Tooltip",
+    			options,
+    			id: create_fragment$4.name
+    		});
+
+    		const { ctx } = this.$$;
+    		const props = options.props || {};
+
+    		if (/*key*/ ctx[10] === undefined && !("key" in props)) {
+    			console.warn("<Tooltip> was created without expected prop 'key'");
+    		}
+    	}
+
+    	get tip() {
+    		throw new Error("<Tooltip>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set tip(value) {
+    		throw new Error("<Tooltip>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get key() {
+    		throw new Error("<Tooltip>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set key(value) {
+    		throw new Error("<Tooltip>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get top() {
+    		throw new Error("<Tooltip>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set top(value) {
+    		throw new Error("<Tooltip>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get right() {
+    		throw new Error("<Tooltip>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set right(value) {
+    		throw new Error("<Tooltip>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get bottom() {
+    		throw new Error("<Tooltip>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set bottom(value) {
+    		throw new Error("<Tooltip>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get left() {
+    		throw new Error("<Tooltip>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set left(value) {
+    		throw new Error("<Tooltip>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get active() {
+    		throw new Error("<Tooltip>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set active(value) {
+    		throw new Error("<Tooltip>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get color() {
+    		throw new Error("<Tooltip>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set color(value) {
+    		throw new Error("<Tooltip>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+    }
+
+    /* src\components\cw\Description.svelte generated by Svelte v3.29.0 */
+
+    const file$5 = "src\\components\\cw\\Description.svelte";
+
+    function create_fragment$5(ctx) {
+    	let div;
+    	let t_value = (/*descriptions*/ ctx[1][/*tag*/ ctx[0]] || "") + "";
+    	let t;
+
+    	const block = {
+    		c: function create() {
+    			div = element("div");
+    			t = text(t_value);
+    			set_style(div, "background", "black");
+    			add_location(div, file$5, 15, 0, 1424);
+    		},
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+    			append_dev(div, t);
+    		},
+    		p: function update(ctx, [dirty]) {
+    			if (dirty & /*tag*/ 1 && t_value !== (t_value = (/*descriptions*/ ctx[1][/*tag*/ ctx[0]] || "") + "")) set_data_dev(t, t_value);
+    		},
+    		i: noop,
+    		o: noop,
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_fragment$5.name,
+    		type: "component",
+    		source: "",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function instance$5($$self, $$props, $$invalidate) {
+    	let { $$slots: slots = {}, $$scope } = $$props;
+    	validate_slots("Description", slots, []);
+    	let { tag = "" } = $$props;
+
+    	let descriptions = {
+    		"Absorb": "(Pre-Battle): If a Shoggoth is present, Eliminate one or more of your Monsters or Cultists in the Battle. For each Unit so removed, add 3 dice to the Shoggoth's Combat for that Battle.",
+    		"Devolve": "(Ongoing): After any player's Action, you may replace any number of your Acolyte Cultists on the Map with the same number of Deep Ones from your Pool.",
+    		"Dreams": "(Action: Cost 2): Choose an Area containing an enemy's Acolyte Cultist. Your enemy must Eliminate one of his Acolyte Cultists from that Area and replace it with one from your Pool.",
+    		"Regenerate": "(Post-Battle): Assign up to 2 Kill or Pain Battle results to the same Starspawn. If 2 Kills are applied, the Starpspawn is Killed. On any other combination of Kill or Pain results, the Starspawn is only Pained.",
+    		"Submerge": "(Action: Cost 1): If Cthulhu is in an ocean or sea Area, remove him from the Map and place him on your Faction Card, along with any or all of your Units in the Area. Later, as a 0-cost Action, you may place Cthulhu, plus all accompanying Units, into any Area.",
+    		"Y'ha Nthlei": "(Ongoing): During the Gather Power Phase, if Cthulhu is in play, gain 1 Power for each enemy-controlled Gate in an ocean or sea Area."
+    	};
+
+    	const writable_props = ["tag"];
+
+    	Object.keys($$props).forEach(key => {
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<Description> was created with unknown prop '${key}'`);
+    	});
+
+    	$$self.$$set = $$props => {
+    		if ("tag" in $$props) $$invalidate(0, tag = $$props.tag);
+    	};
+
+    	$$self.$capture_state = () => ({ tag, descriptions });
+
+    	$$self.$inject_state = $$props => {
+    		if ("tag" in $$props) $$invalidate(0, tag = $$props.tag);
+    		if ("descriptions" in $$props) $$invalidate(1, descriptions = $$props.descriptions);
+    	};
+
+    	if ($$props && "$$inject" in $$props) {
+    		$$self.$inject_state($$props.$$inject);
+    	}
+
+    	return [tag, descriptions];
+    }
+
+    class Description extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance$5, create_fragment$5, safe_not_equal, { tag: 0 });
+
+    		dispatch_dev("SvelteRegisterComponent", {
+    			component: this,
+    			tagName: "Description",
+    			options,
+    			id: create_fragment$5.name
+    		});
+    	}
+
+    	get tag() {
+    		throw new Error("<Description>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set tag(value) {
+    		throw new Error("<Description>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+    }
+
     /* src\components\cw\Player.svelte generated by Svelte v3.29.0 */
 
     const { Object: Object_1 } = globals;
-    const file$4 = "src\\components\\cw\\Player.svelte";
+    const file$6 = "src\\components\\cw\\Player.svelte";
 
     function get_each_context$2(ctx, list, i) {
     	const child_ctx = ctx.slice();
@@ -5244,41 +5864,83 @@ var app = (function () {
 
     function get_each_context_1$1(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[8] = list[i];
+    	child_ctx[11] = list[i];
     	return child_ctx;
     }
 
     function get_each_context_2$1(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[13] = list[i];
+    	child_ctx[11] = list[i];
     	return child_ctx;
     }
 
     function get_each_context_3$1(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[13] = list[i];
+    	child_ctx[8] = list[i];
     	return child_ctx;
     }
 
-    // (78:165) {#each player.faction.bookreqs as book}
-    function create_each_block_3$1(ctx) {
+    function get_each_context_4$1(ctx, list, i) {
+    	const child_ctx = ctx.slice();
+    	child_ctx[8] = list[i];
+    	return child_ctx;
+    }
+
+    // (85:165) {#each player.faction.bookreqs as book}
+    function create_each_block_4$1(ctx) {
     	let li;
-    	let t_value = Object.keys(/*book*/ ctx[13])[0] + "";
+    	let t_value = Object.keys(/*book*/ ctx[8])[0] + "";
     	let t;
 
     	const block = {
     		c: function create() {
     			li = element("li");
     			t = text(t_value);
-    			attr_dev(li, "class", "svelte-cnygka");
-    			add_location(li, file$4, 77, 204, 1894);
+    			attr_dev(li, "class", "svelte-1f8aljx");
+    			add_location(li, file$6, 84, 204, 2071);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, li, anchor);
     			append_dev(li, t);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*player*/ 2 && t_value !== (t_value = Object.keys(/*book*/ ctx[13])[0] + "")) set_data_dev(t, t_value);
+    			if (dirty & /*player*/ 2 && t_value !== (t_value = Object.keys(/*book*/ ctx[8])[0] + "")) set_data_dev(t, t_value);
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(li);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_each_block_4$1.name,
+    		type: "each",
+    		source: "(85:165) {#each player.faction.bookreqs as book}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (85:242) {#each player.books as book}
+    function create_each_block_3$1(ctx) {
+    	let li;
+    	let t_value = /*book*/ ctx[8] + "";
+    	let t;
+
+    	const block = {
+    		c: function create() {
+    			li = element("li");
+    			t = text(t_value);
+    			attr_dev(li, "class", "active svelte-1f8aljx");
+    			add_location(li, file$6, 84, 270, 2137);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, li, anchor);
+    			append_dev(li, t);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*player*/ 2 && t_value !== (t_value = /*book*/ ctx[8] + "")) set_data_dev(t, t_value);
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(li);
@@ -5289,57 +5951,21 @@ var app = (function () {
     		block,
     		id: create_each_block_3$1.name,
     		type: "each",
-    		source: "(78:165) {#each player.faction.bookreqs as book}",
+    		source: "(85:242) {#each player.books as book}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (78:242) {#each player.books as book}
+    // (85:326) {#each player.units.filter( u => u.place == '') as unit}
     function create_each_block_2$1(ctx) {
-    	let li;
-    	let t_value = /*book*/ ctx[13] + "";
-    	let t;
-
-    	const block = {
-    		c: function create() {
-    			li = element("li");
-    			t = text(t_value);
-    			attr_dev(li, "class", "active svelte-cnygka");
-    			add_location(li, file$4, 77, 270, 1960);
-    		},
-    		m: function mount(target, anchor) {
-    			insert_dev(target, li, anchor);
-    			append_dev(li, t);
-    		},
-    		p: function update(ctx, dirty) {
-    			if (dirty & /*player*/ 2 && t_value !== (t_value = /*book*/ ctx[13] + "")) set_data_dev(t, t_value);
-    		},
-    		d: function destroy(detaching) {
-    			if (detaching) detach_dev(li);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_each_block_2$1.name,
-    		type: "each",
-    		source: "(78:242) {#each player.books as book}",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    // (78:326) {#each player.units.filter( u => u.place == '') as unit}
-    function create_each_block_1$1(ctx) {
     	let unit;
     	let current;
 
     	unit = new Unit({
     			props: {
-    				unit: /*unit*/ ctx[8],
+    				unit: /*unit*/ ctx[11],
     				choose: /*choose*/ ctx[0]
     			},
     			$$inline: true
@@ -5355,7 +5981,59 @@ var app = (function () {
     		},
     		p: function update(ctx, dirty) {
     			const unit_changes = {};
-    			if (dirty & /*player*/ 2) unit_changes.unit = /*unit*/ ctx[8];
+    			if (dirty & /*player*/ 2) unit_changes.unit = /*unit*/ ctx[11];
+    			if (dirty & /*choose*/ 1) unit_changes.choose = /*choose*/ ctx[0];
+    			unit.$set(unit_changes);
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(unit.$$.fragment, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(unit.$$.fragment, local);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			destroy_component(unit, detaching);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_each_block_2$1.name,
+    		type: "each",
+    		source: "(85:326) {#each player.units.filter( u => u.place == '') as unit}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (85:427) {#each G.units.filter( u => u.place == player.faction.name) as unit}
+    function create_each_block_1$1(ctx) {
+    	let unit;
+    	let current;
+
+    	unit = new Unit({
+    			props: {
+    				unit: /*unit*/ ctx[11],
+    				choose: /*choose*/ ctx[0]
+    			},
+    			$$inline: true
+    		});
+
+    	const block = {
+    		c: function create() {
+    			create_component(unit.$$.fragment);
+    		},
+    		m: function mount(target, anchor) {
+    			mount_component(unit, target, anchor);
+    			current = true;
+    		},
+    		p: function update(ctx, dirty) {
+    			const unit_changes = {};
+    			if (dirty & /*G, player*/ 6) unit_changes.unit = /*unit*/ ctx[11];
     			if (dirty & /*choose*/ 1) unit_changes.choose = /*choose*/ ctx[0];
     			unit.$set(unit_changes);
     		},
@@ -5377,51 +6055,93 @@ var app = (function () {
     		block,
     		id: create_each_block_1$1.name,
     		type: "each",
-    		source: "(78:326) {#each player.units.filter( u => u.place == '') as unit}",
+    		source: "(85:427) {#each G.units.filter( u => u.place == player.faction.name) as unit}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (78:427) {#each G.units.filter( u => u.place == player.faction.name) as unit}
+    // (85:582) <Tooltip key="{book}" left>
+    function create_default_slot(ctx) {
+    	let div;
+    	let t_value = /*book*/ ctx[8] + "";
+    	let t;
+
+    	const block = {
+    		c: function create() {
+    			div = element("div");
+    			t = text(t_value);
+    			attr_dev(div, "class", "book svelte-1f8aljx");
+    			add_location(div, file$6, 84, 609, 2476);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+    			append_dev(div, t);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*player*/ 2 && t_value !== (t_value = /*book*/ ctx[8] + "")) set_data_dev(t, t_value);
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_default_slot.name,
+    		type: "slot",
+    		source: "(85:582) <Tooltip key=\\\"{book}\\\" left>",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (85:546) {#each player.faction.books as book}
     function create_each_block$2(ctx) {
-    	let unit;
+    	let tooltip;
     	let current;
 
-    	unit = new Unit({
+    	tooltip = new Tooltip({
     			props: {
-    				unit: /*unit*/ ctx[8],
-    				choose: /*choose*/ ctx[0]
+    				key: /*book*/ ctx[8],
+    				left: true,
+    				$$slots: { default: [create_default_slot] },
+    				$$scope: { ctx }
     			},
     			$$inline: true
     		});
 
     	const block = {
     		c: function create() {
-    			create_component(unit.$$.fragment);
+    			create_component(tooltip.$$.fragment);
     		},
     		m: function mount(target, anchor) {
-    			mount_component(unit, target, anchor);
+    			mount_component(tooltip, target, anchor);
     			current = true;
     		},
     		p: function update(ctx, dirty) {
-    			const unit_changes = {};
-    			if (dirty & /*G, player*/ 6) unit_changes.unit = /*unit*/ ctx[8];
-    			if (dirty & /*choose*/ 1) unit_changes.choose = /*choose*/ ctx[0];
-    			unit.$set(unit_changes);
+    			const tooltip_changes = {};
+    			if (dirty & /*player*/ 2) tooltip_changes.key = /*book*/ ctx[8];
+
+    			if (dirty & /*$$scope, player*/ 1048578) {
+    				tooltip_changes.$$scope = { dirty, ctx };
+    			}
+
+    			tooltip.$set(tooltip_changes);
     		},
     		i: function intro(local) {
     			if (current) return;
-    			transition_in(unit.$$.fragment, local);
+    			transition_in(tooltip.$$.fragment, local);
     			current = true;
     		},
     		o: function outro(local) {
-    			transition_out(unit.$$.fragment, local);
+    			transition_out(tooltip.$$.fragment, local);
     			current = false;
     		},
     		d: function destroy(detaching) {
-    			destroy_component(unit, detaching);
+    			destroy_component(tooltip, detaching);
     		}
     	};
 
@@ -5429,14 +6149,14 @@ var app = (function () {
     		block,
     		id: create_each_block$2.name,
     		type: "each",
-    		source: "(78:427) {#each G.units.filter( u => u.place == player.faction.name) as unit}",
+    		source: "(85:546) {#each player.faction.books as book}",
     		ctx
     	});
 
     	return block;
     }
 
-    function create_fragment$4(ctx) {
+    function create_fragment$6(ctx) {
     	let div1;
     	let t0_value = /*player*/ ctx[1].faction.name + "";
     	let t0;
@@ -5456,7 +6176,15 @@ var app = (function () {
     	let current;
     	let mounted;
     	let dispose;
-    	let each_value_3 = /*player*/ ctx[1].faction.bookreqs;
+    	let each_value_4 = /*player*/ ctx[1].faction.bookreqs;
+    	validate_each_argument(each_value_4);
+    	let each_blocks_4 = [];
+
+    	for (let i = 0; i < each_value_4.length; i += 1) {
+    		each_blocks_4[i] = create_each_block_4$1(get_each_context_4$1(ctx, each_value_4, i));
+    	}
+
+    	let each_value_3 = /*player*/ ctx[1].books;
     	validate_each_argument(each_value_3);
     	let each_blocks_3 = [];
 
@@ -5464,7 +6192,7 @@ var app = (function () {
     		each_blocks_3[i] = create_each_block_3$1(get_each_context_3$1(ctx, each_value_3, i));
     	}
 
-    	let each_value_2 = /*player*/ ctx[1].books;
+    	let each_value_2 = /*player*/ ctx[1].units.filter(func$1);
     	validate_each_argument(each_value_2);
     	let each_blocks_2 = [];
 
@@ -5472,7 +6200,11 @@ var app = (function () {
     		each_blocks_2[i] = create_each_block_2$1(get_each_context_2$1(ctx, each_value_2, i));
     	}
 
-    	let each_value_1 = /*player*/ ctx[1].units.filter(func$1);
+    	const out = i => transition_out(each_blocks_2[i], 1, 1, () => {
+    		each_blocks_2[i] = null;
+    	});
+
+    	let each_value_1 = /*G*/ ctx[2].units.filter(/*func_1*/ ctx[5]);
     	validate_each_argument(each_value_1);
     	let each_blocks_1 = [];
 
@@ -5480,11 +6212,11 @@ var app = (function () {
     		each_blocks_1[i] = create_each_block_1$1(get_each_context_1$1(ctx, each_value_1, i));
     	}
 
-    	const out = i => transition_out(each_blocks_1[i], 1, 1, () => {
+    	const out_1 = i => transition_out(each_blocks_1[i], 1, 1, () => {
     		each_blocks_1[i] = null;
     	});
 
-    	let each_value = /*G*/ ctx[2].units.filter(/*func_1*/ ctx[5]);
+    	let each_value = /*player*/ ctx[1].faction.books;
     	validate_each_argument(each_value);
     	let each_blocks = [];
 
@@ -5492,7 +6224,7 @@ var app = (function () {
     		each_blocks[i] = create_each_block$2(get_each_context$2(ctx, each_value, i));
     	}
 
-    	const out_1 = i => transition_out(each_blocks[i], 1, 1, () => {
+    	const out_2 = i => transition_out(each_blocks[i], 1, 1, () => {
     		each_blocks[i] = null;
     	});
 
@@ -5508,34 +6240,38 @@ var app = (function () {
     			t6 = text(t6_value);
     			ul = element("ul");
 
+    			for (let i = 0; i < each_blocks_4.length; i += 1) {
+    				each_blocks_4[i].c();
+    			}
+
+    			each0_anchor = empty();
+
     			for (let i = 0; i < each_blocks_3.length; i += 1) {
     				each_blocks_3[i].c();
     			}
 
-    			each0_anchor = empty();
+    			div0 = element("div");
 
     			for (let i = 0; i < each_blocks_2.length; i += 1) {
     				each_blocks_2[i].c();
     			}
 
-    			div0 = element("div");
+    			each2_anchor = empty();
 
     			for (let i = 0; i < each_blocks_1.length; i += 1) {
     				each_blocks_1[i].c();
     			}
 
-    			each2_anchor = empty();
-
     			for (let i = 0; i < each_blocks.length; i += 1) {
     				each_blocks[i].c();
     			}
 
-    			attr_dev(div0, "class", "units svelte-cnygka");
-    			add_location(div0, file$4, 77, 307, 1997);
-    			attr_dev(ul, "class", "details svelte-cnygka");
-    			add_location(ul, file$4, 77, 144, 1834);
-    			attr_dev(div1, "class", "player2 svelte-cnygka");
-    			add_location(div1, file$4, 77, 0, 1690);
+    			attr_dev(div0, "class", "units svelte-1f8aljx");
+    			add_location(div0, file$6, 84, 307, 2174);
+    			attr_dev(ul, "class", "details svelte-1f8aljx");
+    			add_location(ul, file$6, 84, 144, 2011);
+    			attr_dev(div1, "class", "player2 svelte-1f8aljx");
+    			add_location(div1, file$6, 84, 0, 1867);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -5551,26 +6287,30 @@ var app = (function () {
     			append_dev(div1, t6);
     			append_dev(div1, ul);
 
-    			for (let i = 0; i < each_blocks_3.length; i += 1) {
-    				each_blocks_3[i].m(ul, null);
+    			for (let i = 0; i < each_blocks_4.length; i += 1) {
+    				each_blocks_4[i].m(ul, null);
     			}
 
     			append_dev(ul, each0_anchor);
 
-    			for (let i = 0; i < each_blocks_2.length; i += 1) {
-    				each_blocks_2[i].m(ul, null);
+    			for (let i = 0; i < each_blocks_3.length; i += 1) {
+    				each_blocks_3[i].m(ul, null);
     			}
 
     			append_dev(ul, div0);
+
+    			for (let i = 0; i < each_blocks_2.length; i += 1) {
+    				each_blocks_2[i].m(div0, null);
+    			}
+
+    			append_dev(div0, each2_anchor);
 
     			for (let i = 0; i < each_blocks_1.length; i += 1) {
     				each_blocks_1[i].m(div0, null);
     			}
 
-    			append_dev(div0, each2_anchor);
-
     			for (let i = 0; i < each_blocks.length; i += 1) {
-    				each_blocks[i].m(div0, null);
+    				each_blocks[i].m(ul, null);
     			}
 
     			/*div1_binding*/ ctx[6](div1);
@@ -5588,7 +6328,31 @@ var app = (function () {
     			if ((!current || dirty & /*player*/ 2) && t6_value !== (t6_value = /*player*/ ctx[1].books.length + "")) set_data_dev(t6, t6_value);
 
     			if (dirty & /*Object, player*/ 2) {
-    				each_value_3 = /*player*/ ctx[1].faction.bookreqs;
+    				each_value_4 = /*player*/ ctx[1].faction.bookreqs;
+    				validate_each_argument(each_value_4);
+    				let i;
+
+    				for (i = 0; i < each_value_4.length; i += 1) {
+    					const child_ctx = get_each_context_4$1(ctx, each_value_4, i);
+
+    					if (each_blocks_4[i]) {
+    						each_blocks_4[i].p(child_ctx, dirty);
+    					} else {
+    						each_blocks_4[i] = create_each_block_4$1(child_ctx);
+    						each_blocks_4[i].c();
+    						each_blocks_4[i].m(ul, each0_anchor);
+    					}
+    				}
+
+    				for (; i < each_blocks_4.length; i += 1) {
+    					each_blocks_4[i].d(1);
+    				}
+
+    				each_blocks_4.length = each_value_4.length;
+    			}
+
+    			if (dirty & /*player*/ 2) {
+    				each_value_3 = /*player*/ ctx[1].books;
     				validate_each_argument(each_value_3);
     				let i;
 
@@ -5600,7 +6364,7 @@ var app = (function () {
     					} else {
     						each_blocks_3[i] = create_each_block_3$1(child_ctx);
     						each_blocks_3[i].c();
-    						each_blocks_3[i].m(ul, each0_anchor);
+    						each_blocks_3[i].m(ul, div0);
     					}
     				}
 
@@ -5611,8 +6375,8 @@ var app = (function () {
     				each_blocks_3.length = each_value_3.length;
     			}
 
-    			if (dirty & /*player*/ 2) {
-    				each_value_2 = /*player*/ ctx[1].books;
+    			if (dirty & /*player, choose*/ 3) {
+    				each_value_2 = /*player*/ ctx[1].units.filter(func$1);
     				validate_each_argument(each_value_2);
     				let i;
 
@@ -5621,22 +6385,26 @@ var app = (function () {
 
     					if (each_blocks_2[i]) {
     						each_blocks_2[i].p(child_ctx, dirty);
+    						transition_in(each_blocks_2[i], 1);
     					} else {
     						each_blocks_2[i] = create_each_block_2$1(child_ctx);
     						each_blocks_2[i].c();
-    						each_blocks_2[i].m(ul, div0);
+    						transition_in(each_blocks_2[i], 1);
+    						each_blocks_2[i].m(div0, each2_anchor);
     					}
     				}
 
-    				for (; i < each_blocks_2.length; i += 1) {
-    					each_blocks_2[i].d(1);
+    				group_outros();
+
+    				for (i = each_value_2.length; i < each_blocks_2.length; i += 1) {
+    					out(i);
     				}
 
-    				each_blocks_2.length = each_value_2.length;
+    				check_outros();
     			}
 
-    			if (dirty & /*player, choose*/ 3) {
-    				each_value_1 = /*player*/ ctx[1].units.filter(func$1);
+    			if (dirty & /*G, player, choose*/ 7) {
+    				each_value_1 = /*G*/ ctx[2].units.filter(/*func_1*/ ctx[5]);
     				validate_each_argument(each_value_1);
     				let i;
 
@@ -5650,21 +6418,21 @@ var app = (function () {
     						each_blocks_1[i] = create_each_block_1$1(child_ctx);
     						each_blocks_1[i].c();
     						transition_in(each_blocks_1[i], 1);
-    						each_blocks_1[i].m(div0, each2_anchor);
+    						each_blocks_1[i].m(div0, null);
     					}
     				}
 
     				group_outros();
 
     				for (i = each_value_1.length; i < each_blocks_1.length; i += 1) {
-    					out(i);
+    					out_1(i);
     				}
 
     				check_outros();
     			}
 
-    			if (dirty & /*G, player, choose*/ 7) {
-    				each_value = /*G*/ ctx[2].units.filter(/*func_1*/ ctx[5]);
+    			if (dirty & /*player*/ 2) {
+    				each_value = /*player*/ ctx[1].faction.books;
     				validate_each_argument(each_value);
     				let i;
 
@@ -5678,14 +6446,14 @@ var app = (function () {
     						each_blocks[i] = create_each_block$2(child_ctx);
     						each_blocks[i].c();
     						transition_in(each_blocks[i], 1);
-    						each_blocks[i].m(div0, null);
+    						each_blocks[i].m(ul, null);
     					}
     				}
 
     				group_outros();
 
     				for (i = each_value.length; i < each_blocks.length; i += 1) {
-    					out_1(i);
+    					out_2(i);
     				}
 
     				check_outros();
@@ -5693,6 +6461,10 @@ var app = (function () {
     		},
     		i: function intro(local) {
     			if (current) return;
+
+    			for (let i = 0; i < each_value_2.length; i += 1) {
+    				transition_in(each_blocks_2[i]);
+    			}
 
     			for (let i = 0; i < each_value_1.length; i += 1) {
     				transition_in(each_blocks_1[i]);
@@ -5705,6 +6477,12 @@ var app = (function () {
     			current = true;
     		},
     		o: function outro(local) {
+    			each_blocks_2 = each_blocks_2.filter(Boolean);
+
+    			for (let i = 0; i < each_blocks_2.length; i += 1) {
+    				transition_out(each_blocks_2[i]);
+    			}
+
     			each_blocks_1 = each_blocks_1.filter(Boolean);
 
     			for (let i = 0; i < each_blocks_1.length; i += 1) {
@@ -5721,6 +6499,7 @@ var app = (function () {
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(div1);
+    			destroy_each(each_blocks_4, detaching);
     			destroy_each(each_blocks_3, detaching);
     			destroy_each(each_blocks_2, detaching);
     			destroy_each(each_blocks_1, detaching);
@@ -5733,7 +6512,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_fragment$4.name,
+    		id: create_fragment$6.name,
     		type: "component",
     		source: "",
     		ctx
@@ -5744,7 +6523,7 @@ var app = (function () {
 
     const func$1 = u => u.place == "";
 
-    function instance$4($$self, $$props, $$invalidate) {
+    function instance$6($$self, $$props, $$invalidate) {
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots("Player", slots, []);
     	let { choose } = $$props, { player } = $$props, { G } = $$props;
@@ -5786,6 +6565,8 @@ var app = (function () {
     		player,
     		G,
     		Unit,
+    		Tooltip,
+    		Description,
     		createEventDispatcher,
     		dispatch,
     		onMount,
@@ -5812,13 +6593,13 @@ var app = (function () {
     class Player extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$4, create_fragment$4, safe_not_equal, { choose: 0, player: 1, G: 2 });
+    		init(this, options, instance$6, create_fragment$6, safe_not_equal, { choose: 0, player: 1, G: 2 });
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
     			tagName: "Player",
     			options,
-    			id: create_fragment$4.name
+    			id: create_fragment$6.name
     		});
 
     		const { ctx } = this.$$;
@@ -5899,11 +6680,11 @@ var app = (function () {
         };
         let bookreqs = [
             {'sac 2 cults':f=>false },
-            {'be in 4 areas':f=> Object.keys(G.places).filter( p => G.player.units.map( u => u.place ).includes(p) ).length > 3 },
-            {'be in 6 areas':f=> Object.keys(G.places).filter( p => G.player.units.map( u => u.place ).includes(p) ).length > 5 },
-            {'be in 8 areas':f=> Object.keys(G.places).filter( p => G.player.units.map( u => u.place ).includes(p) ).length > 7 },
+            {'be in 4 areas':f=> Object.keys(G.places).filter( p => G.players.find( pl => pl.faction.name == 'bg' ).units.map( u => u.place ).includes(p) ).length > 3 },
+            {'be in 6 areas':f=> Object.keys(G.places).filter( p => G.players.find( pl => pl.faction.name == 'bg' ).units.map( u => u.place ).includes(p) ).length > 5 },
+            {'be in 8 areas':f=> Object.keys(G.places).filter( p => G.players.find( pl => pl.faction.name == 'bg' ).units.map( u => u.place ).includes(p) ).length > 7 },
             {"Awaken Shub Nigur'rath":f=> G.choices.awaken.unit?.type=="Shub Nigur'rath"},
-            {'be in all enemy areas':f=> G.players.filter( pl => pl.units.filter( un => Object.keys(G.places).filter( p => G.player.units.map( u => u.place ).includes(p) ).includes(un.place) ).length).length == G.players.length  }
+            {'be in all enemy areas':f=> G.players.filter( pl => pl.units.filter( un => Object.keys(G.places).filter( p => G.players.find( pl => pl.faction.name == 'bg' ).units.map( u => u.place ).includes(p) ).includes(un.place) ).length).length == G.players.length  }
         ];
         let goo = "Shub Nigur'rath";
         let mons = {'Ghoul':2,Fungi:4,'Dark Young':2};
@@ -6225,12 +7006,12 @@ var app = (function () {
             "The Thousand Forms":thousandforms
         };
         let bookreqs = [
-            {'pay 4 pwoer':f=>false },
-            {'pay 6 pwoer':f=>false },
+            {'pay 4 power':f=>false },
+            {'pay 6 power':f=>false },
             {'3 gates / 12 power':f=> G$1.player.units.filter( u => u.gate ).length > 2 || G$1.player.power > 11 },
             {'4 gates / 16 power':f=> G$1.player.units.filter( u => u.gate ).length > 3 || G$1.player.power > 15 },
             {'capture':f=> units.filter( u => u.place == G$1.player.faction).length },
-            {"Awaken Nyarlathotap":f=> G$1.choices.awaken.unit?.name=='Nyarlathotap'},
+            {"Awaken Nyarlathotap":f=> G$1.choices.awaken.unit?.type=='Nyarlathotap'},
         ];
         let goo = 'Nyarlathotap';
         let mons = {Nightgaunt:3,"Hunting Horror":2,"Flying Polyp":3};
@@ -6332,7 +7113,7 @@ var app = (function () {
     },'fight','enemy');
 
     let madness = () => {
-        madphase = {
+        let madphase = {
             init : f => {
                 phs$1.interuptStage('fight','placeeretreats',G$1.players.indexOf(G$1.players.find( p => p.faction.name == 'cc' ) ));
             },
@@ -6562,7 +7343,7 @@ var app = (function () {
 
     let lim$1 = 1, unlim = 1;
 
-    let emerge = () => addPhase( 'emerge',{
+    let emerge = () => phs$2.addPhase( 'emerge',{
         lim: lim$1,
         start : 'place',
         req: f => G$2.player.units.find( u => u.type == 'Great Cthulhu').place == 'submerged',
@@ -6722,7 +7503,7 @@ var app = (function () {
         phs$2.addStage('devourunit',dvstage,'fight','roll');
     };
     let yhanthlei = () => {
-        yhstage = {
+        let yhstage = {
             init : f=>{
                 G$2.players.find( p => p.faction.name == 'gc' ).power += G$2.player.power += oceans.filter( o => G$2.places[o].gate && G$2.units.filter( u => u.place == o && u.gate && u.owner.faction.name != 'gc' ).length ).length;
                 phs$2.endStage();
@@ -6793,8 +7574,8 @@ var app = (function () {
             {'Desecrate \\|/':f=> Object.values(G$3.places).filter( p => p.desecrated && p.glyphs['\\|/']).length },
             {'Desecrate \\o/':f=> Object.values(G$3.places).filter( p => p.desecrated && p.glyphs['\\o/']).length },
             {'Desecrate \\-/':f=> Object.values(G$3.places).filter( p => p.desecrated && p.glyphs['\\-/']).length },
-            {"Awaken King in Yellow":f=> G$3.choices.awaken.unit?.name=='King in Yellow'},
-            {"Awaken Hastur":f=> G$3.choices.awaken.unit?.name=='Hastur'}
+            {"Awaken King in Yellow":f=> G$3.choices.awaken.unit?.type=='King in Yellow'},
+            {"Awaken Hastur":f=> G$3.choices.awaken.unit?.type=='Hastur'}
         ];
         let goo = ['King in Yellow','Hastur'];
         let mons = {Undead:2,"Bya'khee":4};
@@ -7212,9 +7993,9 @@ var app = (function () {
             G$4.phases[phase].stages[prev].next = s;
         } //else G.phases[phase].start = s
     };
-    let addPhase$1=(p,phase)=>{G$4.phases[p]=phase;};
+    let addPhase=(p,phase)=>{G$4.phases[p]=phase;};
     let phases = {
-        addPhase: addPhase$1,
+        addPhase,
         roll: roll$1,
         addStage,
         interuptStage,
@@ -7259,11 +8040,11 @@ var app = (function () {
                         options : f => ['keep turn order','reverse turn order'],
                         moves : {
                             choose : (np,c) => {
-                                let p = G$4.players[G$4.turn.pi];
+                                let p = G$4.players[G$4.turn.pi%G$4.players.length];
                                 if( ['keep turn order','reverse turn order'].includes(c) ) {
                                     if (c == 'reverse turn order') {
                                         G$4.players = G$4.players.reverse();
-                                        G$4.turn.pi = G$4.players.indexOf(p);
+                                        G$4.turn.pi = G$4.players.indexOf(G$4.players.find( pp => pp.faction.name == p.faction.name));
                                     }
                                     G$4.players.map( p => p.ritual = 1);
                                     setPhase('doom');
@@ -7671,8 +8452,8 @@ var app = (function () {
 
     /* src\components\cw\Game.svelte generated by Svelte v3.29.0 */
 
-    const { Object: Object_1$1 } = globals;
-    const file$5 = "src\\components\\cw\\Game.svelte";
+    const { Map: Map_1$1, Object: Object_1$1, console: console_1$1 } = globals;
+    const file$7 = "src\\components\\cw\\Game.svelte";
 
     function get_each_context$3(ctx, list, i) {
     	const child_ctx = ctx.slice();
@@ -7686,8 +8467,9 @@ var app = (function () {
     	return child_ctx;
     }
 
-    // (127:35) {#each G.players as player}
-    function create_each_block_1$2(ctx) {
+    // (121:141) {#each G.players as player (player.faction.name)}
+    function create_each_block_1$2(key_1, ctx) {
+    	let first;
     	let player_1;
     	let current;
 
@@ -7701,10 +8483,15 @@ var app = (function () {
     		});
 
     	const block = {
+    		key: key_1,
+    		first: null,
     		c: function create() {
+    			first = empty();
     			create_component(player_1.$$.fragment);
+    			this.first = first;
     		},
     		m: function mount(target, anchor) {
+    			insert_dev(target, first, anchor);
     			mount_component(player_1, target, anchor);
     			current = true;
     		},
@@ -7725,6 +8512,7 @@ var app = (function () {
     			current = false;
     		},
     		d: function destroy(detaching) {
+    			if (detaching) detach_dev(first);
     			destroy_component(player_1, detaching);
     		}
     	};
@@ -7733,15 +8521,15 @@ var app = (function () {
     		block,
     		id: create_each_block_1$2.name,
     		type: "each",
-    		source: "(127:35) {#each G.players as player}",
+    		source: "(121:141) {#each G.players as player (player.faction.name)}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (127:573) {:else}
-    function create_else_block(ctx) {
+    // (121:701) {:else}
+    function create_else_block$1(ctx) {
     	let li;
     	let t_value = /*action*/ ctx[19] + "";
     	let t;
@@ -7752,8 +8540,8 @@ var app = (function () {
     		c: function create() {
     			li = element("li");
     			t = text(t_value);
-    			attr_dev(li, "class", "svelte-mis2cl");
-    			add_location(li, file$5, 126, 580, 4203);
+    			attr_dev(li, "class", "svelte-11jcp7s");
+    			add_location(li, file$7, 120, 708, 4253);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, li, anchor);
@@ -7787,16 +8575,16 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_else_block.name,
+    		id: create_else_block$1.name,
     		type: "else",
-    		source: "(127:573) {:else}",
+    		source: "(121:701) {:else}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (127:479) 
+    // (121:607) 
     function create_if_block_3(ctx) {
     	let li;
     	let t_value = /*action*/ ctx[19].faction.name + "";
@@ -7809,8 +8597,8 @@ var app = (function () {
     			li = element("li");
     			t = text(t_value);
     			set_style(li, "color", /*action*/ ctx[19].faction.color);
-    			attr_dev(li, "class", "svelte-mis2cl");
-    			add_location(li, file$5, 126, 479, 4102);
+    			attr_dev(li, "class", "svelte-11jcp7s");
+    			add_location(li, file$7, 120, 607, 4152);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, li, anchor);
@@ -7850,14 +8638,14 @@ var app = (function () {
     		block,
     		id: create_if_block_3.name,
     		type: "if",
-    		source: "(127:479) ",
+    		source: "(121:607) ",
     		ctx
     	});
 
     	return block;
     }
 
-    // (127:234) {#if G.stage.includes("unit")}
+    // (121:362) {#if G.stage.includes("unit")}
     function create_if_block_2(ctx) {
     	let li;
     	let t0_value = /*action*/ ctx[19].type + "";
@@ -7875,8 +8663,8 @@ var app = (function () {
     			t1 = text(" in ");
     			t2 = text(t2_value);
     			set_style(li, "color", /*action*/ ctx[19].owner.faction.color);
-    			attr_dev(li, "class", "svelte-mis2cl");
-    			add_location(li, file$5, 126, 264, 3887);
+    			attr_dev(li, "class", "svelte-11jcp7s");
+    			add_location(li, file$7, 120, 392, 3937);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, li, anchor);
@@ -7919,14 +8707,14 @@ var app = (function () {
     		block,
     		id: create_if_block_2.name,
     		type: "if",
-    		source: "(127:234) {#if G.stage.includes(\\\"unit\\\")}",
+    		source: "(121:362) {#if G.stage.includes(\\\"unit\\\")}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (127:209) {#each actions as action}
+    // (121:337) {#each actions as action}
     function create_each_block$3(ctx) {
     	let show_if;
     	let show_if_1;
@@ -7937,7 +8725,7 @@ var app = (function () {
     		if (show_if) return create_if_block_2;
     		if (show_if_1 == null || dirty & /*G*/ 1) show_if_1 = !!(/*G*/ ctx[0].stage.includes("player") || /*G*/ ctx[0].stage.includes("enemy") || /*G*/ ctx[0].stage.includes("faction"));
     		if (show_if_1) return create_if_block_3;
-    		return create_else_block;
+    		return create_else_block$1;
     	}
 
     	let current_block_type = select_block_type(ctx, -1);
@@ -7975,14 +8763,14 @@ var app = (function () {
     		block,
     		id: create_each_block$3.name,
     		type: "each",
-    		source: "(127:209) {#each actions as action}",
+    		source: "(121:337) {#each actions as action}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (127:851) 
+    // (121:979) 
     function create_if_block_1(ctx) {
     	let li;
     	let mounted;
@@ -7992,8 +8780,8 @@ var app = (function () {
     		c: function create() {
     			li = element("li");
     			li.textContent = "done";
-    			attr_dev(li, "class", "svelte-mis2cl");
-    			add_location(li, file$5, 126, 851, 4474);
+    			attr_dev(li, "class", "svelte-11jcp7s");
+    			add_location(li, file$7, 120, 979, 4524);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, li, anchor);
@@ -8027,15 +8815,15 @@ var app = (function () {
     		block,
     		id: create_if_block_1.name,
     		type: "if",
-    		source: "(127:851) ",
+    		source: "(121:979) ",
     		ctx
     	});
 
     	return block;
     }
 
-    // (127:636) {#if G.phases[G.phase].stages && G.phases[G.phase].stages[G.stage].moves.done}
-    function create_if_block$1(ctx) {
+    // (121:764) {#if G.phases[G.phase].stages && G.phases[G.phase].stages[G.stage].moves.done}
+    function create_if_block$2(ctx) {
     	let li;
     	let mounted;
     	let dispose;
@@ -8044,8 +8832,8 @@ var app = (function () {
     		c: function create() {
     			li = element("li");
     			li.textContent = "done";
-    			attr_dev(li, "class", "svelte-mis2cl");
-    			add_location(li, file$5, 126, 714, 4337);
+    			attr_dev(li, "class", "svelte-11jcp7s");
+    			add_location(li, file$7, 120, 842, 4387);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, li, anchor);
@@ -8077,20 +8865,23 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block$1.name,
+    		id: create_if_block$2.name,
     		type: "if",
-    		source: "(127:636) {#if G.phases[G.phase].stages && G.phases[G.phase].stages[G.stage].moves.done}",
+    		source: "(121:764) {#if G.phases[G.phase].stages && G.phases[G.phase].stages[G.stage].moves.done}",
     		ctx
     	});
 
     	return block;
     }
 
-    function create_fragment$5(ctx) {
-    	let map;
-    	let div1;
+    function create_fragment$7(ctx) {
     	let div0;
-    	let t;
+    	let map;
+    	let div2;
+    	let each_blocks_1 = [];
+    	let each0_lookup = new Map_1$1();
+    	let div1;
+    	let t1;
     	let ul;
     	let each1_anchor;
     	let current;
@@ -8104,15 +8895,14 @@ var app = (function () {
     	map = new Map$1({ props: map_props, $$inline: true });
     	let each_value_1 = /*G*/ ctx[0].players;
     	validate_each_argument(each_value_1);
-    	let each_blocks_1 = [];
+    	const get_key = ctx => /*player*/ ctx[3].faction.name;
+    	validate_each_keys(ctx, each_value_1, get_each_context_1$2, get_key);
 
     	for (let i = 0; i < each_value_1.length; i += 1) {
-    		each_blocks_1[i] = create_each_block_1$2(get_each_context_1$2(ctx, each_value_1, i));
+    		let child_ctx = get_each_context_1$2(ctx, each_value_1, i);
+    		let key = get_key(child_ctx);
+    		each0_lookup.set(key, each_blocks_1[i] = create_each_block_1$2(key, child_ctx));
     	}
-
-    	const out = i => transition_out(each_blocks_1[i], 1, 1, () => {
-    		each_blocks_1[i] = null;
-    	});
 
     	let each_value = /*actions*/ ctx[1];
     	validate_each_argument(each_value);
@@ -8123,7 +8913,7 @@ var app = (function () {
     	}
 
     	function select_block_type_1(ctx, dirty) {
-    		if (/*G*/ ctx[0].phases[/*G*/ ctx[0].phase].stages && /*G*/ ctx[0].phases[/*G*/ ctx[0].phase].stages[/*G*/ ctx[0].stage].moves.done) return create_if_block$1;
+    		if (/*G*/ ctx[0].phases[/*G*/ ctx[0].phase].stages && /*G*/ ctx[0].phases[/*G*/ ctx[0].phase].stages[/*G*/ ctx[0].stage].moves.done) return create_if_block$2;
     		if (/*G*/ ctx[0].phases[/*G*/ ctx[0].phase].moves && /*G*/ ctx[0].phases[/*G*/ ctx[0].phase].moves.done) return create_if_block_1;
     	}
 
@@ -8132,15 +8922,17 @@ var app = (function () {
 
     	const block = {
     		c: function create() {
+    			div0 = element("div");
+    			div0.textContent = "wubwub";
     			create_component(map.$$.fragment);
-    			div1 = element("div");
+    			div2 = element("div");
 
     			for (let i = 0; i < each_blocks_1.length; i += 1) {
     				each_blocks_1[i].c();
     			}
 
-    			div0 = element("div");
-    			t = text("actions");
+    			div1 = element("div");
+    			t1 = text("actions");
     			ul = element("ul");
 
     			for (let i = 0; i < each_blocks.length; i += 1) {
@@ -8149,29 +8941,36 @@ var app = (function () {
 
     			each1_anchor = empty();
     			if (if_block) if_block.c();
+    			attr_dev(div0, "class", "tooltip hidden");
+    			set_style(div0, "position", "absolute");
+    			set_style(div0, "background", "black");
+    			set_style(div0, "width", "10em");
+    			set_style(div0, "z-index", "100");
+    			add_location(div0, file$7, 120, 0, 3545);
     			set_style(ul, "padding", "0");
-    			attr_dev(ul, "class", "svelte-mis2cl");
-    			add_location(ul, file$5, 126, 187, 3810);
-    			attr_dev(div0, "class", "actions svelte-mis2cl");
-    			set_style(div0, "color", /*G*/ ctx[0].player.faction.color);
-    			add_location(div0, file$5, 126, 119, 3742);
-    			attr_dev(div1, "class", "hud svelte-mis2cl");
-    			add_location(div1, file$5, 126, 18, 3641);
+    			attr_dev(ul, "class", "svelte-11jcp7s");
+    			add_location(ul, file$7, 120, 315, 3860);
+    			attr_dev(div1, "class", "actions svelte-11jcp7s");
+    			set_style(div1, "color", /*G*/ ctx[0].player.faction.color);
+    			add_location(div1, file$7, 120, 247, 3792);
+    			attr_dev(div2, "class", "hud svelte-11jcp7s");
+    			add_location(div2, file$7, 120, 124, 3669);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
     		},
     		m: function mount(target, anchor) {
+    			insert_dev(target, div0, anchor);
     			mount_component(map, target, anchor);
-    			insert_dev(target, div1, anchor);
+    			insert_dev(target, div2, anchor);
 
     			for (let i = 0; i < each_blocks_1.length; i += 1) {
-    				each_blocks_1[i].m(div1, null);
+    				each_blocks_1[i].m(div2, null);
     			}
 
-    			append_dev(div1, div0);
-    			append_dev(div0, t);
-    			append_dev(div0, ul);
+    			append_dev(div2, div1);
+    			append_dev(div1, t1);
+    			append_dev(div1, ul);
 
     			for (let i = 0; i < each_blocks.length; i += 1) {
     				each_blocks[i].m(ul, null);
@@ -8189,30 +8988,11 @@ var app = (function () {
     			map.$set(map_changes);
 
     			if (dirty & /*G*/ 1) {
-    				each_value_1 = /*G*/ ctx[0].players;
+    				const each_value_1 = /*G*/ ctx[0].players;
     				validate_each_argument(each_value_1);
-    				let i;
-
-    				for (i = 0; i < each_value_1.length; i += 1) {
-    					const child_ctx = get_each_context_1$2(ctx, each_value_1, i);
-
-    					if (each_blocks_1[i]) {
-    						each_blocks_1[i].p(child_ctx, dirty);
-    						transition_in(each_blocks_1[i], 1);
-    					} else {
-    						each_blocks_1[i] = create_each_block_1$2(child_ctx);
-    						each_blocks_1[i].c();
-    						transition_in(each_blocks_1[i], 1);
-    						each_blocks_1[i].m(div1, div0);
-    					}
-    				}
-
     				group_outros();
-
-    				for (i = each_value_1.length; i < each_blocks_1.length; i += 1) {
-    					out(i);
-    				}
-
+    				validate_each_keys(ctx, each_value_1, get_each_context_1$2, get_key);
+    				each_blocks_1 = update_keyed_each(each_blocks_1, dirty, get_key, 1, ctx, each_value_1, each0_lookup, div2, outro_and_destroy_block, create_each_block_1$2, div1, get_each_context_1$2);
     				check_outros();
     			}
 
@@ -8253,7 +9033,7 @@ var app = (function () {
     			}
 
     			if (!current || dirty & /*G*/ 1) {
-    				set_style(div0, "color", /*G*/ ctx[0].player.faction.color);
+    				set_style(div1, "color", /*G*/ ctx[0].player.faction.color);
     			}
     		},
     		i: function intro(local) {
@@ -8268,7 +9048,6 @@ var app = (function () {
     		},
     		o: function outro(local) {
     			transition_out(map.$$.fragment, local);
-    			each_blocks_1 = each_blocks_1.filter(Boolean);
 
     			for (let i = 0; i < each_blocks_1.length; i += 1) {
     				transition_out(each_blocks_1[i]);
@@ -8277,9 +9056,14 @@ var app = (function () {
     			current = false;
     		},
     		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div0);
     			destroy_component(map, detaching);
-    			if (detaching) detach_dev(div1);
-    			destroy_each(each_blocks_1, detaching);
+    			if (detaching) detach_dev(div2);
+
+    			for (let i = 0; i < each_blocks_1.length; i += 1) {
+    				each_blocks_1[i].d();
+    			}
+
     			destroy_each(each_blocks, detaching);
 
     			if (if_block) {
@@ -8290,7 +9074,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_fragment$5.name,
+    		id: create_fragment$7.name,
     		type: "component",
     		source: "",
     		ctx
@@ -8299,11 +9083,12 @@ var app = (function () {
     	return block;
     }
 
-    function instance$5($$self, $$props, $$invalidate) {
+    function instance$7($$self, $$props, $$invalidate) {
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots("Game", slots, []);
 
     	let forceRerender = f => {
+    		console.log(G);
     		($$invalidate(0, G), $$invalidate(18, noop));
     	};
 
@@ -8404,7 +9189,7 @@ var app = (function () {
     	const writable_props = [];
 
     	Object_1$1.keys($$props).forEach(key => {
-    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<Game> was created with unknown prop '${key}'`);
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console_1$1.warn(`<Game> was created with unknown prop '${key}'`);
     	});
 
     	$$self.$capture_state = () => ({
@@ -8415,6 +9200,7 @@ var app = (function () {
     		factions,
     		phases,
     		Unit,
+    		faction,
     		forceRerender,
     		players,
     		turn,
@@ -8477,16 +9263,16 @@ var app = (function () {
     			 $$invalidate(
     				0,
     				G.choose = (G.stage == ""
-    				? G.phases[G.phase].moves.choose
-    				: G.phases[G.phase].stages[G.stage].moves.choose) || noop,
+    				? G.phases[G.phase]?.moves?.choose || noop
+    				: G.phases[G.phase].stages[G.stage]?.moves?.choose) || noop,
     				G
     			);
     		}
 
     		if ($$self.$$.dirty & /*G*/ 1) {
     			 $$invalidate(1, actions = G.stage == ""
-    			? G.phases[G.phase].options()
-    			: G.phases[G.phase].stages[G.stage].options());
+    			? G.phases[G.phase]?.options() || []
+    			: G.phases[G.phase].stages[G.stage]?.options() || []);
     		}
     	};
 
@@ -8496,21 +9282,21 @@ var app = (function () {
     class Game extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$5, create_fragment$5, safe_not_equal, {});
+    		init(this, options, instance$7, create_fragment$7, safe_not_equal, {});
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
     			tagName: "Game",
     			options,
-    			id: create_fragment$5.name
+    			id: create_fragment$7.name
     		});
     	}
     }
 
     /* src\App.svelte generated by Svelte v3.29.0 */
-    const file$6 = "src\\App.svelte";
+    const file$8 = "src\\App.svelte";
 
-    function create_fragment$6(ctx) {
+    function create_fragment$8(ctx) {
     	let div;
     	let game;
     	let current;
@@ -8521,7 +9307,7 @@ var app = (function () {
     			div = element("div");
     			create_component(game.$$.fragment);
     			attr_dev(div, "class", "world svelte-1mhq47q");
-    			add_location(div, file$6, 9, 0, 225);
+    			add_location(div, file$8, 9, 0, 225);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -8549,7 +9335,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_fragment$6.name,
+    		id: create_fragment$8.name,
     		type: "component",
     		source: "",
     		ctx
@@ -8558,7 +9344,7 @@ var app = (function () {
     	return block;
     }
 
-    function instance$6($$self, $$props, $$invalidate) {
+    function instance$8($$self, $$props, $$invalidate) {
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots("App", slots, []);
     	const writable_props = [];
@@ -8574,13 +9360,13 @@ var app = (function () {
     class App extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$6, create_fragment$6, safe_not_equal, {});
+    		init(this, options, instance$8, create_fragment$8, safe_not_equal, {});
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
     			tagName: "App",
     			options,
-    			id: create_fragment$6.name
+    			id: create_fragment$8.name
     		});
     	}
     }
