@@ -7940,7 +7940,6 @@ var app = (function () {
     //     }))
     let checkbooks = () => 
         G$4.state.players.map( p => p.faction.bookreqs.map( (l,i) => {
-            console.log(l,H$5[l]);
             if (H$5[l]()){
                 p.faction.bookreqs[i] = 'waiting...';
                 interuptStage('book','book',G$4.state.players.indexOf(p));
@@ -8077,6 +8076,7 @@ var app = (function () {
                         moves : {
                             choose : (np,c) => {
                                 let p = G$4.state.players[G$4.state.turn.pi%G$4.state.players.length];
+                                console.log(c);
                                 if( ['keep turn order','reverse turn order'].includes(c) ) {
                                     if (c == 'reverse turn order') {
                                         G$4.state.players = G$4.state.players.reverse();
@@ -8123,7 +8123,7 @@ var app = (function () {
                         options : f => Object.keys(G$4.phases).filter( p => (G$4.phases[p].unlim || (G$4.phases[p].lim && G$4.state.turn.lim)) && (!G$4.phases[p].req || G$4.phases[p].req())),
                         moves : {
                             choose : (np,c) => {
-                                console.log('choosen',np,c);if (np == 'start') setPhase(c);},
+                                if (np == 'start') setPhase(c);},
                             done : (np,c) => { G$4.player.power = 0; endTurn(); }
                         }
                     }
@@ -8632,7 +8632,7 @@ var app = (function () {
     			li = element("li");
     			t = text(t_value);
     			attr_dev(li, "class", "svelte-11jcp7s");
-    			add_location(li, file$7, 118, 804, 5303);
+    			add_location(li, file$7, 118, 804, 5345);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, li, anchor);
@@ -8689,7 +8689,7 @@ var app = (function () {
     			t = text(t_value);
     			set_style(li, "color", /*action*/ ctx[19].faction.color);
     			attr_dev(li, "class", "svelte-11jcp7s");
-    			add_location(li, file$7, 118, 703, 5202);
+    			add_location(li, file$7, 118, 703, 5244);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, li, anchor);
@@ -8755,7 +8755,7 @@ var app = (function () {
     			t2 = text(t2_value);
     			set_style(li, "color", H.findPlyr(/*action*/ ctx[19].owner).faction.color);
     			attr_dev(li, "class", "svelte-11jcp7s");
-    			add_location(li, file$7, 118, 458, 4957);
+    			add_location(li, file$7, 118, 458, 4999);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, li, anchor);
@@ -8872,7 +8872,7 @@ var app = (function () {
     			li = element("li");
     			li.textContent = "done";
     			attr_dev(li, "class", "svelte-11jcp7s");
-    			add_location(li, file$7, 118, 1068, 5567);
+    			add_location(li, file$7, 118, 1068, 5609);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, li, anchor);
@@ -8924,7 +8924,7 @@ var app = (function () {
     			li = element("li");
     			li.textContent = "done";
     			attr_dev(li, "class", "svelte-11jcp7s");
-    			add_location(li, file$7, 118, 925, 5424);
+    			add_location(li, file$7, 118, 925, 5466);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, li, anchor);
@@ -9038,15 +9038,15 @@ var app = (function () {
     			set_style(div0, "background", "black");
     			set_style(div0, "width", "10em");
     			set_style(div0, "z-index", "100");
-    			add_location(div0, file$7, 118, 0, 4499);
+    			add_location(div0, file$7, 118, 0, 4541);
     			set_style(ul, "padding", "0");
     			attr_dev(ul, "class", "svelte-11jcp7s");
-    			add_location(ul, file$7, 118, 373, 4872);
+    			add_location(ul, file$7, 118, 373, 4914);
     			attr_dev(div1, "class", "actions svelte-11jcp7s");
     			set_style(div1, "color", /*G*/ ctx[0].player.faction.color);
-    			add_location(div1, file$7, 118, 305, 4804);
+    			add_location(div1, file$7, 118, 305, 4846);
     			attr_dev(div2, "class", "hud svelte-11jcp7s");
-    			add_location(div2, file$7, 118, 176, 4675);
+    			add_location(div2, file$7, 118, 176, 4717);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -9189,7 +9189,7 @@ var app = (function () {
     	};
 
     	firebase.initializeApp(firebaseConfig);
-    	let client = new URLSearchParams(window.location.search).get("faction") || "observer";
+    	let client = new URLSearchParams(window.location.search).get("faction") || "hotseat";
 
     	let helpers = {
     		"waiting...": f => false,
@@ -9312,11 +9312,11 @@ var app = (function () {
     	};
 
     	let clientCheck = func => () => {
-    		if (G.player.faction.name == client) func();
+    		if (G.player.faction.name == client || client == "hotseat") func();
     	};
 
     	let click = action => f => {
-    		if (G.player.faction.name == client) H.choose(G.state.stage, action);
+    		if (G.player.faction.name == client || client == "hotseat") H.choose(G.state.stage, action);
     	};
 
     	const writable_props = [];
