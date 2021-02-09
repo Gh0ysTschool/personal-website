@@ -11,6 +11,9 @@ var app = (function () {
             tar[k] = src[k];
         return tar;
     }
+    function is_promise(value) {
+        return value && typeof value === 'object' && typeof value.then === 'function';
+    }
     function add_location(element, file, line, column, char) {
         element.__svelte_meta = {
             loc: { file, line, column, char }
@@ -126,6 +129,9 @@ var app = (function () {
     }
     function text(data) {
         return document.createTextNode(data);
+    }
+    function space() {
+        return text(' ');
     }
     function empty() {
         return text('');
@@ -547,6 +553,75 @@ var app = (function () {
                 }
             }
         };
+    }
+
+    function handle_promise(promise, info) {
+        const token = info.token = {};
+        function update(type, index, key, value) {
+            if (info.token !== token)
+                return;
+            info.resolved = value;
+            let child_ctx = info.ctx;
+            if (key !== undefined) {
+                child_ctx = child_ctx.slice();
+                child_ctx[key] = value;
+            }
+            const block = type && (info.current = type)(child_ctx);
+            let needs_flush = false;
+            if (info.block) {
+                if (info.blocks) {
+                    info.blocks.forEach((block, i) => {
+                        if (i !== index && block) {
+                            group_outros();
+                            transition_out(block, 1, 1, () => {
+                                info.blocks[i] = null;
+                            });
+                            check_outros();
+                        }
+                    });
+                }
+                else {
+                    info.block.d(1);
+                }
+                block.c();
+                transition_in(block, 1);
+                block.m(info.mount(), info.anchor);
+                needs_flush = true;
+            }
+            info.block = block;
+            if (info.blocks)
+                info.blocks[index] = block;
+            if (needs_flush) {
+                flush();
+            }
+        }
+        if (is_promise(promise)) {
+            const current_component = get_current_component();
+            promise.then(value => {
+                set_current_component(current_component);
+                update(info.then, 1, info.value, value);
+                set_current_component(null);
+            }, error => {
+                set_current_component(current_component);
+                update(info.catch, 2, info.error, error);
+                set_current_component(null);
+                if (!info.hasCatch) {
+                    throw error;
+                }
+            });
+            // if we previously had a then/catch block, destroy it
+            if (info.current !== info.pending) {
+                update(info.pending, 0);
+                return true;
+            }
+        }
+        else {
+            if (info.current !== info.then) {
+                update(info.then, 1, info.value, promise);
+                return true;
+            }
+            info.resolved = promise;
+        }
     }
 
     const globals = (typeof window !== 'undefined'
@@ -5845,7 +5920,7 @@ var app = (function () {
     	return child_ctx;
     }
 
-    // (85:165) {#each player.faction.bookreqs as book}
+    // (85:191) {#each player.faction.bookreqs as book}
     function create_each_block_4$1(ctx) {
     	let li;
     	let t_value = /*book*/ ctx[8] + "";
@@ -5856,7 +5931,7 @@ var app = (function () {
     			li = element("li");
     			t = text(t_value);
     			attr_dev(li, "class", "svelte-1f8aljx");
-    			add_location(li, file$6, 84, 204, 2071);
+    			add_location(li, file$6, 84, 230, 2097);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, li, anchor);
@@ -5874,14 +5949,14 @@ var app = (function () {
     		block,
     		id: create_each_block_4$1.name,
     		type: "each",
-    		source: "(85:165) {#each player.faction.bookreqs as book}",
+    		source: "(85:191) {#each player.faction.bookreqs as book}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (85:226) {#each player.books as book}
+    // (85:252) {#each player.books as book}
     function create_each_block_3$1(ctx) {
     	let li;
     	let t_value = /*book*/ ctx[8] + "";
@@ -5892,7 +5967,7 @@ var app = (function () {
     			li = element("li");
     			t = text(t_value);
     			attr_dev(li, "class", "active svelte-1f8aljx");
-    			add_location(li, file$6, 84, 254, 2121);
+    			add_location(li, file$6, 84, 280, 2147);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, li, anchor);
@@ -5910,14 +5985,14 @@ var app = (function () {
     		block,
     		id: create_each_block_3$1.name,
     		type: "each",
-    		source: "(85:226) {#each player.books as book}",
+    		source: "(85:252) {#each player.books as book}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (85:310) {#each player.units.filter( u => u.place == '') as unit}
+    // (85:336) {#each player.units.filter( u => u.place == '') as unit}
     function create_each_block_2$1(ctx) {
     	let unit;
     	let current;
@@ -5962,14 +6037,14 @@ var app = (function () {
     		block,
     		id: create_each_block_2$1.name,
     		type: "each",
-    		source: "(85:310) {#each player.units.filter( u => u.place == '') as unit}",
+    		source: "(85:336) {#each player.units.filter( u => u.place == '') as unit}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (85:411) {#each G.units.filter( u => u.place == player.faction.name) as unit}
+    // (85:437) {#each G.units.filter( u => u.place == player.faction.name) as unit}
     function create_each_block_1$1(ctx) {
     	let unit;
     	let current;
@@ -6014,14 +6089,14 @@ var app = (function () {
     		block,
     		id: create_each_block_1$1.name,
     		type: "each",
-    		source: "(85:411) {#each G.units.filter( u => u.place == player.faction.name) as unit}",
+    		source: "(85:437) {#each G.units.filter( u => u.place == player.faction.name) as unit}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (85:566) <Tooltip key="{book}" left>
+    // (85:592) <Tooltip key="{book}" left>
     function create_default_slot(ctx) {
     	let div;
     	let t_value = /*book*/ ctx[8] + "";
@@ -6032,7 +6107,7 @@ var app = (function () {
     			div = element("div");
     			t = text(t_value);
     			attr_dev(div, "class", "book svelte-1f8aljx");
-    			add_location(div, file$6, 84, 593, 2460);
+    			add_location(div, file$6, 84, 619, 2486);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -6050,14 +6125,14 @@ var app = (function () {
     		block,
     		id: create_default_slot.name,
     		type: "slot",
-    		source: "(85:566) <Tooltip key=\\\"{book}\\\" left>",
+    		source: "(85:592) <Tooltip key=\\\"{book}\\\" left>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (85:530) {#each player.faction.books as book}
+    // (85:556) {#each player.faction.books as book}
     function create_each_block$1(ctx) {
     	let tooltip;
     	let current;
@@ -6108,7 +6183,7 @@ var app = (function () {
     		block,
     		id: create_each_block$1.name,
     		type: "each",
-    		source: "(85:530) {#each player.faction.books as book}",
+    		source: "(85:556) {#each player.faction.books as book}",
     		ctx
     	});
 
@@ -6128,6 +6203,9 @@ var app = (function () {
     	let t5;
     	let t6_value = /*player*/ ctx[1].books.length + "";
     	let t6;
+    	let t7;
+    	let t8_value = /*player*/ ctx[1].signs.length + "";
+    	let t8;
     	let ul;
     	let each0_anchor;
     	let div0;
@@ -6197,6 +6275,8 @@ var app = (function () {
     			t4 = text(t4_value);
     			t5 = text(" | sb ");
     			t6 = text(t6_value);
+    			t7 = text("| es ");
+    			t8 = text(t8_value);
     			ul = element("ul");
 
     			for (let i = 0; i < each_blocks_4.length; i += 1) {
@@ -6226,9 +6306,9 @@ var app = (function () {
     			}
 
     			attr_dev(div0, "class", "units svelte-1f8aljx");
-    			add_location(div0, file$6, 84, 291, 2158);
+    			add_location(div0, file$6, 84, 317, 2184);
     			attr_dev(ul, "class", "details svelte-1f8aljx");
-    			add_location(ul, file$6, 84, 144, 2011);
+    			add_location(ul, file$6, 84, 170, 2037);
     			attr_dev(div1, "class", "player2 svelte-1f8aljx");
     			add_location(div1, file$6, 84, 0, 1867);
     		},
@@ -6244,6 +6324,8 @@ var app = (function () {
     			append_dev(div1, t4);
     			append_dev(div1, t5);
     			append_dev(div1, t6);
+    			append_dev(div1, t7);
+    			append_dev(div1, t8);
     			append_dev(div1, ul);
 
     			for (let i = 0; i < each_blocks_4.length; i += 1) {
@@ -6285,6 +6367,7 @@ var app = (function () {
     			if ((!current || dirty & /*player*/ 2) && t2_value !== (t2_value = /*player*/ ctx[1].doom + "")) set_data_dev(t2, t2_value);
     			if ((!current || dirty & /*player*/ 2) && t4_value !== (t4_value = /*player*/ ctx[1].power + "")) set_data_dev(t4, t4_value);
     			if ((!current || dirty & /*player*/ 2) && t6_value !== (t6_value = /*player*/ ctx[1].books.length + "")) set_data_dev(t6, t6_value);
+    			if ((!current || dirty & /*player*/ 2) && t8_value !== (t8_value = /*player*/ ctx[1].signs.length + "")) set_data_dev(t8, t8_value);
 
     			if (dirty & /*player*/ 2) {
     				each_value_4 = /*player*/ ctx[1].faction.bookreqs;
@@ -6623,10 +6706,10 @@ var app = (function () {
         antarctica = place('antarctica',['indianocean','southatlantic','southpacific']);
         const places = {arcticocean, northpacific, northamerica, northatlantic, scandinavia, europe, northasia, southamerica, southasia, arabia, westafrica, indianocean, eastafrica, antarctica, southatlantic, southpacific, australia};
 
-    let G, phs, H$1;
+    let G, phs$1, H$1;
     let faction = (g,p,h) => {
         G = g;
-        phs = p;
+        phs$1 = p;
         H$1 = h;
         let books = ["Blood Sacrifice","Frenzy","Ghroth","Necrophagy","The Red Sign","The Thousand Young"];
         let bookinit = ["Blood Sacrifice","Frenzy","Ghroth","Necrophagy","The Red Sign","The Thousand Young"];
@@ -6672,7 +6755,7 @@ var app = (function () {
         let awakenshub = {
             awakenplaces: () => G.player.units.filter( u => u.gate ).map( u => u.place ),
             awakenreq: ()=>G.player.power > 7 && G.player.units.filter( u => u.place != '' && u.type == 'cult').length > 1 && G.player.units.filter( u => u.gate ).length,
-            cost: ()=>{ G.player.power-=8; G.player.sac = 2; phs.setStage('bg-sacunit');},
+            cost: ()=>{ G.player.power-=8; G.player.sac = 2; phs$1.setStage('bg-sacunit');},
         };
         H$1["Shub Nigur'rath"]=awakenshub;
         let initUnits = p => {
@@ -6693,7 +6776,7 @@ var app = (function () {
     };
 
     let lim = 1, init$1 = f => {};
-    let sac2cult = () => phs.addPhase('sac 2 cultists',{
+    let sac2cult = () => phs$1.addPhase('sac 2 cultists',{
         lim,
         req : f => G.player.faction.name=='bg' && G.player.faction.bookreqs.includes('sac 2 cults'),
         start : 'unit',
@@ -6709,7 +6792,7 @@ var app = (function () {
                             c.gate = 0;
                             if (G.player.sacs == 0) {
                                 H$1['sac 2 cults'] = f => true;
-                                phs.endPhase();
+                                phs$1.endPhase();
                             }
                             else H$1.forceRerender();
                         }
@@ -6718,7 +6801,7 @@ var app = (function () {
             }
         }
     });
-    let bgsac = () => phs.addStage('bg-sacunit',{
+    let bgsac = () => phs$1.addStage('bg-sacunit',{
         init : f => G.player.sacs = 2,
         options : f => G.player.units.filter( u => u.type == 'cult' && Object.keys(G.state.places).includes(u.place) ),
         moves : {
@@ -6728,7 +6811,7 @@ var app = (function () {
                     c.place = '';
                     c.gate = 0;
                     H$1.forceRerender();
-                    if (G.player.sacs == 0) phs.endStage();
+                    if (G.player.sacs == 0) phs$1.endStage();
                 }
             }
         }
@@ -6736,7 +6819,7 @@ var app = (function () {
 
     let avatar = () => {
         G.state.choices.avatar = {place:null,faction:null,unit:null};
-        phs.addPhase('avatar',{
+        phs$1.addPhase('avatar',{
             lim,
             init: init$1,
             req : f => G.player.faction.name=='bg' && G.player.units.find( u => u.type == "Shub Nigur'rath" && u.place != '' ) && G.player.power >= 1,
@@ -6749,7 +6832,7 @@ var app = (function () {
                         choose : (np, c) => {
                             if ( np == 'place' && G.units.map( u => u.place ).includes(c)) {
                                 G.state.choices.avatar.place = c;
-                                phs.endStage();
+                                phs$1.endStage();
                             }
                         }
                     }
@@ -6762,12 +6845,12 @@ var app = (function () {
                             if  ( np == 'faction' && G.state.players.filter( p => p.units.map( u => u.place).includes( G.state.choices.avatar.place ) ).map( p => p.faction.name ).includes(c) ){
                                 G.state.choices.avatar.faction = G.state.players.find( p => p.faction.name == c);
                                 G.state.stage = 'resolve';
-                                phs.interuptStage('avatar','unit',G.state.players.indexOf(G.state.choices.avatar.faction));
+                                phs$1.interuptStage('avatar','unit',G.state.players.indexOf(G.state.choices.avatar.faction));
                             }
                             else if ( np == 'player' && G.state.players.filter( p => p.units.map( u => u.place).includes( G.state.choices.avatar.place ) ).includes(c) ) {
                                 G.state.choices.avatar.faction = c;
                                 G.state.stage = 'resolve';
-                                phs.interuptStage('avatar','unit',G.state.players.indexOf(G.state.choices.avatar.faction));
+                                phs$1.interuptStage('avatar','unit',G.state.players.indexOf(G.state.choices.avatar.faction));
                             }
                         }
                     }
@@ -6779,7 +6862,7 @@ var app = (function () {
                         choose : (np, c) => {
                             if  ( np == 'unit' && G.state.choices.avatar.faction.units.filter( u => u.place == G.state.choices.avatar.place ).includes(c) ){
                                 G.state.choices.avatar.unit = c;
-                                phs.endStage();
+                                phs$1.endStage();
                             }
                         }
                     }
@@ -6790,7 +6873,7 @@ var app = (function () {
                         G.state.turn.pi = G.state.players.indexOf(G.state.players.find(p => p.faction.name == 'bg'));
                         G.state.players[G.state.turn.pi].power--;
                         G.state.players[G.state.turn.pi].units.find( u => u.name == "Shub Nigur'rath").place = G.state.choices.avatar.place;
-                        phs.endStage();
+                        phs$1.endStage();
                     },
                     moves : {},
                     options : f => [],
@@ -6802,13 +6885,13 @@ var app = (function () {
 
     let necrophagy = () => {
         G.state.choices.necro = { once : null };
-        phs.addStage('necrounits',{
+        phs$1.addStage('necrounits',{
             options : f => G.player.units.filter( u => u.type == 'Ghoul' && u.place != '' && !u.moved),
             init : f => {
-                if ( G.state.choices.necro.once) {G.state.choices.necro.once = null; phs.endStage();}
+                if ( G.state.choices.necro.once) {G.state.choices.necro.once = null; phs$1.endStage();}
                 else {
                     G.state.stage = 'assignpretreats';
-                    phs.interuptStage('fight','necrounits',G.state.players.indexOf(G.state.players.find( p => p.faction.name == 'bg' )));
+                    phs$1.interuptStage('fight','necrounits',G.state.players.indexOf(G.state.players.find( p => p.faction.name == 'bg' )));
                 }
             },
             moves : {
@@ -6824,7 +6907,7 @@ var app = (function () {
                 done : f => {        
                     G.state.choices.necro.once = 1;
                     G.player.units.map( u => u.moved = 0);
-                    phs.returnStage();
+                    phs$1.returnStage();
                 },
             }
         },'fight','placeeretreats');
@@ -6832,7 +6915,7 @@ var app = (function () {
 
     let ghroth = () => {
         G.state.choices.ghroth = { roll : 0, offers : [], tries : 3, negotiated : 0 };
-        phs.addPhase('ghroth',{
+        phs$1.addPhase('ghroth',{
             lim,
             init : f => {
                 G.state.choices.ghroth.roll = roll(G.state.places.filter( p => G.player.units.filter( u => u.type == 'Fungi' ).map( u => u.place).includes(p) ).length );
@@ -6872,7 +6955,7 @@ var app = (function () {
                                 G.state.choices.ghroth.offers[G.state.turn.pi%G.state.players.length]--;
                                 if(!G.state.choices.ghroth.offers[G.state.turn.pi%G.state.players.length]) G.state.turn.pi++;
                                 H$1.forceRerender();
-                                if(!G.state.choices.ghroth.offers.reduce((acc,cur)=>acc+cur,0)) phs.endStage();
+                                if(!G.state.choices.ghroth.offers.reduce((acc,cur)=>acc+cur,0)) phs$1.endStage();
                             }
                         },
                     }
@@ -6887,7 +6970,7 @@ var app = (function () {
                                 c.place = '';
                                 G.state.choices.ghroth.offers--;
                                 H$1.forceRerender();
-                                if(!G.state.choices.ghroth.offers) phs.endStage();
+                                if(!G.state.choices.ghroth.offers) phs$1.endStage();
                             }
                         },
                     }
@@ -6897,39 +6980,39 @@ var app = (function () {
     };
 
     let blood = () => {
-        phs.addStage('bloodinit',{
-            init : f => phs.interuptStage( 'doom','blood',G.state.players.indexOf( G.state.players.find( p => p.faction.name=='bg') ) ),
+        phs$1.addStage('bloodinit',{
+            init : f => phs$1.interuptStage( 'doom','blood',G.state.players.indexOf( G.state.players.find( p => p.faction.name=='bg') ) ),
             options : f => [],
             moves : { choose : (np,c) => {} }
         },'doom','doom');
         
-        phs.addStage('blood',{
+        phs$1.addStage('blood',{
             next : 'bloodunit',
             options : f => ['blood sacrifice'],
             moves : { 
                 choose : (np,c) => {
-                    if ( c == 'blood sacrifice') phs.endStage();
+                    if ( c == 'blood sacrifice') phs$1.endStage();
                 },
-                done : f => phs.returnStage()
+                done : f => phs$1.returnStage()
             }
         },'doom');
         
-        phs.addStage('bloodunit',{
+        phs$1.addStage('bloodunit',{
             options : f => G.player.units.filter( u => u.type == 'cult' && Object.keys(G.state.places).includes(u.place) ),
             moves : { 
                 choose : (np,c) => {
                     if ( (np == 'unit' || np == 'bloodunit') && G.player.units.filter( u => u.type == 'cult' && Object.keys(G.state.places).includes(u.place) ) ) {
                         c.place = '';
-                        G.player.signs++;
-                        phs.returnStage();
+                        G.player.signs.push((phs$1.roll()%3)+1);
+                        phs$1.returnStage();
                     }
                 }
             }
         },'doom');
     };
 
-    let fertility = () => phs.addStage('fertility',{
-        init : f => {G.state.turn.lim+=G.player.faction.name=='bg';phs.endStage();},
+    let fertility = () => phs$1.addStage('fertility',{
+        init : f => {G.state.turn.lim+=G.player.faction.name=='bg';phs$1.endStage();},
         options : f => [],
         moves : { choose : (np,c) => {}}
     },'summon','place');
@@ -6940,10 +7023,10 @@ var app = (function () {
 
     let redsign = () => G.player.units.filter( u => u.type == 'Dark Young' ).map( u => u.gatherer = 1 );
 
-    let G$1, phs$1, H$2;
+    let G$1, phs$2, H$2;
     let faction$1 = (g,p,h) => {
         G$1 = g;
-        phs$1 = p;
+        phs$2 = p;
         H$2 = h;
         let books = ["Abduct","Emissary of the Outer Gods","Invisibility","Madness","Seek and Destroy","The Thousand Forms"];
         let bookinit = ["Abduct","Emissary of the Outer Gods","Invisibility","Madness","Seek and Destroy","The Thousand Forms"];
@@ -6990,7 +7073,7 @@ var app = (function () {
         let awakennarl = {
             awakenplaces: () => G$1.player.units.filter( u => u.gate ).map( u => u.place ),
             awakenreq: () => G$1.player.power > 9 && G$1.player.units.filter( u => u.gate ).length,
-            cost: () => { G$1.player.power-=10; phs$1.endStage(); },
+            cost: () => { G$1.player.power-=10; phs$2.endStage(); },
         };
         H$2['Nyarlathotap']=awakennarl;
         let initUnits = p => {
@@ -7011,54 +7094,54 @@ var app = (function () {
         return faction
     };
     let hasBookReq = ( b ) => G$1.player.faction.bookreqs.includes( o );
-    let pay4 = () => phs$1.addPhase('pay 4 power',{
+    let pay4 = () => phs$2.addPhase('pay 4 power',{
         req : f => G$1.player.faction.name == 'cc' && G$1.player.power > 3 && hasBookReq(),
         init : f => {G$1.player.power -= 4; H$2['pay 4 power'] = F=>true; endStage(); }
     });
-    let pay6 = () => phs$1.addPhase('pay 6 power',{
+    let pay6 = () => phs$2.addPhase('pay 6 power',{
         req : f => G$1.player.faction.name == 'cc' && G$1.player.power > 5 && hasBookReq(),
         init : f => {G$1.player.power -= 6; H$2['pay 6 power'] = F=>true; endStage(); }
     });
-    let pay10 = () => phs$1.addPhase('pay 10 power',{
+    let pay10 = () => phs$2.addPhase('pay 10 power',{
         req : f => G$1.player.faction.name == 'cc' && G$1.player.power > 9 && hasBookReq() && hasBookReq(),
         init : f => {G$1.player.power -= 10; H$2['pay 4 power'] = F=>true;H$2['pay 6 power'] = F=>true; endStage(); }
     });
     let harbinged = [];
     let involved = false;
     let harbinger = () => {
-        phs$1.addStage('harb0',{
+        phs$2.addStage('harb0',{
             init : f => {
                 involved = [G$1.state.choices.fight.player,G$1.state.choices.fight.enemy].find( p => p.faction.name == 'cc')?.units.find( u => u.type == 'Nyarlathotap').place == G$1.state.choices.fight.place;
-                if(involved && G$1.state.choices.fight.unit.tier >= 2) harbinged.push(G$1.state.choices.fight.unit);phs$1.endStage();},
+                if(involved && G$1.state.choices.fight.unit.tier >= 2) harbinged.push(G$1.state.choices.fight.unit);phs$2.endStage();},
         },'fight','assignpkills');
-        phs$1.addStage('harb1',{
-            init : f => {if(involved && G$1.state.choices.fight.unit.tier >= 2) harbinged.push(G$1.state.choices.fight.unit);phs$1.endStage();},
+        phs$2.addStage('harb1',{
+            init : f => {if(involved && G$1.state.choices.fight.unit.tier >= 2) harbinged.push(G$1.state.choices.fight.unit);phs$2.endStage();},
         },'fight','assignpretreats');
-        phs$1.addStage('harb2',{
-            init : f => {if(involved && G$1.state.choices.fight.unit.tier >= 2) harbinged.push(G$1.state.choices.fight.unit);phs$1.endStage();},
+        phs$2.addStage('harb2',{
+            init : f => {if(involved && G$1.state.choices.fight.unit.tier >= 2) harbinged.push(G$1.state.choices.fight.unit);phs$2.endStage();},
         },'fight','assigneretreats');
-        phs$1.addStage('harb3',{
-            init : f => {if(involved && G$1.state.choices.fight.unit.tier >= 2) harbinged.push(G$1.state.choices.fight.unit);phs$1.endStage();},
+        phs$2.addStage('harb3',{
+            init : f => {if(involved && G$1.state.choices.fight.unit.tier >= 2) harbinged.push(G$1.state.choices.fight.unit);phs$2.endStage();},
         },'fight','assignekills');
-        phs$1.addStage('harbresolve',{
-            init : f => {if(involved && harbinged.length) phs$1.interuptStage('fight','harbresolve',G$1.state.players.indexOf(G$1.state.players.find( p => p.faction.name == 'cc'))); },
+        phs$2.addStage('harbresolve',{
+            init : f => {if(involved && harbinged.length) phs$2.interuptStage('fight','harbresolve',G$1.state.players.indexOf(G$1.state.players.find( p => p.faction.name == 'cc'))); },
             options : f => harbinged.map( h => ['+2 signs '+h.type,h.cost/2+' power  '+h.type]),
             moves : {
                 choose : (np,c) => {
                     if ( !harbinged.map( h => ['+2 signs',h.cost/2+' power']).includes(c)) return
-                    if ( c.includes('+2 signs')) G$1.player.signs++;
+                    if ( c.includes('+2 signs')) {G$1.player.signs.push((phs$2.roll()%3)+1);G$1.player.signs.push((phs$2.roll()%3)+1);}
                     if ( c.includes( ' power ')) G$1.player.power += Number(c.split('')[0]);
                     harbinged = harbinged.filter( u => u.type != c.split('').slice(8).join('') );
-                    if (!harbinged.length) { phs$1.returnStage(); if (G$1.state.stage == 'harbresolve') phs$1.endStage(); }
+                    if (!harbinged.length) { phs$2.returnStage(); if (G$1.state.stage == 'harbresolve') phs$2.endStage(); }
                 }
             }
         },'fight','placeeretreats');
     };
-    let seekanddestroy = () => phs$1.addStage('seek and destroy',{
+    let seekanddestroy = () => phs$2.addStage('seek and destroy',{
         init : f => {
             involved = [G$1.state.choices.fight.player,G$1.state.choices.fight.enemy].find( p => p.faction.name == 'cc')?.units.find( u => u.type == 'Nyarlathotap').place == G$1.state.choices.fight.place;
-            if (!G$1.player.units.filter( u => u.type == 'Hunting Horror' && G$1.state.places[u.place] ).length ) {phs$1.endStage();return;}
-            phs$1.interuptStage('fight','seek and destroy',G$1.state.players.indexOf(G$1.state.players.find( p => p.faction.name == 'cc' ) ) );
+            if (!G$1.player.units.filter( u => u.type == 'Hunting Horror' && G$1.state.places[u.place] ).length ) {phs$2.endStage();return;}
+            phs$2.interuptStage('fight','seek and destroy',G$1.state.players.indexOf(G$1.state.players.find( p => p.faction.name == 'cc' ) ) );
         },
         options : f => G$1.player.units.filter( u => u.type == 'Hunting Horror' && G$1.state.places[u.place] ),
         moves : {
@@ -7066,11 +7149,11 @@ var app = (function () {
                 if ( np != 'unit' || np != 'seek and destroy' || !G$1.player.units.filter( u => u.type == 'Hunting Horror' && G$1.state.places[u.place] ).includes(c)) return
                 c.place = G$1.state.choices.fight.place;
                 if (!G$1.player.units.filter( u => u.type == 'Hunting Horror' && G$1.state.places[u.place] ).length) {
-                    phs$1.returnStage();
-                    phs$1.endStage();
+                    phs$2.returnStage();
+                    phs$2.endStage();
                 }
             },
-            done : f => {phs$1.returnStage();phs$1.endStage();}
+            done : f => {phs$2.returnStage();phs$2.endStage();}
         }
 
     },'fight','enemy');
@@ -7078,7 +7161,7 @@ var app = (function () {
     let madness = () => {
         let madphase = {
             init : f => {
-                phs$1.interuptStage('fight','placeeretreats',G$1.state.players.indexOf(G$1.state.players.find( p => p.faction.name == 'cc' ) ));
+                phs$2.interuptStage('fight','placeeretreats',G$1.state.players.indexOf(G$1.state.players.find( p => p.faction.name == 'cc' ) ));
             },
             options : f => G$1.state.places[G$1.state.choices.fight.unit.place].adjacent.filter( p => !G$1.state.choices.fight.enemy.units.map( u => u.place ).includes(p)),
             moves : {
@@ -7089,11 +7172,11 @@ var app = (function () {
                         H$2.forceRerender();
                     }
                     if ( !G$1.state.choices.fight.player.temp.phase.pains || !G$1.state.choices.fight.player.units.filter( u => u.place == G$1.state.choices.fight.place ).length )  {
-                        phs$1.returnStage();
-                        phs$1.endStage();
+                        phs$2.returnStage();
+                        phs$2.endStage();
                     } else {
-                        phs$1.returnStage();
-                        phs$1.setStage('assignpretreats');
+                        phs$2.returnStage();
+                        phs$2.setStage('assignpretreats');
                     }
                 }
             }
@@ -7101,7 +7184,7 @@ var app = (function () {
         G$1.phases.fight.stages.placepretreats = {...madphase,next:'assignekills'};
         G$1.phases.fight.stages.placeeretreats = {
             init : f => {
-                phs$1.interuptStage('fight','placeeretreats',G$1.state.players.indexOf(G$1.state.players.find( p => p.faction.name == 'cc' ) ));
+                phs$2.interuptStage('fight','placeeretreats',G$1.state.players.indexOf(G$1.state.players.find( p => p.faction.name == 'cc' ) ));
             },
             options : f => G$1.state.places[choices.fight.unit.place].adjacent.filter( p => !G$1.state.choices.fight.player.units.map( u => u.place ).includes(p)),
             moves : {
@@ -7112,33 +7195,33 @@ var app = (function () {
                         H$2.forceRerender();
                     }
                     if ( !G$1.state.choices.fight.enemy.pains || !G$1.state.choices.fight.enemy.units.filter( u => u.place == G$1.state.choices.fight.place ).length ) {
-                        phs$1.returnStage(); phs$1.endStage();
+                        phs$2.returnStage(); phs$2.endStage();
                         G$1.state.choices.fight.place = null;
                         G$1.state.choices.fight.enemy = null;
                         G$1.state.choices.fight.unit = null;
                     } else {
-                        phs$1.returnStage();
-                        phs$1.setStage('assignpretreats');
+                        phs$2.returnStage();
+                        phs$2.setStage('assignpretreats');
                     }
                 }
             }
         };
     };
-    let emissary = () => phs$1.addStage('emissary',{
+    let emissary = () => phs$2.addStage('emissary',{
         init : f => {
             G$1.state.players.find( p => p.faction.name == 'cc' ).units.find( u => u.type == 'Nyarlathtap' ).invulnerable = (
                 !G$1.state.choices.fight.enemy.units.find( u => H$2.findPlyr(u.owner).faction.name != 'cc' && u.tier == 2 && u.place == G$1.state.choices.fight.place) ||
                 !G$1.state.choices.fight.player.units.find( u => H$2.findPlyr(u.owner).faction.name != 'cc' && u.tier == 2 && u.place == G$1.state.choices.fight.place)
             );
-            phs$1.endStage();
+            phs$2.endStage();
         },
     },'fight','roll');
     let invis = 0;
     let invisibility = () => {
-        phs$1.addStage('invisunit',{
+        phs$2.addStage('invisunit',{
             init : f => {
-                if ( G$1.state.choices.fight.player.faction.name != 'cc' && G$1.state.choices.fight.enemy.faction.name != 'cc' ) {phs$1.endStage(); return}
-                phs$1.interuptStage('fight','invisunit',G$1.state.players.indexOf(G$1.state.players.find( p => p.faction.name == 'cc' ) ));
+                if ( G$1.state.choices.fight.player.faction.name != 'cc' && G$1.state.choices.fight.enemy.faction.name != 'cc' ) {phs$2.endStage(); return}
+                phs$2.interuptStage('fight','invisunit',G$1.state.players.indexOf(G$1.state.players.find( p => p.faction.name == 'cc' ) ));
                 invis = G$1.units.filter( u => u.type == 'Flying Polyp' && u.place == G$1.state.choices.fight.place );
             },
             options : f => [...G$1.state.choices.fight.player.units,...G$1.state.choices.fight.enemy.units,].filter( u => u.place == G$1.state.choices.fight.place ),
@@ -7148,12 +7231,12 @@ var app = (function () {
                     c.place = 'invisible';
                     invis--;
                     H$2.forceRerender();
-                    if (!invis) {phs$1.returnStage();phs$1.endStage();}
+                    if (!invis) {phs$2.returnStage();phs$2.endStage();}
                 },
-                done : f => {phs$1.returnStage();phs$1.endStage();},
+                done : f => {phs$2.returnStage();phs$2.endStage();},
             }
         },'fight','roll');
-        phs$1.addStage('invisreturn',{
+        phs$2.addStage('invisreturn',{
             init : f => {
                 G$1.units.filter( u.place == 'invisible' ).map( u => u.place = G$1.state.choices.fight.place );
                 endStage();
@@ -7162,10 +7245,10 @@ var app = (function () {
     };
     let abductions = 0;
     let abduct = () => {
-        phs$1.addStage('abductunit',{
+        phs$2.addStage('abductunit',{
             init : f => {
-                if ( G$1.state.choices.fight.player.faction.name != 'cc' && G$1.state.choices.fight.enemy.faction.name != 'cc' ) {phs$1.endStage(); return}
-                phs$1.interuptStage('fight','abductunit',G$1.state.players.indexOf(G$1.state.players.find( p => p.faction.name == 'cc' ) ));
+                if ( G$1.state.choices.fight.player.faction.name != 'cc' && G$1.state.choices.fight.enemy.faction.name != 'cc' ) {phs$2.endStage(); return}
+                phs$2.interuptStage('fight','abductunit',G$1.state.players.indexOf(G$1.state.players.find( p => p.faction.name == 'cc' ) ));
                 abductions = 0;
             },
             options : f => [...G$1.state.choices.fight.player.units,...G$1.state.choices.fight.enemy.units,].filter( u => u.type == 'Nightgaunt' && u.place == G$1.state.choices.fight.place ),
@@ -7174,17 +7257,17 @@ var app = (function () {
                     if (np != 'unit' || np != 'abductunit' || ![...G$1.state.choices.fight.player.units,...G$1.state.choices.fight.enemy.units,].filter( u => u.place == G$1.state.choices.fight.place ).includes(c) ) return
                     c.place = '';
                     abductions++;
-                    if (![...G$1.state.choices.fight.player.units,...G$1.state.choices.fight.enemy.units,].filter( u => u.type == 'Nightgaunt' && u.place == G$1.state.choices.fight.place ).length) {phs$1.returnStage();phs$1.endStage();}
+                    if (![...G$1.state.choices.fight.player.units,...G$1.state.choices.fight.enemy.units,].filter( u => u.type == 'Nightgaunt' && u.place == G$1.state.choices.fight.place ).length) {phs$2.returnStage();phs$2.endStage();}
                     else H$2.forceRerender();
                 },
-                done : f => {phs$1.returnStage();phs$1.endStage();},
+                done : f => {phs$2.returnStage();phs$2.endStage();},
             }
         },'fight','enemy');
-        phs$1.addStage('abductenemyunit',{
+        phs$2.addStage('abductenemyunit',{
             init : f => {
-                if ( G$1.state.choices.fight.player.faction.name != 'cc' && G$1.state.choices.fight.enemy.faction.name != 'cc' ) {phs$1.endStage(); return}
+                if ( G$1.state.choices.fight.player.faction.name != 'cc' && G$1.state.choices.fight.enemy.faction.name != 'cc' ) {phs$2.endStage(); return}
                 let p = [G$1.state.choices.fight.player.units,G$1.state.choices.fight.enemy].find( p => p.faction.name != 'cc');
-                phs$1.interuptStage('fight','abductenemyunit',G$1.state.players.indexOf(p));
+                phs$2.interuptStage('fight','abductenemyunit',G$1.state.players.indexOf(p));
                 abductions = 0;
             },
             options : f => [G$1.state.choices.fight.player.units,G$1.state.choices.fight.enemy].find( p => p.faction.name != 'cc').units.filter( u => u.place == G$1.state.choices.fight.place && u.tier < 2 ),
@@ -7193,7 +7276,7 @@ var app = (function () {
                     if (np != 'unit' || np != 'abductenemyunit' || ![G$1.state.choices.fight.player.units,G$1.state.choices.fight.enemy].find( p => p.faction.name != 'cc').units.filter( u => u.place == G$1.state.choices.fight.place && u.tier < 2 ).includes(c) ) return
                     c.place = '';
                     abductions--;
-                    if (!abductions || ![G$1.state.choices.fight.player.units,G$1.state.choices.fight.enemy].find( p => p.faction.name != 'cc').units.filter( u => u.place == G$1.state.choices.fight.place && u.tier < 2 ).length) {phs$1.returnStage();phs$1.endStage();}
+                    if (!abductions || ![G$1.state.choices.fight.player.units,G$1.state.choices.fight.enemy].find( p => p.faction.name != 'cc').units.filter( u => u.place == G$1.state.choices.fight.place && u.tier < 2 ).length) {phs$2.returnStage();phs$2.endStage();}
                     else H$2.forceRerender();
                 },
             }
@@ -7204,7 +7287,7 @@ var app = (function () {
     }; 
     let thousandforms = f => {
         G$1.state.choices.thousandforms = { once : 1, roll : 0, offers : [], tries : 3, negotiated : 0 };
-        phs$1.addPhase('thousand forms',{
+        phs$2.addPhase('thousand forms',{
             req : f => G$1.state.choices.thousandforms.once && G$1.player.faction.name == 'cc' &&  hasBookReq(),
             init : f => { 
                 G$1.state.choices.thousandforms.roll = roll(G$1.state.places.filter( p => G$1.player.units.filter( u => u.type == 'Fungi' ).map( u => u.place).includes(p) ).length );
@@ -7236,23 +7319,23 @@ var app = (function () {
                 losepower : {
                     init : f => {
                         G$1.pllayers.map( (p,i) => p.power -= G$1.state.choices.thousandforms.offers[i] );
-                        phs$1.endStage();
+                        phs$2.endStage();
                     },
                 },             
                 gainpower : {
                     init : f => {
                         G$1.player.power += G$1.state.choices.thousandforms.roll;
-                        phs$1.endStage();
+                        phs$2.endStage();
                     },
                 }
             }
         } ); 
     };
 
-    let G$2, phs$2, H$3;
+    let G$2, phs$3, H$3;
     let faction$2 = (g,p,h) => {
         G$2 = g;
-        phs$2 = p;
+        phs$3 = p;
         H$3 = h;
         let oceans = Object.keys(G$2.state.places).filter( p => G$2.state.places[p].oceans);
         let books = ["Absorb", "Devolve", "Dreams", "Regenerate", "Submerge", "Y'hn Nthlei"];
@@ -7301,7 +7384,7 @@ var app = (function () {
         let awakencthu = {
             awakenplaces: () => [G$2.player.faction.start],
             awakenreq: () => G$2.player.power > 9 && G$2.state.places[G$2.player.faction.start].gate,
-            cost: () => { G$2.player.power-=cost; cost = 4; G$2.player.signs++; phs$2.endStage(); },
+            cost: () => { G$2.player.power-=cost; cost = 4; G$2.player.signs.push((phs$3.roll()%3)+1); phs$3.endStage(); },
         };
         H$3['Great Cthulhu']=awakencthu;
         let initUnits = p => {
@@ -7320,7 +7403,7 @@ var app = (function () {
 
     let lim$1 = 1, unlim = 1;
 
-    let emerge = () => phs$2.addPhase( 'emerge',{
+    let emerge = () => phs$3.addPhase( 'emerge',{
         lim: lim$1,
         start : 'place',
         req: f => G$2.player.faction.name == 'gc' && G$2.player.units.find( u => u.type == 'Great Cthulhu').place == 'submerged',
@@ -7331,14 +7414,14 @@ var app = (function () {
                     choose : (np, c) => {
                         if ((np == 'place' || np == 'emerge') && Object.keys(G$2.state.places).includes(c)) {
                             G$2.player.units.filter( u => u.place == 'submerged').map( u => u.place = c);
-                            phs$2.endStage();
+                            phs$3.endStage();
                         }
                     }
                 }
             }
         }
     });
-    let submerge = () => phs$2.addPhase('submerge', {
+    let submerge = () => phs$3.addPhase('submerge', {
         lim: lim$1,
         start : 'unit',
         req: f =>  G$2.player.faction.name == 'gc' && G$2.player.units.find( u => u.type == 'Great Cthulhu' && G$2.state.places[u.place] ),
@@ -7355,13 +7438,13 @@ var app = (function () {
                     done : f => {
                         G$2.player.units.find( u => u.type == 'Greath Cthulhu').place = 'submerged';
                         G$2.player.power--;
-                        phs$2.endStage();
+                        phs$3.endStage();
                     }
                 },
             }
         }
     });
-    let dream = () => phs$2.addPhase('dream', {
+    let dream = () => phs$3.addPhase('dream', {
         lim: lim$1,
         start : 'place',
         req: f => G$2.player.power > 1 && G$2.player.units.filter( u => u.type == 'cult' && u.place == '' ).length && G$2.units.filter( u => u.type == 'cult' && G$2.state.places[u.place] && H$3.findPlyr(u.owner).faction.name != 'gc' ).length,
@@ -7373,7 +7456,7 @@ var app = (function () {
                     choose : (np, c) => {
                         if ((np == 'place' || np == 'dream') && Object.keys(G$2.state.places).filter( p => G$2.units.find( u => u.type == cult && H$3.findPlyr(u.owner).faction != 'gc' ) ).includes(c)) {
                             G$2.state.choices.dream.places = c;
-                            phs$2.endStage();
+                            phs$3.endStage();
                         }
                     }
                 },
@@ -7385,17 +7468,17 @@ var app = (function () {
                     choose : (np, c) => {
                         if (np == 'player' && G$2.state.players.filter( p => p.units.find( u => u.place == G$2.state.choices.dream.place ) && p.faction.name != 'gc').includes(c)) {
                             G$2.state.choices.dream.player = c;
-                            phs$2.endStage();
+                            phs$3.endStage();
                         }
                     }
                 },
             },
             util : {
                 options : f => [],
-                init : f => {phs$2.interuptStage('dream','unit',G$2.state.players.indexOf(G$2.state.choices.dream.player));},
+                init : f => {phs$3.interuptStage('dream','unit',G$2.state.players.indexOf(G$2.state.choices.dream.player));},
                 moves : {
                     choose : (np,c) => {},
-                    done : (np, c) => phs$2.endStage()
+                    done : (np, c) => phs$3.endStage()
                 },
             },
             unit : {
@@ -7406,7 +7489,7 @@ var app = (function () {
                             G$2.state.choices.dream.unit = c;
                             c.place = '';
                             G$2.state.players.find( p => p.faction.name='gc').units.find( u => u.type == 'cult' && u.place == '' ).place = G$2.state.choices.dreams.place;
-                            phs$2.returnStage();
+                            phs$3.returnStage();
                         }
                     }
                 },
@@ -7425,14 +7508,14 @@ var app = (function () {
                         G$2.player.units.find( u => u.type=='Deep One' && u.place=='' ).place = c.place;
                         c.place = '';
                         c.gate = 0;
-                        if (!G$2.player.units.find( u => u.type=='Deep One' && u.place=='' )) phs$2.endStage();
+                        if (!G$2.player.units.find( u => u.type=='Deep One' && u.place=='' )) phs$3.endStage();
                         H$3.forceRerender();
                     },
-                    done : (np,c) => phs$2.endStage(),
+                    done : (np,c) => phs$3.endStage(),
                 }
             }
         };
-        phs$2.addPhase('devolve',{
+        phs$3.addPhase('devolve',{
             start : 'unit',
             unlim,
             req: f => G$2.player.faction.name=='gc' && G$2.player.units.find( u => u.type=='cult' && G$2.state.places[u.place]) && G$2.player.units.find( u => u.type=='Deep One' && u.place=='' ),
@@ -7446,10 +7529,10 @@ var app = (function () {
                 H$3.findPlyr(u.owner).faction.name != 'gc' 
                 && (u.combat || u.tier)
                 && G$2.state.players.find( p => p.faction.name=='gc' ).units.filter( u => !u.tier).map(u => u.place).includes(u.place)) )
-                    phs$2.interuptStage('action','devolveunit',G$2.state.players.indexOf(G$2.state.players.find( p => p.faction.name=='gc')));
-            else phs$2.endStage();
+                    phs$3.interuptStage('action','devolveunit',G$2.state.players.indexOf(G$2.state.players.find( p => p.faction.name=='gc')));
+            else phs$3.endStage();
         };
-        dvstage.unit.moves.done = f => {phs$2.returnStage();phs$2.endStage();};
+        dvstage.unit.moves.done = f => {phs$3.returnStage();phs$3.endStage();};
         dvstage.unit.next = ''+G$2.phases.action.start||'';
         G$2.phases.action.start = 'devolveunit';
         G$2.phases.action.stages['devolveunit'] = dvstage.unit;
@@ -7461,7 +7544,7 @@ var app = (function () {
             init : f => { 
                 devoured = ([G$2.state.choices.fight.player, G$2.state.choices.fight.enemy].find( p => p.faction.name == 'gc')) ? [G$2.state.choices.fight.player, G$2.state.choices.fight.enemy].find( p => p.faction.name == 'gc') : null;
                 if (!devoued || G$2.units.find( u => u.type = 'Great Cthulhu').place != G$2.state.choices.fight.place || !devoured.units.find( u => u.tier < 2 && u.place == G$2.state.choices.fight.place )) {
-                    phs$2.endStage();
+                    phs$3.endStage();
                     return 
                 }
                 G$2.state.turn.pi = G$2.state.players.indexOf(devoured);
@@ -7473,17 +7556,17 @@ var app = (function () {
                     if ( np != 'unit' || np != 'devourunit' || !devoured?.units.filter( u => u.tier < 2 && u.place == G$2.state.choices.fight.place ).includes(c)) return
                     c.place = '';
                     G$2.state.turn.pi = G$2.state.players.indexOf([G$2.state.choices.fight.player, G$2.state.choices.fight.enemy].find( p => p.faction.name != devoured.faction.name));
-                    phs$2.endStage();
+                    phs$3.endStage();
                 }
             }
         };
-        phs$2.addStage('devourunit',dvstage,'fight','roll');
+        phs$3.addStage('devourunit',dvstage,'fight','roll');
     };
     let yhanthlei = () => {
         let yhstage = {
             init : f=>{
                 G$2.state.players.find( p => p.faction.name == 'gc' ).power += G$2.player.power += oceans.filter( o => G$2.state.places[o].gate && G$2.units.filter( u => u.place == o && u.gate && H$3.findPlyr(u.owner).faction.name != 'gc' ).length ).length;
-                phs$2.endStage();
+                phs$3.endStage();
             },
             options : f=>[],
             moves : {
@@ -7494,24 +7577,24 @@ var app = (function () {
         G$2.phases.gather.start = 'yhanthlei';
         G$2.phases.gather.stages['yhanthlei'] = yhstage;
     };
-    let regenerate = () => phs$2.addStage( 'regenerate',{
+    let regenerate = () => phs$3.addStage( 'regenerate',{
         init : f=>{
             G$2.state.players.find( p => p.faction.name=='gc').units.filter( u => u.type == 'Starspawn' && u.place == G$2.state.choices.fight.place).map( f => (G$2.state.players.find( p => p.faction.name=='gc').temp.phase.kills) ? G$2.state.players.find( p => p.faction.name=='gc').temp.phase.kills-- : G$2.state.players.find( p => p.faction.name=='gc').temp.phase.pains--);
-            phs$2.endStage();
+            phs$3.endStage();
         },
         options : f=>[],
         moves : {
             choose : (np,c) => {}
         },
     },'fight','roll');
-    let absorb = () => phs$2.addStage( 'absorbunit',{
+    let absorb = () => phs$3.addStage( 'absorbunit',{
         init : f=>{
             G$2.units.filter( u => u.type == 'Shoggoth').map( u => u.absorb = 0);
             if ( ![G$2.state.choices.fight.player,G$2.state.choices.fight.enemy].find( p => p.faction.name == 'gc') || !G$2.units.find( u => u.type == 'Shoggoth' && u.place == G$2.state.choices.fight.place) ) {
-                phs$2.endStage();
+                phs$3.endStage();
                 return
             }
-            phs$2.interuptStage('fight','absorbunit',G$2.state.players.indexOf(G$2.state.players.find( p => p.faction.name == 'gc')));
+            phs$3.interuptStage('fight','absorbunit',G$2.state.players.indexOf(G$2.state.players.find( p => p.faction.name == 'gc')));
         },
         options : f=>G$2.player.units.filter( u => u.tier < 2 && u.type != 'Shoggoth' && u.place == G$2.state.choices.fight.place),
         moves : {
@@ -7521,20 +7604,20 @@ var app = (function () {
                 G$2.units.find( u => u.type == 'Shoggoth' && u.place == G$2.state.choices.fight.place).absorb+=3;
                 H$3.forceRerender();
             },
-            done : (np,c) => {phs$2.returnStage(); if(G$2.state.stage == 'absorbunit') phs$2.endStage();}
+            done : (np,c) => {phs$3.returnStage(); if(G$2.state.stage == 'absorbunit') phs$3.endStage();}
         },
     },'fight','enemy');
-    let immortal = () => phs$2.addStage( 'immortal', {
+    let immortal = () => phs$3.addStage( 'immortal', {
         init : f => {
             G$2.player.sign += (G$2.player.faction.name == 'gc' && G$2.state.choices.awaken.unit.tier >= 2);
-            phs$2.endStage();
+            phs$3.endStage();
         }
     }, 'awaken','place');
 
-    let G$3, phs$3, H$4;
+    let G$3, phs$4, H$4;
     let faction$3 = (g,p,h) => {
         G$3 = g;
-        phs$3 = p;
+        phs$4 = p;
         H$4 = h;
         let books = ["He Who Must Not Be Named","Passion","Shriek of the Byakhee","The Screaming Dead","The Third Eye","Zin Gaya"];
         let bookinit = ["He Who Must Not Be Named","Passion","Shriek of the Byakhee","The Screaming Dead","The Third Eye","Zin Gaya"];
@@ -7582,12 +7665,12 @@ var app = (function () {
         let awakenking = {
             awakenplaces: () => Object.keys(G$3.state.places).filter( p => !G$3.state.places[p].gate && G$3.player.units.filter( u => u.place == p).length ),
             awakenreq: () => G$3.player.power > 3 && Object.keys(G$3.state.places).filter( p => !G$3.state.places[p].gate && G$3.player.units.filter( u => u.place == p).length ).length,
-            cost: () => { G$3.player.power-=4; phs$3.endStage(); },
+            cost: () => { G$3.player.power-=4; phs$4.endStage(); },
         };
         let awakenhast = {
             awakenplaces: () => G$3.player.units.filter( u => u.gate && u.place == G$3.player.units.find( u => u.type == 'King in Yellow' ).place ).map( u => u.place ),
             awakenreq: () => G$3.player.power > 9 && G$3.player.units.filter( u => u.gate && u.place == G$3.player.units.find( u => u.type == 'King in Yellow' ).place ).length,
-            cost: () => { G$3.player.power-=10; phs$3.endStage(); },
+            cost: () => { G$3.player.power-=10; phs$4.endStage(); },
         };
         H$4['Hastur'] = awakenhast;
         H$4['King in Yellow'] = awakenking;
@@ -7610,7 +7693,7 @@ var app = (function () {
     };
 
     let lim$2 = 1, unlim$1 = 1;
-    let gift3doom = () => phs$3.addPhase('gift 3 doom',{
+    let gift3doom = () => phs$4.addPhase('gift 3 doom',{
         lim: lim$2,
         req : f => G$3.player.faction.name=='ys' && G$3.player.faction.bookreqs.includes('gift 3 doom'),
         start : 'player',
@@ -7622,7 +7705,7 @@ var app = (function () {
                         if ( ( np == 'player' || np == 'gift 3 doom' ) && G$3.state.players.filter( p => p.faction.name != 'ys' ).includes(c)) {
                             c.doom+=3;
                             H$4['gift 3 doom'] = f => true;
-                            phs$3.endPhase();
+                            phs$4.endPhase();
                         }
                     }
                 }
@@ -7632,7 +7715,7 @@ var app = (function () {
 
     let named = () => {
         G$3.player.temp.turn.named = 1;
-        phs$3.addPhase('named',{
+        phs$4.addPhase('named',{
             unlim: unlim$1,
             req : f => G$3.player.faction.name == 'ys' && G$3.player.units.find( u => u.type == 'Hastur' && G$3.state.places[u.place] ) && !G$3.player.temp.turn.named && !G$3.player.temp.turn.scream && G$3.player.power > 0,
             start : 'place',
@@ -7645,7 +7728,7 @@ var app = (function () {
                                 G$3.player.temp.turn.named = 1;
                                 G$3.player.units.find( u => u.type == 'Hastur' ).place = c;
                                 G$3.player.power--;
-                                phs$3.endPhase();
+                                phs$4.endPhase();
                             }
                         }
                     }
@@ -7656,7 +7739,7 @@ var app = (function () {
 
     let shriek = () => {
         G$3.state.choices.shriek = {place:null};
-        phs$3.addPhase('shriek',{
+        phs$4.addPhase('shriek',{
             lim: lim$2,
             req : f => G$3.player.faction.name == 'ys' && G$3.player.units.find( u => u.type == 'Byakhee' && G$3.state.places[u.place]) && G$3.player.power > 0,
             start : 'place',
@@ -7669,7 +7752,7 @@ var app = (function () {
                             if ( ( np == 'place' || np == 'shriek' ) && G$3.state.places.includes(c) ) {
                                 G$3.state.choices.shriek.place = c;
                                 G$3.player.power--;
-                                phs$3.endPhase();
+                                phs$4.endPhase();
                             }
                         }
                     }
@@ -7683,7 +7766,7 @@ var app = (function () {
                                 H$4.forceRerender();
                             }
                         },
-                        done : f => phs$3.endStage()
+                        done : f => phs$4.endStage()
                     }
                 }
             }
@@ -7692,7 +7775,7 @@ var app = (function () {
 
     let zingaya = () => {
         G$3.state.choices.zingaya = {place:null};
-        phs$3.addPhase('shriek',{
+        phs$4.addPhase('shriek',{
             lim: lim$2,
             req : f => G$3.player.faction.name == 'ys' && G$3.player.units.find( u => u.type == 'Undead' && u.place == '' ) && G$3.player.units.find( u => u.type == 'Undead' && G$3.state.places[u.place] && G$3.units.find( uu => H$4.findPlyr(uu.owner).faction.name != 'ys' && uu.type == 'cult' && uu.place == u.place) ) && G$3.player.power > 0,
             start : 'place',
@@ -7704,7 +7787,7 @@ var app = (function () {
                         choose : (np, c) => {
                             if ( ( np == 'place' || np == 'zingaya' ) && Array.from( new Set( G$3.player.units.find( u => u.type == 'Undead' && G$3.state.places[u.place] && G$3.units.find( uu => H$4.findPlyr(uu.owner).faction.name != 'ys' && uu.type == 'cult' && uu.place == u.place) ).map( u => u.place ) ) ).includes(c) ) {
                                 G$3.state.choices.zingaya.place = c;
-                                phs$3.endPhase();
+                                phs$4.endPhase();
                             }
                         }
                     }
@@ -7717,7 +7800,7 @@ var app = (function () {
                                 G$3.player.units.find( u => u.type == 'Undead' && u.place == '' ).place = c.place;
                                 G$3.player.power--;
                                 c.place = '';
-                                phs$3.endStage();
+                                phs$4.endStage();
                             }
                         },
                     }
@@ -7728,20 +7811,20 @@ var app = (function () {
 
     let desecrate = () => {
         let roll;
-        phs$3.addPhase('desecrate',{
+        phs$4.addPhase('desecrate',{
             lim: lim$2,
-            req : f => G$3.player.faction.name == 'ys' && G$3.player.units.find( u => u.type == 'King in Yellow' && G$3.state.places[u.place] ) && !G$3.state.places[G$3.player.units.find( u => u.type == 'King in Yellow' && !G$3.state.places[u.place] ).place].glyphs.includes('desecration') && G$3.player.power > 1,
+            req : f => G$3.player.faction.name == 'ys' && G$3.player.units.find( u => u.type == 'King in Yellow' && G$3.state.places[u.place] ) && !G$3.state.places[G$3.player.units.find( u => u.type == 'King in Yellow').place].glyphs.includes('desecration') && G$3.player.power > 1,
             start : 'roll',
             stages: {               
                 roll : {
                     init : f=> {
                         G$3.player.power-= (2 - ( G$3.player.books.includes("The Third Eye") && G$3.state.places[ G$3.player.units.find( u => u.type == 'Hastur' ).place ] ) );
-                        roll = phs$3.roll(1);
-                        if (phs$3.roll(1) >= G$3.player.units.filter( u => u.place == G$3.player.units.find( u => u.type == 'King in Yellow' ).place ).length ) {
+                        roll = phs$4.roll(1);
+                        if (phs$4.roll(1) >= G$3.player.units.filter( u => u.place == G$3.player.units.find( u => u.type == 'King in Yellow' ).place ).length ) {
                             G$3.state.places[G$3.player.units.find( u => u.type == 'King in Yellow' ).place].glyphs.push('desecration');
-                            phs$3.endStage();
+                            phs$4.endStage();
                         } else {
-                            phs$3.setStage('unit');
+                            phs$4.setStage('unit');
                         }
                     },
                 },              
@@ -7751,10 +7834,10 @@ var app = (function () {
                         choose : (np, c) => {
                             if ( ( np == 'unit' || np == 'desecrate' ) && G$3.player.units.filter( u => H$4.findPlyr(u.owner).faction.name != 'ys' && u.cost <= 2 && u.place == '' ).includes(c) ) {
                                 c.place = G$3.player.units.find( u => u.type = 'King in Yellow' );
-                                phs$3.endStage();
+                                phs$4.endStage();
                             }
                         },
-                        done : f=>phs$3.endStage()
+                        done : f=>phs$4.endStage()
                     }
                 }
             }
@@ -7764,7 +7847,7 @@ var app = (function () {
     let scream = () => {
         G$3.player.temp.turn.scream = 1;
         G$3.state.choices.scream = {place:null};
-        phs$3.addPhase('scream',{
+        phs$4.addPhase('scream',{
             unlim: unlim$1,
             req : f => G$3.player.faction.name == 'ys' && G$3.state.places[G$3.player.units.find( u => u.type = 'King in Yellow' ).place] && !G$3.player.temp.turn.named && !G$3.player.temp.turn.scream && G$3.player.power > 0,
             start : 'place',
@@ -7778,7 +7861,7 @@ var app = (function () {
                                 G$3.state.choices.scream.place = c;
                                 G$3.player.temp.turn.scream = 1;
                                 G$3.player.power--;
-                                phs$3.endPhase();
+                                phs$4.endPhase();
                             }
                         }
                     }
@@ -7793,13 +7876,13 @@ var app = (function () {
                                     H$4.forceRerender();
                                 else {
                                     G$3.player.units.find( u => u.type = 'King in Yellow' ).place = G$3.state.choices.scream.place;
-                                    phs$3.endStage();
+                                    phs$4.endStage();
                                 }
                             }
                         },
                         done : f => {
                             G$3.player.units.find( u => u.type = 'King in Yellow' ).place = G$3.state.choices.scream.place;
-                            phs$3.endStage();
+                            phs$4.endStage();
                         }
                     }
                 }
@@ -7807,10 +7890,10 @@ var app = (function () {
         });
     };
 
-    let feast = () => phs$3.addStage('feast',{
+    let feast = () => phs$4.addStage('feast',{
         init : f => {
             G$3.state.players.find( p => p.faction.name == 'ys' ).power += G$3.state.places.filter( p => G$3.state.places[p].glyphs.includes('desecration') && G$3.units.find( u => u.place == p) ).length;
-            phs$3.endStage();
+            phs$4.endStage();
         }
     },'gather','start');
 
@@ -7821,7 +7904,7 @@ var app = (function () {
                 if ( G$3.state.players.find( p => p.faction.name == 'ys' ).units.filter( u => u.type == 'cult' && G$3.state.places[u.place] ).length < cultists )
                     G$3.state.players.find( p => p.faction.name == 'ys' ).power += cultists - G$3.state.players.find( p => p.faction.name == 'ys' ).units.filter( u => u.type == 'cult' && G$3.state.places[u.place] ).length;
                 cultists = G$3.state.players.find( p => p.faction.name == 'ys' ).units.filter( u => u.type == 'cult' && G$3.state.places[u.place] ).length;
-                phs$3.endStage();
+                phs$4.endStage();
             },
         };
         pastage.next = G$3.phases.action.start||'';
@@ -7830,50 +7913,50 @@ var app = (function () {
     };
 
     let thirdeye = () => {
-        phs$3.addStage('thirdeye',{
+        phs$4.addStage('thirdeye',{
             init : f => {
                 G$3.player.signs += G$3.state.places.includes( G$3.player.units.find( u => u.type == 'Hastur' ).place );
-                phs$3.endStage();
+                phs$4.endStage();
             }
         },'desecrate','roll');
     };
 
     let vengence = () => {
         let interupted;
-        phs$3.phases.fight.stages.assignekills.init = {
+        phs$4.phases.fight.stages.assignekills.init = {
             init : f => {
                 interupted = [G$3.state.choices.fight.enemy,G$3.state.choices.fight.player].find( p => p.faction.name == 'ys' ) && G$3.units.find( u => u.type == 'Hastur').place == G$3.state.choices.fight.place;
                 if ( interupted )
-                    phs$3.interuptStage('fight','assignekills',G$3.state.players.indexOf(G$3.state.players.find( p => p.faction.name == 'ys' ) ));
+                    phs$4.interuptStage('fight','assignekills',G$3.state.players.indexOf(G$3.state.players.find( p => p.faction.name == 'ys' ) ));
             },
         };
-        phs$3.addStage('veng-e',{
+        phs$4.addStage('veng-e',{
             init : f => {
                 if ( interupted ) {
                     interupted = false;
-                    phs$3.returnStage();
-                    phs$3.endStage();
+                    phs$4.returnStage();
+                    phs$4.endStage();
                 }
                 else
-                    phs$3.endStage();
+                    phs$4.endStage();
             }
         },'fight','assignekills');
-        phs$3.phases.fight.stages.assignpkills.init = {
+        phs$4.phases.fight.stages.assignpkills.init = {
             init : f => {
                 interupted = [G$3.state.choices.fight.enemy,G$3.state.choices.fight.player].find( p => p.faction.name == 'ys' ) && G$3.units.find( u => u.type == 'Hastur').place == G$3.state.choices.fight.place;
                 if ( interupted )
-                    phs$3.interuptStage('fight','assignpkills',G$3.state.players.indexOf(G$3.state.players.find( p => p.faction.name == 'ys' ) ));
+                    phs$4.interuptStage('fight','assignpkills',G$3.state.players.indexOf(G$3.state.players.find( p => p.faction.name == 'ys' ) ));
             },
         };
-        phs$3.addStage('veng-p',{
+        phs$4.addStage('veng-p',{
             init : f => {
                 if ( interupted ) {
                     interupted = false;
-                    phs$3.returnStage();
-                    phs$3.endStage();
+                    phs$4.returnStage();
+                    phs$4.endStage();
                 }
                 else
-                    phs$3.endStage();
+                    phs$4.endStage();
             }
         },'fight','assignpkills');
     };
@@ -7901,7 +7984,7 @@ var app = (function () {
         p.temp.phase.kills = r.filter( e => e > 4 ).length;
         p.temp.phase.pains = r.filter( e => e < 5 && e > 2).length;
     };
-    let roll$1 = ( dice ) => Math.floor((Math.random() * 6) + 1);
+    let roll$1 = ( dice=1 ) => Array.from(dice).fill(0).map( v => Math.floor((Math.random() * 6) + 1) ).reduce((acc,cur)=>acc+cur,0);
     let endTurn = t => { 
         G$4.state.players.map( p => p.temp.turn = {} );
         if (!G$4.state.players.filter( p => p.power ).length) 
@@ -7931,13 +8014,6 @@ var app = (function () {
         G$4.state.turn.pi = inpi;
         H$5.forceRerender();
     };
-    // let checkbooks = () => 
-    //     G.state.players.map( p => p.faction.bookreqs.map( (l,i) => {
-    //         if (Object.values(l)[0]()){
-    //             p.faction.bookreqs[i] = {'waiting...':f=>false}
-    //             interuptStage('book','book',G.state.players.indexOf(p))
-    //         }
-    //     }))
     let checkbooks = () => 
         G$4.state.players.map( p => p.faction.bookreqs.map( (l,i) => {
             if (H$5[l]()){
@@ -7976,7 +8052,11 @@ var app = (function () {
         phaseInit();
         H$5.forceRerender();
     };
+    let checkWin = f => {
+        return G$4.players.find( p => p.doom > 29 ) || G$4.state.rituals >= G$4.ritualtrack[G$4.state.players.length].length
+    };
     let endPhase = p => {
+        if (checkWin()) {setPhase('win');return;}
         G$4.state.players.map( p => p.temp.phase = {} );
         if (G$4.phases[G$4.state.phase].lim) 
             G$4.state.turn.lim--;
@@ -8103,9 +8183,9 @@ var app = (function () {
                                 G$4.player.ritual = 0;
                                 if (c == 'ritual' && G$4.player.power >= G$4.ritualcost) {
                                     G$4.player.units.filter( u => u.gate ).map( f => G$4.player.doom++);
-                                    G$4.player.units.filter( u => u.tier==2 ).map( f => G$4.player.signs++);
+                                    G$4.player.units.filter( u => u.tier==2 ).map( f => G$4.player.signs.push((phs.roll()%3)+1));
                                     G$4.player.power -= G$4.ritualcost;
-                                    G$4.rituals++;
+                                    G$4.staterituals++;
                                 }
                                 G$4.state.turn.pi++;        
                                 if (!G$4.state.players.filter( p => p.ritual).length) endStage$1();
@@ -8151,7 +8231,7 @@ var app = (function () {
                         },
                         place : {
                             next : 'unit',
-                            options : f => (G$4.state.choices.move.unit.speed == 2 ) ? Array.from( new Set(G$4.state.places[G$4.state.choices.move.unit.place].adjacent.reduce( (acc,p) => acc.concat(G$4.state.places[p].adjacent), []) ) ) : G$4.state.places[G$4.state.choices.move.unit.place].adjacent,
+                            options : f => (G$4.state.choices.move?.unit?.speed == 2 ) ? Array.from( new Set(G$4.state.places[G$4.state.choices.move.unit.place].adjacent.reduce( (acc,p) => acc.concat(G$4.state.places[p].adjacent), []) ) ) : G$4.state.places[G$4.state.choices.move.unit.place].adjacent,
                             moves : {
                                 choose : (np, c) => {
                                     if (np == 'place' && ((G$4.state.choices.move.unit.speed == 2 ) ? Array.from( new Set(G$4.state.places[G$4.state.choices.move.unit.place].adjacent.reduce( (acc,p) => acc.concat(G$4.state.places[p].adjacent), []) ) ) : G$4.state.places[G$4.state.choices.move.unit.place].adjacent).includes(c)) {
@@ -8160,8 +8240,6 @@ var app = (function () {
                                         G$4.state.choices.move.unit.place = c;
                                         G$4.state.choices.move.unit.moved = 1;
                                         G$4.player.power--;
-                                        G$4.state.choices.move.unit = null;
-                                        G$4.state.choices.move.place = null;
                                         H$5.forceRerender();
                                         if (G$4.player.power == 0) {
                                             endPhase();
@@ -8317,7 +8395,7 @@ var app = (function () {
                 req : f => G$4.player.units.find( u => u.type == 'cult' && u.place == '' ),
                 stages : {
                     place : {
-                        options : f => Array.from( new Set( G$4.player.units.map( u => u.place ) ) ),
+                        options : f => Array.from( new Set( G$4.player.units.filter( u => G$4.places[u.place] ).map( u => u.place ) ) ),
                         moves : {
                             choose : (np, c) => {
                                 if (np == 'place' && G$4.player.units.map( u => u.place ).includes(c) ) {
@@ -8391,45 +8469,6 @@ var app = (function () {
                     },
                 }
             },
-            // awaken : {
-            //     lim,
-            //     start : 'unit',
-            //     req : f => G.player.units.filter( u => u.tier == 2 && u.place == '' && u.awakenreq()).length,
-            //     stages : {
-            //         unit : {
-            //             next : 'place',
-            //             options : f => G.player.units.filter( u => u.tier==2 && u.awakenreq()),
-            //             moves : {
-            //                 choose : (np, c) => {
-            //                     if (np == 'unit' && G.player.units.filter( u => u.tier==2 && u.awakenreq()).includes(c)) {
-            //                         G.state.choices.awaken.unit = c
-            //                         endStage()
-            //                     }
-            //                 },
-            //                 done : f => {
-            //                     endPhase()
-            //                 }
-            //             },
-            //         },
-            //         place : {
-            //             options : f => G.state.choices.awaken.unit.awakenplaces(),
-            //             moves : {
-            //                 choose : (np, c) => {
-            //                     if (np == 'place' && G.state.choices.awaken.unit.awakenplaces().includes(c)) {
-            //                         G.state.choices.awaken.place = c
-            //                         G.state.choices.awaken.unit.place = c
-            //                         // G.player.power -= G.state.choices.awaken.unit.cost
-            //                         // G.state.choices.awaken.unit = null
-            //                         // G.state.choices.awaken.place = null
-            //                         G.state.choices.awaken.unit.cost()
-            //                         H.forceRerender()
-            //                         // endStage()
-            //                     }
-            //                 }
-            //             },
-            //         },
-            //     }
-            // },
             awaken : {
                 lim: lim$3,
                 start : 'unit',
@@ -8499,26 +8538,6 @@ var app = (function () {
                     },
                 }
             },
-            // book : {
-            //     start : 'book',
-            //     stages : {
-            //         book : {
-            //             options : f => G.player.faction.books,
-            //             moves : {
-            //                 choose : (np, c) => {
-            //                     if (np == 'book' && G.player.faction.books.includes(c) ) {
-            //                         G.state.choices.book.book = c
-            //                         G.player.books = [...G.player.books, c ]
-            //                         G.player.faction.bookreqs = G.player.faction.bookreqs.filter( b => !b['waiting...'])
-            //                         G.player.faction.books = G.player.faction.books.filter( b => b != G.state.choices.book.book)
-            //                         G.player.faction.bookinit[c]()
-            //                         returnStage()
-            //                     }
-            //                 }
-            //             },
-            //         },
-            //     }
-            // },
             book : {
                 start : 'book',
                 stages : {
@@ -8539,6 +8558,21 @@ var app = (function () {
                     },
                 }
             },
+            win : {
+                start : 'end',
+                stages : {
+                    'end' : {
+                        next : 'cease',
+                        init : f => {
+                            G$4.state.done = 1;
+                            endStage$1();
+                        },
+                    },
+                    'cease' : {
+
+                    }
+                }
+            }
         }
     };
 
@@ -8549,7 +8583,7 @@ var app = (function () {
 
     function get_each_context$2(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[19] = list[i];
+    	child_ctx[20] = list[i];
     	return child_ctx;
     }
 
@@ -8559,7 +8593,7 @@ var app = (function () {
     	return child_ctx;
     }
 
-    // (119:193) {#each G.state.players as player (player.faction.name)}
+    // (112:193) {#each G.state.players as player (player.faction.name)}
     function create_each_block_1$2(key_1, ctx) {
     	let first;
     	let player_1;
@@ -8612,17 +8646,17 @@ var app = (function () {
     		block,
     		id: create_each_block_1$2.name,
     		type: "each",
-    		source: "(119:193) {#each G.state.players as player (player.faction.name)}",
+    		source: "(112:193) {#each G.state.players as player (player.faction.name)}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (119:797) {:else}
+    // (112:797) {:else}
     function create_else_block$1(ctx) {
     	let li;
-    	let t_value = /*action*/ ctx[19] + "";
+    	let t_value = /*action*/ ctx[20] + "";
     	let t;
     	let mounted;
     	let dispose;
@@ -8632,7 +8666,7 @@ var app = (function () {
     			li = element("li");
     			t = text(t_value);
     			attr_dev(li, "class", "svelte-11jcp7s");
-    			add_location(li, file$7, 118, 804, 5345);
+    			add_location(li, file$7, 111, 804, 5059);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, li, anchor);
@@ -8643,7 +8677,7 @@ var app = (function () {
     					li,
     					"click",
     					function () {
-    						if (is_function(/*click*/ ctx[2](/*action*/ ctx[19]))) /*click*/ ctx[2](/*action*/ ctx[19]).apply(this, arguments);
+    						if (is_function(/*click*/ ctx[2](/*action*/ ctx[20]))) /*click*/ ctx[2](/*action*/ ctx[20]).apply(this, arguments);
     					},
     					false,
     					false,
@@ -8655,7 +8689,7 @@ var app = (function () {
     		},
     		p: function update(new_ctx, dirty) {
     			ctx = new_ctx;
-    			if (dirty & /*G*/ 1 && t_value !== (t_value = /*action*/ ctx[19] + "")) set_data_dev(t, t_value);
+    			if (dirty & /*G*/ 1 && t_value !== (t_value = /*action*/ ctx[20] + "")) set_data_dev(t, t_value);
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(li);
@@ -8668,17 +8702,17 @@ var app = (function () {
     		block,
     		id: create_else_block$1.name,
     		type: "else",
-    		source: "(119:797) {:else}",
+    		source: "(112:797) {:else}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (119:703) 
+    // (112:703) 
     function create_if_block_3(ctx) {
     	let li;
-    	let t_value = /*action*/ ctx[19].faction.name + "";
+    	let t_value = /*action*/ ctx[20].faction.name + "";
     	let t;
     	let mounted;
     	let dispose;
@@ -8687,9 +8721,9 @@ var app = (function () {
     		c: function create() {
     			li = element("li");
     			t = text(t_value);
-    			set_style(li, "color", /*action*/ ctx[19].faction.color);
+    			set_style(li, "color", /*action*/ ctx[20].faction.color);
     			attr_dev(li, "class", "svelte-11jcp7s");
-    			add_location(li, file$7, 118, 703, 5244);
+    			add_location(li, file$7, 111, 703, 4958);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, li, anchor);
@@ -8700,7 +8734,7 @@ var app = (function () {
     					li,
     					"click",
     					function () {
-    						if (is_function(/*click*/ ctx[2](/*action*/ ctx[19]))) /*click*/ ctx[2](/*action*/ ctx[19]).apply(this, arguments);
+    						if (is_function(/*click*/ ctx[2](/*action*/ ctx[20]))) /*click*/ ctx[2](/*action*/ ctx[20]).apply(this, arguments);
     					},
     					false,
     					false,
@@ -8712,10 +8746,10 @@ var app = (function () {
     		},
     		p: function update(new_ctx, dirty) {
     			ctx = new_ctx;
-    			if (dirty & /*G*/ 1 && t_value !== (t_value = /*action*/ ctx[19].faction.name + "")) set_data_dev(t, t_value);
+    			if (dirty & /*G*/ 1 && t_value !== (t_value = /*action*/ ctx[20].faction.name + "")) set_data_dev(t, t_value);
 
     			if (dirty & /*G*/ 1) {
-    				set_style(li, "color", /*action*/ ctx[19].faction.color);
+    				set_style(li, "color", /*action*/ ctx[20].faction.color);
     			}
     		},
     		d: function destroy(detaching) {
@@ -8729,20 +8763,20 @@ var app = (function () {
     		block,
     		id: create_if_block_3.name,
     		type: "if",
-    		source: "(119:703) ",
+    		source: "(112:703) ",
     		ctx
     	});
 
     	return block;
     }
 
-    // (119:422) {#if G.state.stage.includes("unit")}
+    // (112:422) {#if G.state.stage.includes("unit")}
     function create_if_block_2(ctx) {
     	let li;
-    	let t0_value = /*action*/ ctx[19].type + "";
+    	let t0_value = /*action*/ ctx[20].type + "";
     	let t0;
     	let t1;
-    	let t2_value = (/*action*/ ctx[19].place || "pool") + "";
+    	let t2_value = (/*action*/ ctx[20].place || "pool") + "";
     	let t2;
     	let mounted;
     	let dispose;
@@ -8753,9 +8787,9 @@ var app = (function () {
     			t0 = text(t0_value);
     			t1 = text(" in ");
     			t2 = text(t2_value);
-    			set_style(li, "color", H.findPlyr(/*action*/ ctx[19].owner).faction.color);
+    			set_style(li, "color", H.findPlyr(/*action*/ ctx[20].owner).faction.color);
     			attr_dev(li, "class", "svelte-11jcp7s");
-    			add_location(li, file$7, 118, 458, 4999);
+    			add_location(li, file$7, 111, 458, 4713);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, li, anchor);
@@ -8768,7 +8802,7 @@ var app = (function () {
     					li,
     					"click",
     					function () {
-    						if (is_function(/*click*/ ctx[2](/*action*/ ctx[19]))) /*click*/ ctx[2](/*action*/ ctx[19]).apply(this, arguments);
+    						if (is_function(/*click*/ ctx[2](/*action*/ ctx[20]))) /*click*/ ctx[2](/*action*/ ctx[20]).apply(this, arguments);
     					},
     					false,
     					false,
@@ -8780,11 +8814,11 @@ var app = (function () {
     		},
     		p: function update(new_ctx, dirty) {
     			ctx = new_ctx;
-    			if (dirty & /*G*/ 1 && t0_value !== (t0_value = /*action*/ ctx[19].type + "")) set_data_dev(t0, t0_value);
-    			if (dirty & /*G*/ 1 && t2_value !== (t2_value = (/*action*/ ctx[19].place || "pool") + "")) set_data_dev(t2, t2_value);
+    			if (dirty & /*G*/ 1 && t0_value !== (t0_value = /*action*/ ctx[20].type + "")) set_data_dev(t0, t0_value);
+    			if (dirty & /*G*/ 1 && t2_value !== (t2_value = (/*action*/ ctx[20].place || "pool") + "")) set_data_dev(t2, t2_value);
 
     			if (dirty & /*G*/ 1) {
-    				set_style(li, "color", H.findPlyr(/*action*/ ctx[19].owner).faction.color);
+    				set_style(li, "color", H.findPlyr(/*action*/ ctx[20].owner).faction.color);
     			}
     		},
     		d: function destroy(detaching) {
@@ -8798,14 +8832,14 @@ var app = (function () {
     		block,
     		id: create_if_block_2.name,
     		type: "if",
-    		source: "(119:422) {#if G.state.stage.includes(\\\"unit\\\")}",
+    		source: "(112:422) {#if G.state.stage.includes(\\\"unit\\\")}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (119:395) {#each G.actions as action}
+    // (112:395) {#each G.actions as action}
     function create_each_block$2(ctx) {
     	let show_if;
     	let show_if_1;
@@ -8854,14 +8888,14 @@ var app = (function () {
     		block,
     		id: create_each_block$2.name,
     		type: "each",
-    		source: "(119:395) {#each G.actions as action}",
+    		source: "(112:395) {#each G.actions as action}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (119:1068) 
+    // (112:1068) 
     function create_if_block_1(ctx) {
     	let li;
     	let mounted;
@@ -8872,7 +8906,7 @@ var app = (function () {
     			li = element("li");
     			li.textContent = "done";
     			attr_dev(li, "class", "svelte-11jcp7s");
-    			add_location(li, file$7, 118, 1068, 5609);
+    			add_location(li, file$7, 111, 1068, 5323);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, li, anchor);
@@ -8906,14 +8940,14 @@ var app = (function () {
     		block,
     		id: create_if_block_1.name,
     		type: "if",
-    		source: "(119:1068) ",
+    		source: "(112:1068) ",
     		ctx
     	});
 
     	return block;
     }
 
-    // (119:860) {#if G.phases[G.state.phase]?.stages[G.state.stage]?.moves?.done}
+    // (112:860) {#if G.phases[G.state.phase]?.stages[G.state.stage]?.moves?.done}
     function create_if_block$3(ctx) {
     	let li;
     	let mounted;
@@ -8924,7 +8958,7 @@ var app = (function () {
     			li = element("li");
     			li.textContent = "done";
     			attr_dev(li, "class", "svelte-11jcp7s");
-    			add_location(li, file$7, 118, 925, 5466);
+    			add_location(li, file$7, 111, 925, 5180);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, li, anchor);
@@ -8958,7 +8992,7 @@ var app = (function () {
     		block,
     		id: create_if_block$3.name,
     		type: "if",
-    		source: "(119:860) {#if G.phases[G.state.phase]?.stages[G.state.stage]?.moves?.done}",
+    		source: "(112:860) {#if G.phases[G.state.phase]?.stages[G.state.stage]?.moves?.done}",
     		ctx
     	});
 
@@ -9038,15 +9072,15 @@ var app = (function () {
     			set_style(div0, "background", "black");
     			set_style(div0, "width", "10em");
     			set_style(div0, "z-index", "100");
-    			add_location(div0, file$7, 118, 0, 4541);
+    			add_location(div0, file$7, 111, 0, 4255);
     			set_style(ul, "padding", "0");
     			attr_dev(ul, "class", "svelte-11jcp7s");
-    			add_location(ul, file$7, 118, 373, 4914);
+    			add_location(ul, file$7, 111, 373, 4628);
     			attr_dev(div1, "class", "actions svelte-11jcp7s");
     			set_style(div1, "color", /*G*/ ctx[0].player.faction.color);
-    			add_location(div1, file$7, 118, 305, 4846);
+    			add_location(div1, file$7, 111, 305, 4560);
     			attr_dev(div2, "class", "hud svelte-11jcp7s");
-    			add_location(div2, file$7, 118, 176, 4717);
+    			add_location(div2, file$7, 111, 176, 4431);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -9177,18 +9211,7 @@ var app = (function () {
     function instance$7($$self, $$props, $$invalidate) {
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots("Game", slots, []);
-
-    	let firebaseConfig = {
-    		apiKey: "AIzaSyAtutNxHpxtCJi3EUB3irfhNiTfoMu1zLY",
-    		authDomain: "cw-wars.firebaseapp.com",
-    		databaseURL: "https://cw-wars-default-rtdb.firebaseio.com",
-    		projectId: "cw-wars",
-    		storageBucket: "cw-wars.appspot.com",
-    		messagingSenderId: "311965598360",
-    		appId: "1:311965598360:web:b4f0ff76188930035e86ed"
-    	};
-
-    	firebase.initializeApp(firebaseConfig);
+    	let { page = "1" } = $$props, { size = 1 } = $$props;
     	let client = new URLSearchParams(window.location.search).get("faction") || "hotseat";
 
     	let helpers = {
@@ -9209,7 +9232,7 @@ var app = (function () {
     				G
     			);
 
-    			$$invalidate(0, G.rituals = 0, G);
+    			$$invalidate(0, G.state.rituals = 0, G);
     			phases.init(G, helpers);
     			factions(G, phases, helpers);
 
@@ -9244,12 +9267,17 @@ var app = (function () {
 
     			$$invalidate(0, G.state.phase = "action", G);
     			$$invalidate(0, G.state.stage = "start", G);
+
+    			if (page == "newgame") {
+    				$$invalidate(4, page = size);
+    				H.push();
+    			}
     		},
     		log: f => console.log(G, H, phases),
     		push: f => {
-    			firebase.database().ref("game/" + 1).set(JSON.stringify({ ...G.state, sender: client }));
+    			firebase.database().ref("game/" + page).set(JSON.stringify({ ...G.state, sender: client }));
     		},
-    		pull: f => firebase.database().ref("game/" + 1).on("value", g => {
+    		pull: f => firebase.database().ref("game/" + page).on("value", g => {
     			if (JSON.parse(g.val()).sender == client) return;
     			let books = [];
 
@@ -9319,11 +9347,16 @@ var app = (function () {
     		if (G.player.faction.name == client || client == "hotseat") H.choose(G.state.stage, action);
     	};
 
-    	const writable_props = [];
+    	const writable_props = ["page", "size"];
 
     	Object_1.keys($$props).forEach(key => {
     		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console_1.warn(`<Game> was created with unknown prop '${key}'`);
     	});
+
+    	$$self.$$set = $$props => {
+    		if ("page" in $$props) $$invalidate(4, page = $$props.page);
+    		if ("size" in $$props) $$invalidate(5, size = $$props.size);
+    	};
 
     	$$self.$capture_state = () => ({
     		Map: Map$1,
@@ -9333,7 +9366,8 @@ var app = (function () {
     		phases,
     		Unit,
     		faction,
-    		firebaseConfig,
+    		page,
+    		size,
     		client,
     		helpers,
     		genid,
@@ -9354,7 +9388,8 @@ var app = (function () {
     	});
 
     	$$self.$inject_state = $$props => {
-    		if ("firebaseConfig" in $$props) firebaseConfig = $$props.firebaseConfig;
+    		if ("page" in $$props) $$invalidate(4, page = $$props.page);
+    		if ("size" in $$props) $$invalidate(5, size = $$props.size);
     		if ("client" in $$props) client = $$props.client;
     		if ("helpers" in $$props) helpers = $$props.helpers;
     		if ("genid" in $$props) genid = $$props.genid;
@@ -9369,7 +9404,7 @@ var app = (function () {
     		if ("G" in $$props) $$invalidate(0, G = $$props.G);
     		if ("actions" in $$props) actions = $$props.actions;
     		if ("choose" in $$props) choose = $$props.choose;
-    		if ("noop" in $$props) $$invalidate(18, noop = $$props.noop);
+    		if ("noop" in $$props) $$invalidate(19, noop = $$props.noop);
     		if ("clientCheck" in $$props) $$invalidate(1, clientCheck = $$props.clientCheck);
     		if ("click" in $$props) $$invalidate(2, click = $$props.click);
     	};
@@ -9388,7 +9423,7 @@ var app = (function () {
     		}
 
     		if ($$self.$$.dirty & /*G*/ 1) {
-    			 $$invalidate(0, G.ritualcost = G.ritualtracks[G.state.players.length][G.rituals], G);
+    			 $$invalidate(0, G.ritualcost = G.ritualtracks[G.state.players.length][G.state.rituals], G);
     		}
 
     		if ($$self.$$.dirty & /*G*/ 1) {
@@ -9408,13 +9443,13 @@ var app = (function () {
     		}
     	};
 
-    	return [G, clientCheck, click, player];
+    	return [G, clientCheck, click, player, page, size];
     }
 
     class Game extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$7, create_fragment$7, safe_not_equal, {});
+    		init(this, options, instance$7, create_fragment$7, safe_not_equal, { page: 4, size: 5 });
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
@@ -9423,33 +9458,62 @@ var app = (function () {
     			id: create_fragment$7.name
     		});
     	}
+
+    	get page() {
+    		throw new Error("<Game>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set page(value) {
+    		throw new Error("<Game>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get size() {
+    		throw new Error("<Game>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set size(value) {
+    		throw new Error("<Game>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
     }
 
-    /* src\App.svelte generated by Svelte v3.29.0 */
-    const file$8 = "src\\App.svelte";
+    /* src\components\cw\Lobby.svelte generated by Svelte v3.29.0 */
 
-    function create_fragment$8(ctx) {
-    	let div;
+    const { Object: Object_1$1 } = globals;
+    const file$8 = "src\\components\\cw\\Lobby.svelte";
+
+    function get_each_context$3(ctx, list, i) {
+    	const child_ctx = ctx.slice();
+    	child_ctx[11] = list[i];
+    	return child_ctx;
+    }
+
+    // (41:0) {:else}
+    function create_else_block$2(ctx) {
     	let game;
     	let current;
-    	game = new Game({ $$inline: true });
+
+    	game = new Game({
+    			props: {
+    				page: /*page*/ ctx[1],
+    				size: /*size*/ ctx[0]
+    			},
+    			$$inline: true
+    		});
 
     	const block = {
     		c: function create() {
-    			div = element("div");
     			create_component(game.$$.fragment);
-    			attr_dev(div, "class", "world svelte-1mhq47q");
-    			add_location(div, file$8, 9, 0, 225);
-    		},
-    		l: function claim(nodes) {
-    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
     		},
     		m: function mount(target, anchor) {
-    			insert_dev(target, div, anchor);
-    			mount_component(game, div, null);
+    			mount_component(game, target, anchor);
     			current = true;
     		},
-    		p: noop,
+    		p: function update(ctx, dirty) {
+    			const game_changes = {};
+    			if (dirty & /*page*/ 2) game_changes.page = /*page*/ ctx[1];
+    			if (dirty & /*size*/ 1) game_changes.size = /*size*/ ctx[0];
+    			game.$set(game_changes);
+    		},
     		i: function intro(local) {
     			if (current) return;
     			transition_in(game.$$.fragment, local);
@@ -9460,8 +9524,418 @@ var app = (function () {
     			current = false;
     		},
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(div);
-    			destroy_component(game);
+    			destroy_component(game, detaching);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_else_block$2.name,
+    		type: "else",
+    		source: "(41:0) {:else}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (24:0) {#if (page=='menu') }
+    function create_if_block$4(ctx) {
+    	let t0;
+    	let span;
+    	let t2;
+    	let ul;
+    	let li;
+    	let a;
+    	let t4;
+    	let promise_1;
+    	let mounted;
+    	let dispose;
+    	let if_block = /*client*/ ctx[5] == "hotseat" && create_if_block_1$1(ctx);
+
+    	let info = {
+    		ctx,
+    		current: null,
+    		token: null,
+    		hasCatch: false,
+    		pending: create_pending_block,
+    		then: create_then_block,
+    		catch: create_catch_block,
+    		value: 10
+    	};
+
+    	handle_promise(promise_1 = /*promise*/ ctx[2], info);
+
+    	const block = {
+    		c: function create() {
+    			if (if_block) if_block.c();
+    			t0 = space();
+    			span = element("span");
+    			span.textContent = "games:";
+    			t2 = space();
+    			ul = element("ul");
+    			li = element("li");
+    			a = element("a");
+    			a.textContent = "new game";
+    			t4 = space();
+    			info.block.c();
+    			add_location(span, file$8, 31, 4, 1317);
+    			attr_dev(a, "class", "svelte-5l26aa");
+    			add_location(a, file$8, 33, 31, 1379);
+    			add_location(li, file$8, 33, 8, 1356);
+    			add_location(ul, file$8, 32, 4, 1342);
+    		},
+    		m: function mount(target, anchor) {
+    			if (if_block) if_block.m(target, anchor);
+    			insert_dev(target, t0, anchor);
+    			insert_dev(target, span, anchor);
+    			insert_dev(target, t2, anchor);
+    			insert_dev(target, ul, anchor);
+    			append_dev(ul, li);
+    			append_dev(li, a);
+    			append_dev(ul, t4);
+    			info.block.m(ul, info.anchor = null);
+    			info.mount = () => ul;
+    			info.anchor = null;
+
+    			if (!mounted) {
+    				dispose = listen_dev(li, "click", /*newgame*/ ctx[3], false, false, false);
+    				mounted = true;
+    			}
+    		},
+    		p: function update(new_ctx, dirty) {
+    			ctx = new_ctx;
+
+    			{
+    				const child_ctx = ctx.slice();
+    				child_ctx[10] = info.resolved;
+    				info.block.p(child_ctx, dirty);
+    			}
+    		},
+    		i: noop,
+    		o: noop,
+    		d: function destroy(detaching) {
+    			if (if_block) if_block.d(detaching);
+    			if (detaching) detach_dev(t0);
+    			if (detaching) detach_dev(span);
+    			if (detaching) detach_dev(t2);
+    			if (detaching) detach_dev(ul);
+    			info.block.d();
+    			info.token = null;
+    			info = null;
+    			mounted = false;
+    			dispose();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block$4.name,
+    		type: "if",
+    		source: "(24:0) {#if (page=='menu') }",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (25:4) {#if (client == 'hotseat')}
+    function create_if_block_1$1(ctx) {
+    	let p;
+    	let t1;
+    	let a0;
+    	let t3;
+    	let a1;
+    	let t5;
+    	let a2;
+    	let t7;
+    	let a3;
+
+    	const block = {
+    		c: function create() {
+    			p = element("p");
+    			p.textContent = "you're currently playing a hotseat pass-and-play game. select your faction to enable online play:";
+    			t1 = space();
+    			a0 = element("a");
+    			a0.textContent = "yellow sign";
+    			t3 = space();
+    			a1 = element("a");
+    			a1.textContent = "great cthulhu";
+    			t5 = space();
+    			a2 = element("a");
+    			a2.textContent = "black goat";
+    			t7 = space();
+    			a3 = element("a");
+    			a3.textContent = "crawling chaos";
+    			add_location(p, file$8, 25, 8, 994);
+    			attr_dev(a0, "href", "./?faction=ys");
+    			attr_dev(a0, "class", "svelte-5l26aa");
+    			add_location(a0, file$8, 26, 8, 1110);
+    			attr_dev(a1, "href", "./?faction=gc");
+    			attr_dev(a1, "class", "svelte-5l26aa");
+    			add_location(a1, file$8, 27, 8, 1159);
+    			attr_dev(a2, "href", "./?faction=bg");
+    			attr_dev(a2, "class", "svelte-5l26aa");
+    			add_location(a2, file$8, 28, 8, 1210);
+    			attr_dev(a3, "href", "./?faction=cc");
+    			attr_dev(a3, "class", "svelte-5l26aa");
+    			add_location(a3, file$8, 29, 8, 1258);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, p, anchor);
+    			insert_dev(target, t1, anchor);
+    			insert_dev(target, a0, anchor);
+    			insert_dev(target, t3, anchor);
+    			insert_dev(target, a1, anchor);
+    			insert_dev(target, t5, anchor);
+    			insert_dev(target, a2, anchor);
+    			insert_dev(target, t7, anchor);
+    			insert_dev(target, a3, anchor);
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(p);
+    			if (detaching) detach_dev(t1);
+    			if (detaching) detach_dev(a0);
+    			if (detaching) detach_dev(t3);
+    			if (detaching) detach_dev(a1);
+    			if (detaching) detach_dev(t5);
+    			if (detaching) detach_dev(a2);
+    			if (detaching) detach_dev(t7);
+    			if (detaching) detach_dev(a3);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_1$1.name,
+    		type: "if",
+    		source: "(25:4) {#if (client == 'hotseat')}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (1:0) <script lang="javascript">      import Game from './Game.svelte'      import Gate from './Gate.svelte'      let firebaseConfig = {          apiKey: "AIzaSyAtutNxHpxtCJi3EUB3irfhNiTfoMu1zLY",          authDomain: "cw-wars.firebaseapp.com",          databaseURL: "https://cw-wars-default-rtdb.firebaseio.com",          projectId: "cw-wars",          storageBucket: "cw-wars.appspot.com",          messagingSenderId: "311965598360",          appId: "1:311965598360:web:b4f0ff76188930035e86ed"      }
+    function create_catch_block(ctx) {
+    	const block = { c: noop, m: noop, p: noop, d: noop };
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_catch_block.name,
+    		type: "catch",
+    		source: "(1:0) <script lang=\\\"javascript\\\">      import Game from './Game.svelte'      import Gate from './Gate.svelte'      let firebaseConfig = {          apiKey: \\\"AIzaSyAtutNxHpxtCJi3EUB3irfhNiTfoMu1zLY\\\",          authDomain: \\\"cw-wars.firebaseapp.com\\\",          databaseURL: \\\"https://cw-wars-default-rtdb.firebaseio.com\\\",          projectId: \\\"cw-wars\\\",          storageBucket: \\\"cw-wars.appspot.com\\\",          messagingSenderId: \\\"311965598360\\\",          appId: \\\"1:311965598360:web:b4f0ff76188930035e86ed\\\"      }",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (35:35)               {#each Object.keys(value.val()) as key}
+    function create_then_block(ctx) {
+    	let each_1_anchor;
+    	let each_value = Object.keys(/*value*/ ctx[10].val());
+    	validate_each_argument(each_value);
+    	let each_blocks = [];
+
+    	for (let i = 0; i < each_value.length; i += 1) {
+    		each_blocks[i] = create_each_block$3(get_each_context$3(ctx, each_value, i));
+    	}
+
+    	const block = {
+    		c: function create() {
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].c();
+    			}
+
+    			each_1_anchor = empty();
+    		},
+    		m: function mount(target, anchor) {
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].m(target, anchor);
+    			}
+
+    			insert_dev(target, each_1_anchor, anchor);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*join, Object, promise*/ 20) {
+    				each_value = Object.keys(/*value*/ ctx[10].val());
+    				validate_each_argument(each_value);
+    				let i;
+
+    				for (i = 0; i < each_value.length; i += 1) {
+    					const child_ctx = get_each_context$3(ctx, each_value, i);
+
+    					if (each_blocks[i]) {
+    						each_blocks[i].p(child_ctx, dirty);
+    					} else {
+    						each_blocks[i] = create_each_block$3(child_ctx);
+    						each_blocks[i].c();
+    						each_blocks[i].m(each_1_anchor.parentNode, each_1_anchor);
+    					}
+    				}
+
+    				for (; i < each_blocks.length; i += 1) {
+    					each_blocks[i].d(1);
+    				}
+
+    				each_blocks.length = each_value.length;
+    			}
+    		},
+    		d: function destroy(detaching) {
+    			destroy_each(each_blocks, detaching);
+    			if (detaching) detach_dev(each_1_anchor);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_then_block.name,
+    		type: "then",
+    		source: "(35:35)               {#each Object.keys(value.val()) as key}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (36:12) {#each Object.keys(value.val()) as key}
+    function create_each_block$3(ctx) {
+    	let li;
+    	let a;
+    	let t0_value = /*key*/ ctx[11] + "";
+    	let t0;
+    	let t1;
+    	let mounted;
+    	let dispose;
+
+    	function click_handler(...args) {
+    		return /*click_handler*/ ctx[6](/*key*/ ctx[11], ...args);
+    	}
+
+    	const block = {
+    		c: function create() {
+    			li = element("li");
+    			a = element("a");
+    			t0 = text(t0_value);
+    			t1 = space();
+    			attr_dev(a, "class", "svelte-5l26aa");
+    			add_location(a, file$8, 36, 41, 1532);
+    			add_location(li, file$8, 36, 12, 1503);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, li, anchor);
+    			append_dev(li, a);
+    			append_dev(a, t0);
+    			append_dev(li, t1);
+
+    			if (!mounted) {
+    				dispose = listen_dev(li, "click", click_handler, false, false, false);
+    				mounted = true;
+    			}
+    		},
+    		p: function update(new_ctx, dirty) {
+    			ctx = new_ctx;
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(li);
+    			mounted = false;
+    			dispose();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_each_block$3.name,
+    		type: "each",
+    		source: "(36:12) {#each Object.keys(value.val()) as key}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (1:0) <script lang="javascript">      import Game from './Game.svelte'      import Gate from './Gate.svelte'      let firebaseConfig = {          apiKey: "AIzaSyAtutNxHpxtCJi3EUB3irfhNiTfoMu1zLY",          authDomain: "cw-wars.firebaseapp.com",          databaseURL: "https://cw-wars-default-rtdb.firebaseio.com",          projectId: "cw-wars",          storageBucket: "cw-wars.appspot.com",          messagingSenderId: "311965598360",          appId: "1:311965598360:web:b4f0ff76188930035e86ed"      }
+    function create_pending_block(ctx) {
+    	const block = { c: noop, m: noop, p: noop, d: noop };
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_pending_block.name,
+    		type: "pending",
+    		source: "(1:0) <script lang=\\\"javascript\\\">      import Game from './Game.svelte'      import Gate from './Gate.svelte'      let firebaseConfig = {          apiKey: \\\"AIzaSyAtutNxHpxtCJi3EUB3irfhNiTfoMu1zLY\\\",          authDomain: \\\"cw-wars.firebaseapp.com\\\",          databaseURL: \\\"https://cw-wars-default-rtdb.firebaseio.com\\\",          projectId: \\\"cw-wars\\\",          storageBucket: \\\"cw-wars.appspot.com\\\",          messagingSenderId: \\\"311965598360\\\",          appId: \\\"1:311965598360:web:b4f0ff76188930035e86ed\\\"      }",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function create_fragment$8(ctx) {
+    	let current_block_type_index;
+    	let if_block;
+    	let if_block_anchor;
+    	let current;
+    	const if_block_creators = [create_if_block$4, create_else_block$2];
+    	const if_blocks = [];
+
+    	function select_block_type(ctx, dirty) {
+    		if (/*page*/ ctx[1] == "menu") return 0;
+    		return 1;
+    	}
+
+    	current_block_type_index = select_block_type(ctx);
+    	if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
+
+    	const block = {
+    		c: function create() {
+    			if_block.c();
+    			if_block_anchor = empty();
+    		},
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+    		m: function mount(target, anchor) {
+    			if_blocks[current_block_type_index].m(target, anchor);
+    			insert_dev(target, if_block_anchor, anchor);
+    			current = true;
+    		},
+    		p: function update(ctx, [dirty]) {
+    			let previous_block_index = current_block_type_index;
+    			current_block_type_index = select_block_type(ctx);
+
+    			if (current_block_type_index === previous_block_index) {
+    				if_blocks[current_block_type_index].p(ctx, dirty);
+    			} else {
+    				group_outros();
+
+    				transition_out(if_blocks[previous_block_index], 1, 1, () => {
+    					if_blocks[previous_block_index] = null;
+    				});
+
+    				check_outros();
+    				if_block = if_blocks[current_block_type_index];
+
+    				if (!if_block) {
+    					if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
+    					if_block.c();
+    				}
+
+    				transition_in(if_block, 1);
+    				if_block.m(if_block_anchor.parentNode, if_block_anchor);
+    			}
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(if_block);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(if_block);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			if_blocks[current_block_type_index].d(detaching);
+    			if (detaching) detach_dev(if_block_anchor);
     		}
     	};
 
@@ -9478,6 +9952,146 @@ var app = (function () {
 
     function instance$8($$self, $$props, $$invalidate) {
     	let { $$slots: slots = {}, $$scope } = $$props;
+    	validate_slots("Lobby", slots, []);
+
+    	let firebaseConfig = {
+    		apiKey: "AIzaSyAtutNxHpxtCJi3EUB3irfhNiTfoMu1zLY",
+    		authDomain: "cw-wars.firebaseapp.com",
+    		databaseURL: "https://cw-wars-default-rtdb.firebaseio.com",
+    		projectId: "cw-wars",
+    		storageBucket: "cw-wars.appspot.com",
+    		messagingSenderId: "311965598360",
+    		appId: "1:311965598360:web:b4f0ff76188930035e86ed"
+    	};
+
+    	firebase.initializeApp(firebaseConfig);
+    	let size;
+    	let promise = firebase.database().ref("game").get();
+    	promise.then(v => $$invalidate(0, size = v.val().length));
+
+    	let newgame = () => {
+    			$$invalidate(1, page = "newgame");
+    		},
+    		join = key => {
+    			$$invalidate(1, page = key);
+    		},
+    		off = () => {
+    			$$invalidate(1, page = "Game");
+    		},
+    		back = () => {
+    			
+    		},
+    		page = "menu";
+
+    	let client = new URLSearchParams(window.location.search).get("faction") || "hotseat";
+    	const writable_props = [];
+
+    	Object_1$1.keys($$props).forEach(key => {
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<Lobby> was created with unknown prop '${key}'`);
+    	});
+
+    	const click_handler = (key, f) => join(key);
+
+    	$$self.$capture_state = () => ({
+    		Game,
+    		Gate,
+    		firebaseConfig,
+    		size,
+    		promise,
+    		newgame,
+    		join,
+    		off,
+    		back,
+    		page,
+    		client
+    	});
+
+    	$$self.$inject_state = $$props => {
+    		if ("firebaseConfig" in $$props) firebaseConfig = $$props.firebaseConfig;
+    		if ("size" in $$props) $$invalidate(0, size = $$props.size);
+    		if ("promise" in $$props) $$invalidate(2, promise = $$props.promise);
+    		if ("newgame" in $$props) $$invalidate(3, newgame = $$props.newgame);
+    		if ("join" in $$props) $$invalidate(4, join = $$props.join);
+    		if ("off" in $$props) off = $$props.off;
+    		if ("back" in $$props) back = $$props.back;
+    		if ("page" in $$props) $$invalidate(1, page = $$props.page);
+    		if ("client" in $$props) $$invalidate(5, client = $$props.client);
+    	};
+
+    	if ($$props && "$$inject" in $$props) {
+    		$$self.$inject_state($$props.$$inject);
+    	}
+
+    	return [size, page, promise, newgame, join, client, click_handler];
+    }
+
+    class Lobby extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance$8, create_fragment$8, safe_not_equal, {});
+
+    		dispatch_dev("SvelteRegisterComponent", {
+    			component: this,
+    			tagName: "Lobby",
+    			options,
+    			id: create_fragment$8.name
+    		});
+    	}
+    }
+
+    /* src\App.svelte generated by Svelte v3.29.0 */
+    const file$9 = "src\\App.svelte";
+
+    function create_fragment$9(ctx) {
+    	let div;
+    	let lobby;
+    	let current;
+    	lobby = new Lobby({ $$inline: true });
+
+    	const block = {
+    		c: function create() {
+    			div = element("div");
+    			create_component(lobby.$$.fragment);
+    			attr_dev(div, "class", "world svelte-1mhq47q");
+    			add_location(div, file$9, 9, 0, 227);
+    		},
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+    			mount_component(lobby, div, null);
+    			current = true;
+    		},
+    		p: noop,
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(lobby.$$.fragment, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(lobby.$$.fragment, local);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div);
+    			destroy_component(lobby);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_fragment$9.name,
+    		type: "component",
+    		source: "",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function instance$9($$self, $$props, $$invalidate) {
+    	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots("App", slots, []);
     	const writable_props = [];
 
@@ -9485,20 +10099,20 @@ var app = (function () {
     		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<App> was created with unknown prop '${key}'`);
     	});
 
-    	$$self.$capture_state = () => ({ Game });
+    	$$self.$capture_state = () => ({ Lobby });
     	return [];
     }
 
     class App extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$8, create_fragment$8, safe_not_equal, {});
+    		init(this, options, instance$9, create_fragment$9, safe_not_equal, {});
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
     			tagName: "App",
     			options,
-    			id: create_fragment$8.name
+    			id: create_fragment$9.name
     		});
     	}
     }
