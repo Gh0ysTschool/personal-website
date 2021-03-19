@@ -8053,7 +8053,7 @@ var app = (function () {
         H$5.forceRerender();
     };
     let checkWin = f => {
-        return G$4.players.find( p => p.doom > 29 ) || G$4.state.rituals >= G$4.ritualtrack[G$4.state.players.length].length
+        return G$4.state.players.find( p => p.doom > 29 ) || G$4.state.rituals >= G$4.ritualtracks[G$4.state.players.length].length
     };
     let endPhase = p => {
         if (checkWin()) {setPhase('win');return;}
@@ -8666,7 +8666,7 @@ var app = (function () {
     			li = element("li");
     			t = text(t_value);
     			attr_dev(li, "class", "svelte-11jcp7s");
-    			add_location(li, file$7, 111, 804, 5059);
+    			add_location(li, file$7, 111, 804, 5068);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, li, anchor);
@@ -8723,7 +8723,7 @@ var app = (function () {
     			t = text(t_value);
     			set_style(li, "color", /*action*/ ctx[20].faction.color);
     			attr_dev(li, "class", "svelte-11jcp7s");
-    			add_location(li, file$7, 111, 703, 4958);
+    			add_location(li, file$7, 111, 703, 4967);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, li, anchor);
@@ -8789,7 +8789,7 @@ var app = (function () {
     			t2 = text(t2_value);
     			set_style(li, "color", H.findPlyr(/*action*/ ctx[20].owner).faction.color);
     			attr_dev(li, "class", "svelte-11jcp7s");
-    			add_location(li, file$7, 111, 458, 4713);
+    			add_location(li, file$7, 111, 458, 4722);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, li, anchor);
@@ -8906,7 +8906,7 @@ var app = (function () {
     			li = element("li");
     			li.textContent = "done";
     			attr_dev(li, "class", "svelte-11jcp7s");
-    			add_location(li, file$7, 111, 1068, 5323);
+    			add_location(li, file$7, 111, 1068, 5332);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, li, anchor);
@@ -8958,7 +8958,7 @@ var app = (function () {
     			li = element("li");
     			li.textContent = "done";
     			attr_dev(li, "class", "svelte-11jcp7s");
-    			add_location(li, file$7, 111, 925, 5180);
+    			add_location(li, file$7, 111, 925, 5189);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, li, anchor);
@@ -9072,15 +9072,15 @@ var app = (function () {
     			set_style(div0, "background", "black");
     			set_style(div0, "width", "10em");
     			set_style(div0, "z-index", "100");
-    			add_location(div0, file$7, 111, 0, 4255);
+    			add_location(div0, file$7, 111, 0, 4264);
     			set_style(ul, "padding", "0");
     			attr_dev(ul, "class", "svelte-11jcp7s");
-    			add_location(ul, file$7, 111, 373, 4628);
+    			add_location(ul, file$7, 111, 373, 4637);
     			attr_dev(div1, "class", "actions svelte-11jcp7s");
     			set_style(div1, "color", /*G*/ ctx[0].player.faction.color);
-    			add_location(div1, file$7, 111, 305, 4560);
+    			add_location(div1, file$7, 111, 305, 4569);
     			attr_dev(div2, "class", "hud svelte-11jcp7s");
-    			add_location(div2, file$7, 111, 176, 4431);
+    			add_location(div2, file$7, 111, 176, 4440);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -9239,6 +9239,7 @@ var app = (function () {
     			$$invalidate(
     				0,
     				G.state.players = Object.values(G.factions).map(f => ({
+    					signs: [],
     					units: [],
     					faction: f,
     					doom: 0,
